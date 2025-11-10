@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài tập Trắc nghiệm: Chương 1 - Khái niệm Cơ bản (Đề 2)</title>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script>
+    MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        }
+    };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        :root {
+            --primary-color: #005a9c;
+            --secondary-color: #007bff;
+            --text-color: #333;
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --border-color: #e0e0e0;
+            --correct-bg: #e6f7ec;
+            --correct-border: #5cb85c;
+            --incorrect-bg: #fbe9e9;
+            --incorrect-border: #d9534f;
+            --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            font-family: var(--font-stack);
+            line-height: 1.6;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            background: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 30px 40px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.2em;
+        }
+        header h2 {
+            margin: 5px 0 0;
+            font-size: 1.5em;
+            font-weight: 400;
+            opacity: 0.9;
+        }
+
+        main {
+            padding: 30px 40px;
+        }
+        
+        .section-header {
+            font-family: var(--font-stack);
+            color: var(--primary-color);
+            font-size: 1.8em;
+            font-weight: 600;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 10px;
+            margin-top: 10px;
+            margin-bottom: 25px;
+        }
+        main .section-header:first-of-type {
+            margin-top: 0;
+        }
+
+        .question-block {
+            margin-bottom: 30px;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 25px;
+        }
+
+        .question-block:last-child {
+            border-bottom: none;
+        }
+
+        .question-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .options-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .option {
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px 18px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .option:hover {
+            background-color: #f9f9f9;
+            border-color: var(--secondary-color);
+        }
+
+        /* Lớp CSS cho các lựa chọn */
+        .option.correct {
+            background-color: var(--correct-bg);
+            border-color: var(--correct-border);
+            font-weight: bold;
+            color: #2b7a4b;
+        }
+
+        .option.incorrect {
+            background-color: var(--incorrect-bg);
+            border-color: var(--incorrect-border);
+            color: #a94442;
+        }
+
+        /* Vô hiệu hóa click sau khi đã chọn */
+        .question-block.answered .option {
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .question-block.answered .option:hover {
+            background-color: transparent;
+        }
+        .question-block.answered .option.correct:hover {
+            background-color: var(--correct-bg);
+        }
+         .question-block.answered .option.incorrect:hover {
+            background-color: var(--incorrect-bg);
+        }
+
+        /* Khung giải thích */
+        .explanation {
+            display: none; /* Ẩn mặc định */
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #fdfdea;
+            border: 1px solid #f0ad4e;
+            border-left-width: 5px;
+            border-radius: 5px;
+        }
+
+        .explanation strong {
+            color: #8a6d3b;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Bài ôn tập: Chương 1 - Khái niệm Cơ bản</h1>
+            <h2>Đề thi số 2</h2>
+        </header>
+        
+        <main id="quiz-container">
+            </main>
+    </div>
+
+    <script>
+        // Dữ liệu câu hỏi và đáp án dựa trên đề bài bạn cung cấp
+        const quizData = [
+            {
+                section: "Phần 1: Khái niệm cơ bản và Tổng quan về Xử lý tiếng nói",
+                question: "Câu 1: Ngoài việc truyền tải thông tin ngôn ngữ, ngôn ngữ nói còn có khả năng truyền tải gì?",
+                options: ["Chỉ cử chỉ tay.", "Sắc thái và thái độ (vui, buồn,...) của người nói.", "Tần số cơ bản cố định.", "Sóng siêu âm."],
+                answer: "Sắc thái và thái độ (vui, buồn,...) của người nói.",
+                explanation: "<strong>Giải thích:</strong> Theo tài liệu (1.1.1), tiếng nói không chỉ truyền tải ngôn từ mà còn 'truyền tải cả sắc thái, thái độ (vui, buồn,...) ngoài bản thân ngôn từ'."
+            },
+            {
+                question: "Câu 2: Một trong những ứng dụng hiện đại của xử lý tiếng nói được đề cập trong nguồn là gì?",
+                options: ["Điều khiển thiết bị chỉ bằng văn bản.", "Điều khiển các thiết bị trong nhà thông minh bằng giọng nói.", "Nghiên cứu sóng hạ âm.", "Biểu diễn phổ pha."],
+                answer: "Điều khiển các thiết bị trong nhà thông minh bằng giọng nói.",
+                explanation: "<strong>Giải thích:</strong> Tài liệu (1.1.1) nêu rõ 'Nhu cầu sử dụng tiếng nói thay vì các thao tác bằng tay... Ví dụ: điều khiển thiết bị trong nhà thông minh bằng giọng nói'."
+            },
+            {
+                question: "Câu 3: Theo mô tả quá trình giao tiếp bằng giọng nói, bộ phận nào thực hiện việc phân tích thông điệp và điều khiển các bộ phận phát âm?",
+                options: ["Tuyến âm.", "Phổi.", "Bộ não.", "Cơ quan cảm thụ."],
+                answer: "Bộ não.",
+                explanation: "<strong>Giải thích:</strong> Theo (1.2.1), 'Thông điệp được định hình tại bộ não, sau đó não phân tích thông điệp và đưa tín hiệu điều khiển các bộ phận phát âm'."
+            },
+            {
+                question: "Câu 4: Dù con người chưa hoàn toàn hiểu một cách toàn diện về quá trình tạo và cảm nhận tiếng nói, nhưng cần phải có những kiến thức cơ bản về xử lý tiếng nói để làm gì?",
+                options: ["Chỉ để viết được nhiều từ hơn.", "Chỉ để chế tạo microphone.", "Có khả năng xây dựng và triển khai các hệ thống giao tiếp bằng giọng nói.", "Chỉ để vẽ biểu đồ dạng sóng."],
+                answer: "Có khả năng xây dựng và triển khai các hệ thống giao tiếp bằng giọng nói.",
+                explanation: "<strong>Giải thích:</strong> Mục đích nghiên cứu (1.1.2) là 'để có khả năng xây dựng, triển khai các hệ thống giao tiếp bằng giọng nói, cần thiết phải có những kiến thức cơ bản về xử lý tiếng nói'."
+            },
+            {
+                question: "Câu 5: Việc tìm cách biểu diễn tín hiệu tiếng nói ở dạng tín hiệu số sao cho dung lượng nhỏ nhất thuộc lĩnh vực xử lý tiếng nói nào?",
+                options: ["Tăng cường nâng cao chất lượng tiếng nói.", "Nhận dạng tiếng nói.", "Tổng hợp tiếng nói.", "Mã hóa lưu trữ và truyền tải tín hiệu thoại."],
+                answer: "Mã hóa lưu trữ và truyền tải tín hiệu thoại.",
+                explanation: "<strong>Giải thích:</strong> Đây là định nghĩa của lĩnh vực 'Mã hóa lưu trữ và truyền tải tín hiệu thoại' (1.2.2)."
+            },
+            {
+                section: "Phần 2: Bản chất và Cấu tạo Hệ thống Phát âm/Thính giác",
+                question: "Câu 6: Về mặt bản chất, sóng âm tiếng nói là gì và thuộc loại sóng cơ học nào?",
+                options: ["Sóng ngang lan truyền trong chân không.", "Sóng điện từ.", "Sóng dọc lan truyền trong môi trường vật chất.", "Sóng xung."],
+                answer: "Sóng dọc lan truyền trong môi trường vật chất.",
+                explanation: "<strong>Giải thích:</strong> Tài liệu (1.3.1) ghi rõ 'Âm thanh tiếng nói là những sóng âm... Sóng âm là dao động cơ học, thuộc loại sóng dọc và là sóng cơ học' (lan truyền trong môi trường vật lý, không phải chân không)."
+            },
+            {
+                question: "Câu 7: Dải tần số sóng âm mà con người có thể cảm nhận được là bao nhiêu?",
+                options: ["Khoảng từ 1Hz đến 1000Hz.", "Khoảng từ 16Hz đến 20000Hz.", "Trên 20000Hz.", "Dưới 10Hz."],
+                answer: "Khoảng từ 16Hz đến 20000Hz.",
+                explanation: "<strong>Giải thích:</strong> Theo (1.3.1), 'Sóng âm thanh mà con người có thể cảm nhận được nằm trong dải tần số khoảng từ 16Hz đến 20000Hz'."
+            },
+            {
+                question: "Câu 8: Trong quá trình tạo tiếng nói, hệ thống tuyến âm đóng vai trò gì?",
+                options: ["Nguồn tạo dao động ban đầu.", "Một bộ lọc cơ học (ống âm học).", "Nơi thu nhận tín hiệu.", "Nguồn cung cấp áp suất khí."],
+                answer: "Một bộ lọc cơ học (ống âm học).",
+                explanation: "<strong>Giải thích:</strong> Phổi là nguồn kích thích. Tuyến âm (Vocal Tract) 'Được coi như một ống âm học (bộ lọc cơ học)' (1.3.2)."
+            },
+            {
+                question: "Câu 9: Khi phát âm, không khí được đẩy từ phổi vào khí quản, luồng khí này bị ép và đi qua cặp dây thanh tạo ra quá trình gì?",
+                options: ["Sự tán xạ môi.", "Tạo ra dao động.", "Tạo ra âm bật.", "Tạo ra sóng hạ âm."],
+                answer: "Tạo ra dao động.",
+                explanation: "<strong>Giải thích:</strong> Theo (1.3.1), 'Dây thanh trong hầu dao động, truyền qua hệ thống tuyến âm... tạo nên sóng âm'."
+            },
+            {
+                question: "Câu 10: Tuyến âm của con người có hình dạng thay đổi và được điều khiển co thắt dựa trên vị trí của các bộ phận nào?",
+                options: ["Màng nhĩ và ốc tai.", "Lưỡi, môi, hàm, và vòm miệng.", "Phổi và khí quản.", "Xương vồ và xương đe."],
+                answer: "Lưỡi, môi, hàm, và vòm miệng.",
+                explanation: "<strong>Giải thích:</strong> Tuyến âm 'được điều khiển bởi vị trí của lưỡi, môi, hàm, vòm miệng' (1.3.2)."
+            },
+            {
+                question: "Câu 11: Tiết diện mặt cắt của tuyến âm có thể thay đổi từ 0cm$^2$ (khi ngậm môi) đến khoảng bao nhiêu cm$^2$ (khi hở môi)?",
+                options: ["Khoảng 5 cm$^2$.", "Khoảng 10 cm$^2$.", "Khoảng 15 cm$^2$.", "Khoảng 20 cm$^2$."],
+                answer: "Khoảng 20 cm$^2$.",
+                explanation: "<strong>Giải thích:</strong> Tài liệu (1.3.2) ghi rõ: 'Tiết diện thay đổi từ 0cm$^2$ (ngậm môi) đến khoảng 20cm$^2$ (hở môi)'."
+            },
+            {
+                question: "Câu 12: Khi phát âm tiếng nói âm mũi, điều gì xảy ra về mặt âm học?",
+                options: ["Dây thanh đóng kín hoàn toàn.", "Áp suất khí tăng đột ngột.", "Vòm miệng hạ thấp, khiến tuyến mũi được nối với tuyến âm.", "Tạo ra giọng như giọng thở."],
+                answer: "Vòm miệng hạ thấp, khiến tuyến mũi được nối với tuyến âm.",
+                explanation: "<strong>Giải thích:</strong> Theo (1.3.2), 'Khi vòm miệng hạ thấp, tuyến mũi nối với tuyến âm và tạo nên tiếng nói âm mũi'."
+            },
+            {
+                question: "Câu 13: Âm hữu thanh được tạo ra do sự khép mở liên tục không tuần hoàn của cặp môi dây thanh dưới sự điều khiển của hai sụn nào?",
+                options: ["Sụn khí quản.", "Hai sụn chóp.", "Sụn vòm miệng.", "Xương hàm."],
+                answer: "Hai sụn chóp.",
+                explanation: "<strong>Giải thích:</strong> Mặc dù không có trong bản tóm tắt, nhưng câu hỏi này đề cập đến 'hai sụn chóp' (arytenoid cartilages), là cấu trúc giải phẫu điều khiển sự đóng mở của dây thanh để tạo âm hữu thanh."
+            },
+            {
+                question: "Câu 14: Đặc điểm phát âm của âm bật (còn gọi là âm nổ) là gì?",
+                options: ["Dây thanh rung liên tục với tần số cơ bản.", "Dây thanh đóng kín, tạo áp suất không khí lớn, sau đó mở đột ngột.", "Dây thanh không rung, tạo giọng thở.", "Thanh môn mở hẹp."],
+                answer: "Dây thanh đóng kín, tạo áp suất không khí lớn, sau đó mở đột ngột.",
+                explanation: "<strong>Giải thích:</strong> Theo (1.3.3), 'Âm bật (Plosive/Âm nổ): Dây thanh đóng kín tạo áp suất không khí lớn, sau đó mở đột ngột giải phóng không khí'."
+            },
+            {
+                question: "Câu 15: Tai người đặc biệt nhạy cảm với những tần số tín hiệu tiếng nói nằm trong vùng nào (tương ứng với vùng nghe)?",
+                options: ["16Hz – 100Hz.", "Khoảng xấp xỉ từ 200Hz – 5600Hz.", "10000Hz – 20000Hz.", "Toàn bộ dải 16Hz – 20000Hz."],
+                answer: "Khoảng xấp xỉ từ 200Hz – 5600Hz.",
+                explanation: "<strong>Giải thích:</strong> Tài liệu (1.3.4) ghi rõ: 'Tai người nhạy cảm nhất với tần số tiếng nói trong vùng nghe (xấp xỉ 200 – 5600Hz)'."
+            },
+            {
+                question: "Câu 16: Loa tai (vành tai) dường như tham gia vào khả năng khu biệt các âm, đặc biệt là ở những tần số nào?",
+                options: ["Tần số rất thấp.", "Tần số cơ bản.", "Những tần số cao hơn.", "Tần số trung bình."],
+                answer: "Những tần số cao hơn.",
+                explanation: "<strong>Giải thích:</strong> Loa tai giúp định hướng âm thanh và khu biệt, đặc biệt là với các âm thanh ở 'những tần số cao hơn'."
+            },
+            {
+                question: "Câu 17: Ống tai ngoài (Ear Canal) có chiều dài khoảng bao nhiêu?",
+                options: ["1 cm.", "Khoảng 2.5 cm.", "5 cm.", "10 cm."],
+                answer: "Khoảng 2.5 cm.",
+                explanation: "<strong>Giải thích:</strong> Theo (1.3.4), 'Ống tai ngoài (dài khoảng 2.5cm)'."
+            },
+            {
+                question: "Câu 18: Ống tai ngoài ưu tiên cho việc truyền và khuếch đại các âm có tần số cao giữa 3000 Hz và 12000Hz, chức năng này đặc biệt trợ giúp cho việc tiếp nhận loại âm nào?",
+                options: ["Âm hữu thanh.", "Âm xát.", "Âm mũi.", "Sóng hạ âm."],
+                answer: "Âm xát.",
+                explanation: "<strong>Giải thích:</strong> Theo (1.3.4), dải tần này (3000-12000Hz) 'giúp tiếp nhận các âm xát'."
+            },
+            {
+                question: "Câu 19: Bộ ba khúc xương liên kết trong tai giữa còn được gọi là gì?",
+                options: ["Xương hàm và xương mũi.", "Xương sụn chóp.", "Xương vồ (mallet), xương đe (anvil), và xương bàn đạp (stirrup).", "Xương nền."],
+                answer: "Xương vồ (mallet), xương đe (anvil), và xương bàn đạp (stirrup).",
+                explanation: "<strong>Giải thích:</strong> Tài liệu (1.3.4) đề cập 'bộ ba khúc xương liên kết (xương vồ/búa, xương đe, xương bàn đạp)'."
+            },
+            {
+                question: "Câu 20: Tai giữa được nối với họng bằng một ống hẹp gọi là gì, giúp cân bằng những thay đổi áp suất khí nền giữa tai giữa và tai ngoài?",
+                options: ["Ốc tai.", "Màng nền.", "Vòi ốc tai (eustachian tube).", "Cửa sổ hình bầu dục."],
+                answer: "Vòi ốc tai (eustachian tube).",
+                explanation: "<strong>Giải thích:</strong> Theo (1.3.4), 'Vòi ốc tai (eustachian tube): Nối tai giữa với họng, cân bằng áp suất khí nền'."
+            },
+            {
+                question: "Câu 21: Cơ chế nào trong tai giữa bảo vệ tai chống lại những dao động âm lớn (khoảng 90dB và lớn hơn)?",
+                options: ["Màng nền dịch chuyển.", "Sự co thắt của ống tai ngoài.", "Hoạt động của cơ chế phản xạ âm học của hệ cơ gắn với các xương tai.", "Sự đóng kín của vòm miệng."],
+                answer: "Hoạt động của cơ chế phản xạ âm học của hệ cơ gắn với các xương tai.",
+                explanation: "<strong>Giải thích:</strong> Theo (1.3.4), 'khi âm có biên độ $\ge 90dB$, cơ chế phản xạ âm học sẽ giảm hiệu quả truyền âm đến cửa hình bầu dục'."
+            },
+            {
+                question: "Câu 22: Cấu trúc phức tạp chứa nhiều tế bào tóc gắn dọc với màng nền, có vai trò biến sự dịch chuyển của màng nền thành các tín hiệu thần kinh, là gì?",
+                options: ["Màng nhĩ.", "Thanh môn.", "Cơ quan vỏ não (organ of corti).", "Màng tiền định."],
+                answer: "Cơ quan vỏ não (organ of corti).",
+                explanation: "<strong>Giải thích:</strong> Theo (1.3.4), 'Cơ quan vỏ não (organ of corti) gắn dọc màng nền, chứa tế bào tóc, biến dịch chuyển màng nền thành tín hiệu thần kinh'."
+            },
+            {
+                section: "Phần 3: Đặc điểm Cảm nhận Tiếng nói (SPL, Masking, Scales)",
+                question: "Câu 23: Ngưỡng nghe (TOH – Threshold of hearing) là gì?",
+                options: ["Mức áp suất âm gây đau.", "Ngưỡng áp suất âm thấp nhất mà tai con người có thể cảm nhận được.", "Tần số cơ bản thấp nhất.", "Mức cường độ âm tham chiếu."],
+                answer: "Ngưỡng áp suất âm thấp nhất mà tai con người có thể cảm nhận được.",
+                explanation: "<strong>Giải thích:</strong> Đây là định nghĩa của Ngưỡng nghe (TOH) theo (1.3.5)."
+            },
+            {
+                question: "Câu 24: Công thức tính Mức áp suất âm (SPL) sử dụng áp suất âm tham chiếu ($P_0$) ở tử số hay mẫu số?",
+                options: ["Tử số, theo tỷ lệ tuyến tính.", "Mẫu số, $P_0$ là áp suất âm tham chiếu.", "Cả tử số và mẫu số.", "Không liên quan."],
+                answer: "Mẫu số, $P_0$ là áp suất âm tham chiếu.",
+                explanation: "<strong>Giải thích:</strong> Công thức (1.3.5) là $SPL = 10 \log_{10} [ P_{rms}^2 / P_0^2 ]$. $P_0$ (áp suất tham chiếu) nằm ở mẫu số."
+            },
+            {
+                question: "Câu 25: Giá trị tham chiếu thường được sử dụng cho Mức cường độ âm ($I_0$) là bao nhiêu?",
+                options: ["$10^{-5}$ Pa.", "$10^{-12}$ W/m$^2$.", "$10^2$ Pa.", "20000 Hz."],
+                answer: "$10^{-12}$ W/m$^2$.",
+                explanation: "<strong>Giải thích:</strong> Tài liệu (1.3.5) định nghĩa $I_0$ (mức cường độ âm tham chiếu) thường là $10^{-12}W/m^2$."
+            },
+            {
+                question: "Câu 26: Trong điều kiện sóng âm lan truyền trong môi trường không hạn chế, mối quan hệ giữa Mức áp suất âm (SPL) và Mức cường độ âm (SIL) là gì?",
+                options: ["SPL lớn hơn SIL.", "SPL nhỏ hơn SIL.", "Giá trị của SPL và SIL bằng nhau.", "Giá trị của SPL và SIL không còn bằng nhau do có sự phản xạ âm."],
+                answer: "Giá trị của SPL và SIL bằng nhau.",
+                explanation: "<strong>Giải thích:</strong> Theo (1.3.5), 'Khi sóng âm lan truyền trong môi trường không khí tự do, giá trị của SPL và SIL bằng nhau'."
+            },
+            {
+                question: "Câu 27: Hiện tượng che lấp thời gian xảy ra khi một âm thanh rất lớn tắt đột ngột, và sau đó chúng ta phát một âm thanh khác có mức thấp hơn, kết quả là gì?",
+                options: ["Âm thanh nhỏ hơn nghe to hơn.", "Tai chúng ta sẽ không thể cảm nhận được âm thanh khác đó (bị che lấp).", "Âm thanh nhỏ hơn làm tăng ngưỡng nghe gây đau.", "Âm thanh nhỏ hơn làm giảm độ rộng băng tần cơ bản."],
+                answer: "Tai chúng ta sẽ không thể cảm nhận được âm thanh khác đó (bị che lấp).",
+                explanation: "<strong>Giải thích:</strong> Đây là định nghĩa của che lấp thời gian (1.3.5). 'Âm thanh có mức thấp hơn phát ra ngay sau đó sẽ bị che lấp'."
+            },
+            {
+                question: "Câu 28: Trong hiện tượng che lấp tần số, hiệu ứng che lấp lớn nhất xảy ra ở vùng nào?",
+                options: ["Tại vùng tần số rất cao.", "Tại vùng gần các âm tần số thấp.", "Tại vùng gần các thành phần hài của âm che lấp.", "Tại vùng tần số trên 5000Hz."],
+                answer: "Tại vùng gần các thành phần hài của âm che lấp.",
+                explanation: "<strong>Giải thích:</strong> Theo (1.3.5), 'Hiệu ứng che lấp lớn nhất tại vùng gần các thành phần hài của âm che lấp'."
+            },
+            {
+                question: "Câu 29: Với các tần số che lấp nhỏ hơn 500Hz, độ rộng vùng tần số che lấp (băng tần cơ bản) gần như không đổi, cỡ khoảng bao nhiêu?",
+                options: ["10 Hz.", "50 Hz.", "100 Hz.", "500 Hz."],
+                answer: "100 Hz.",
+                explanation: "<strong>Giải thích:</strong> Tài liệu (1.3.5) ghi: 'Băng tần cơ bản... gần như không đổi cỡ khoảng 100Hz với các tần số che lấp $<500Hz$'."
+            },
+            {
+                question: "Câu 30: Thang tần số Bark chia toàn dải nghe của người thành bao nhiêu băng tần cơ bản (thang)?",
+                options: ["12 thang.", "24 thang.", "48 thang.", "100 thang."],
+                answer: "24 thang.",
+                explanation: "<strong>Giải thích:</strong> Theo (1.3.5), 'Thang tần số Bark... Toàn dải nghe được chia thành 24 thang'."
+            },
+            {
+                question: "Câu 31: Đặc điểm nào là đúng về thang tần số Mel?",
+                options: ["Nó tuyến tính trên toàn dải tần số.", "Nó thay đổi theo quy luật lô-ga-rít ở vùng nhỏ hơn 1kHz.", "Nó tuyến tính trong một khoảng nhỏ hơn 1kHz, và thay đổi theo quy luật lô-ga-rít ở vùng lớn hơn 1kHz.", "Nó mô phỏng gần với đặc tính độ nhạy của tai hơn so với thang tần Bark."],
+                answer: "Nó tuyến tính trong một khoảng nhỏ hơn 1kHz, và thay đổi theo quy luật lô-ga-rít ở vùng lớn hơn 1kHz.",
+                explanation: "<strong>Giải thích:</strong> Đây là định nghĩa của thang tần số Mel trong tài liệu (1.3.5)."
+            },
+            {
+                question: "Câu 32: Thuộc tính cảm nhận Âm sắc (timbre) có mối liên hệ mật thiết với đại lượng vật lý nào?",
+                options: ["Tần số cơ bản.", "Mức cường độ âm.", "Độ lệch thời gian.", "Hình dạng phổ."],
+                answer: "Hình dạng phổ.",
+                explanation: "<strong>Giải thích:</strong> Theo Bảng 1.1 (1.3.5), đại lượng vật lý 'Hình dạng phổ' tương ứng với chất lượng cảm nhận 'Âm sắc (timbre)'."
+            },
+            {
+                question: "Câu 33: Thuộc tính cảm nhận Vị trí âm (location) có mối liên hệ mật thiết với đại lượng vật lý nào?",
+                options: ["Hình dạng phổ.", "Sự lệch pha.", "Tần số cơ bản.", "Độ to."],
+                answer: "Sự lệch pha.",
+                explanation: "<strong>Giải thích:</strong> Theo Bảng 1.1 (1.3.5), đại lượng vật lý 'Sự lệch pha' tương ứng với chất lượng cảm nhận 'Vị trí âm (location)'."
+            },
+            {
+                section: "Phần 4: Mô hình hóa và Biểu diễn Tín hiệu",
+                question: "Câu 34: Trong mô hình nguồn-bộ lọc, nguồn kích thích cho các âm vô thanh được mô tả tương ứng như là gì?",
+                options: ["Một dãy xung tuần hoàn.", "Một bộ lọc toàn điểm cực.", "Nhiễu trắng (dao động dây thanh không xác lập tần số).", "Tín hiệu dao động dây thanh."],
+                answer: "Nhiễu trắng (dao động dây thanh không xác lập tần số).",
+                explanation: "<strong>Giải thích:</strong> Theo mô hình nguồn-bộ lọc (1.4), 'Âm vô thanh: Nguồn là nhiễu trắng'."
+            },
+            {
+                question: "Câu 35: Bộ lọc tuyến âm thường được xấp xỉ bằng bộ lọc toàn điểm cực (all-pole) để đạt được mục đích gì?",
+                options: ["Giảm nhiễu.", "Lọc bỏ tần số cao.", "Nhấn được các đỉnh cộng hưởng.", "Mô tả hàm truyền đạt của khoang mũi."],
+                answer: "Nhấn được các đỉnh cộng hưởng.",
+                explanation: "<strong>Giải thích:</strong> Theo (1.4), 'người ta thường xấp xỉ bộ lọc tuyến âm bằng bộ lọc toàn điểm cực (all-pole)... Để nhấn các đỉnh cộng hưởng (formant)'."
+            },
+            {
+                question: "Câu 36: Để mô tả đầy đủ một tần số formant, người ta có thể sử dụng loại mạch lọc nào?",
+                options: ["Mạch lọc thông thấp bậc một.", "Mạch lọc chỉ điểm không.", "Mạch lọc IIR bậc hai (tổng hợp bộ lọc toàn điểm cực).", "Mạch lọc thông cao."],
+                answer: "Mạch lọc IIR bậc hai (tổng hợp bộ lọc toàn điểm cực).",
+                explanation: "<strong>Giải thích:</strong> Theo (1.4), 'Bộ lọc IIR bậc hai có thể mô tả đầy đủ một tần số formant'."
+            },
+            {
+                question: "Câu 37: Dữ liệu dạng sóng tín hiệu tiếng nói số s(n) là kết quả của hai quá trình nào từ tín hiệu liên tục s(t)?",
+                options: ["Biến đổi Fourier và nén.", "Lấy mẫu và lượng tử hóa.", "Phân tích phổ và Spectrogram.", "Tăng cường và giảm nhiễu."],
+                answer: "Lấy mẫu và lượng tử hóa.",
+                explanation: "<strong>Giải thích:</strong> Theo (1.5.1), 'Tín hiệu tiếng nói số $s(n)$ là kết quả lấy mẫu và lượng tử hóa của tín hiệu liên tục $s(t)$'."
+            },
+            {
+                question: "Câu 38: Khi quan sát biểu diễn dạng sóng của một từ, các khoảng tín hiệu có biên độ rất nhỏ gần như bằng không được gọi là gì?",
+                options: ["Âm vô thanh.", "Âm hữu thanh.", "Các khoảng lặng (silent).", "Âm bật."],
+                answer: "Các khoảng lặng (silent).",
+                explanation: "<strong>Giải thích:</strong> Theo (1.5.1), 'Khoảng lặng (silent): Khoảng tín hiệu có biên độ rất nhỏ gần như bằng không'."
+            },
+            {
+                question: "Câu 39: Khi quan sát dạng sóng tín hiệu tiếng nói, phần âm vô thanh thường có đặc điểm gì?",
+                options: ["Có dạng tuần hoàn và biên độ cao.", "Có dạng tuần hoàn và biên độ thấp.", "Biên độ thấp và có dạng ngẫu nhiên.", "Có chu kỳ pitch rõ ràng."],
+                answer: "Biên độ thấp và có dạng ngẫu nhiên.",
+                explanation: "<strong>Giải thích:</strong> Theo (1.5.1), 'Âm vô thanh: Biên độ thấp, có dạng ngẫu nhiên, không có dạng tuần hoàn'."
+            },
+            {
+                question: "Câu 40: Lý do khiến việc nhận dạng tiếng nói bằng cách sử dụng trực tiếp dạng sóng (dữ liệu thô) là không khả thi là gì?",
+                options: ["Tần số cơ bản quá thấp.", "Dạng sóng có sự khác nhau nhất định ngay cả khi cùng một từ do người nói khác nhau hoặc thời điểm khác nhau.", "Phổ biên độ luôn có các đỉnh formant.", "Tín hiệu luôn có tính tuần hoàn."],
+                answer: "Dạng sóng có sự khác nhau nhất định ngay cả khi cùng một từ do người nói khác nhau hoặc thời điểm khác nhau.",
+                explanation: "<strong>Giải thích:</strong> Theo (1.5.1), 'Dạng sóng tiếng nói khác nhau giữa các lần thu âm, người nói... Do đó, việc nhận dạng bằng cách sử dụng trực tiếp dạng sóng (dữ liệu thô) là không khả thi'."
+            },
+            {
+                question: "Câu 41: Độ phân giải bit phổ biến khi lưu trữ tín hiệu tiếng nói số là bao nhiêu?",
+                options: ["1 bit và 2 bit.", "8bit, 16bit, 24bit, ...", "Chỉ có 32 bit.", "64 bit."],
+                answer: "8bit, 16bit, 24bit, ...",
+                explanation: "<strong>Giải thích:</strong> Theo (1.5.1), các độ phân giải phổ biến là '8bit, 16bit, 24bit,....'"
+            },
+            {
+                question: "Câu 42: Trong phân tích tín hiệu tiếng nói bằng biến đổi Fourier, thông tin tiếng nói được chứa chủ yếu trong thành phần nào của phổ?",
+                options: ["Phổ pha.", "Phổ biên độ.", "Phổ của nhiễu trắng.", "Hàm truyền đạt."],
+                answer: "Phổ biên độ.",
+                explanation: "<strong>Giải thích:</strong> Theo (1.5.2), 'Phổ Biên độ: $|S(j\omega)|$ chứa thông tin tiếng nói chủ yếu (ít quan tâm đến phổ pha)'."
+            },
+            {
+                question: "Câu 43: Trong biểu diễn phổ biên độ, phần dao động phổ nhỏ (phổ nhỏ) tương ứng với thành phần nào trong mô hình phát âm?",
+                options: ["Hàm truyền đạt của bộ lọc tuyến âm.", "Phổ của tín hiệu tạo bởi dao động của dây thanh.", "Đường bao phổ.", "Các đỉnh formant."],
+                answer: "Phổ của tín hiệu tạo bởi dao động của dây thanh.",
+                explanation: "<strong>Giải thích:</strong> Theo (1.5.2), 'Phổ nhỏ (Fine Structure):... đại diện cho phổ của tín hiệu tạo bởi dao động của dây thanh'."
+            },
+            {
+                question: "Câu 44: Các rãnh cực tiểu xen kẽ giữa các đỉnh cực đại (formant) của đường bao phổ được gọi là gì?",
+                options: ["Phổ nhỏ.", "Tần số cơ bản.", "Các phản formant (anti-formant).", "Tần số cộng hưởng."],
+                answer: "Các phản formant (anti-formant).",
+                explanation: "<strong>Giải thích:</strong> Theo (1.5.2), trong âm hữu thanh, 'Các đỉnh cực đại: Đỉnh formant' và 'Các rãnh cực tiểu: Phản formant'."
+            },
+            {
+                question: "Câu 45: Đối với âm vô thanh, năng lượng phổ của tín hiệu có xu thế tập trung ở vùng tần số nào?",
+                options: ["Tần số rất thấp.", "Dải tần số 300-3400Hz.", "Vùng tần số cao.", "Tần số cơ bản."],
+                answer: "Vùng tần số cao.",
+                explanation: "<strong>Giải thích:</strong> Theo (1.5.2), 'Âm vô thanh:... năng lượng phổ... có xu thế tập trung ở vùng tần số cao'."
+            },
+            {
+                question: "Câu 46: Khi tạo biểu diễn spectrogram, tín hiệu được chia thành các phân đoạn ngắn hạn bằng hàm cửa sổ với độ rộng thường được chọn tương ứng với bao nhiêu miligiây (ms) tín hiệu?",
+                options: ["1-5 ms.", "10-30 ms.", "50-100 ms.", "200-500 ms."],
+                answer: "10-30 ms.",
+                explanation: "<strong>Giải thích:</strong> Theo (1.5.3), 'Chia tín hiệu thành các phân đoạn ngắn hạn (10-30ms) bằng các hàm cửa sổ'."
+            },
+            {
+                question: "Câu 47: Trên biểu diễn spectrogram, những phân đoạn tín hiệu ứng với âm hữu thanh có đặc điểm gì để thể hiện tính tuần hoàn?",
+                options: ["Dải đặc nhạt màu.", "Những dải đậm màu có những vằn (cực trị).", "Phân bố tần số đều trên toàn dải.", "Chỉ xuất hiện ở vùng tần số cao."],
+                answer: "Những dải đậm màu có những vằn (cực trị).",
+                explanation: "<strong>Giải thích:</strong> Theo (1.5.3), 'Âm hữu thanh: Tương ứng là những dải đậm màu có những vằn (cực trị), thể hiện tính tuần hoàn'."
+            },
+            {
+                section: "Phần 5: Tham số cơ bản và Đặc điểm Ngữ âm",
+                question: "Câu 48: Với nam giới, tần số cơ bản ($F_0$) có sự thay đổi như thế nào sau tuổi 55?",
+                options: ["Giảm mạnh.", "Giữ ổn định.", "Bắt đầu có sự tăng trở lại.", "Tăng gấp đôi."],
+                answer: "Bắt đầu có sự tăng trở lại.",
+                explanation: "<strong>Giải thích:</strong> Theo (1.6.1), 'Nam giới giảm mạnh... sau 55 tuổi lại bắt đầu tăng trở lại'."
+            },
+            {
+                question: "Câu 49: Trong các phát âm của nguyên âm, người ta thấy luôn có bao nhiêu tần số formant phân biệt trở lên?",
+                options: ["Chỉ cần hai formant đầu tiên.", "Hai formant cuối cùng.", "Bốn hoặc nhiều hơn bốn tần số formant phân biệt.", "Chỉ một formant duy nhất."],
+                answer: "Bốn hoặc nhiều hơn bốn tần số formant phân biệt.",
+                explanation: "<strong>Giải thích:</strong> Theo (1.6.2), 'Trong các nguyên âm, luôn có bốn hoặc nhiều hơn bốn tần số formant phân biệt'. (Mặc dù chỉ cần 2 formant đầu là đủ để phân biệt)."
+            },
+            {
+                question: "Câu 50: Trong tiếng Việt, âm tiết có cấu trúc đơn giản luôn gắn liền với đặc điểm nào?",
+                options: ["Sự biến hình của từ.", "Cấu trúc phức tạp.", "Thanh điệu (gồm sáu thanh điệu).", "Phụ âm xát tắc."],
+                answer: "Thanh điệu (gồm sáu thanh điệu).",
+                explanation: "<strong>Giải thích:</strong> Theo (1.7.2), 'Thanh điệu: Âm tiết luôn gắn liền với thanh điệu. Tiếng Việt có sáu thanh điệu'."
+            }
+        ];
+
+        // Hàm khởi tạo bài kiểm tra
+        function buildQuiz() {
+            const quizContainer = document.getElementById('quiz-container');
+            let currentSection = "";
+
+            quizData.forEach((data, index) => {
+                // Thêm tiêu đề Mục nếu có
+                if (data.section && data.section !== currentSection) {
+                    currentSection = data.section;
+                    const sectionHeader = document.createElement('h2');
+                    sectionHeader.className = 'section-header';
+                    sectionHeader.textContent = currentSection;
+                    quizContainer.appendChild(sectionHeader);
+                }
+
+                // Tạo khối câu hỏi
+                const questionBlock = document.createElement('div');
+                questionBlock.className = 'question-block';
+                questionBlock.id = `q${index}`;
+
+                // Thêm câu hỏi
+                const questionTitle = document.createElement('div');
+                questionTitle.className = 'question-title';
+                questionTitle.innerHTML = data.question; // Dùng innerHTML để render MathJax
+                questionBlock.appendChild(questionTitle);
+
+                // Tạo danh sách các lựa chọn
+                const optionsList = document.createElement('ul');
+                optionsList.className = 'options-list';
+
+                data.options.forEach(optionText => {
+                    const optionItem = document.createElement('li');
+                    optionItem.className = 'option';
+                    optionItem.innerHTML = optionText; // Dùng innerHTML để render MathJax
+
+                    // Kiểm tra xem đây có phải là câu trả lời đúng không
+                    if (optionText.startsWith(data.answer) && data.answer.length > 0) {
+                        optionItem.dataset.correct = "true";
+                    }
+
+                    // Thêm sự kiện click
+                    optionItem.addEventListener('click', () => selectAnswer(questionBlock, optionItem, data.answer, data.explanation));
+                    optionsList.appendChild(optionItem);
+                });
+
+                questionBlock.appendChild(optionsList);
+
+                // Tạo khung giải thích (ẩn)
+                const explanationBox = document.createElement('div');
+                explanationBox.className = 'explanation';
+                explanationBox.innerHTML = data.explanation; // Dùng innerHTML để render MathJax
+                questionBlock.appendChild(explanationBox);
+
+                // Thêm khối câu hỏi vào container
+                quizContainer.appendChild(questionBlock);
+            });
+            
+            // Yêu cầu MathJax render lại nếu cần
+            if (typeof MathJax !== 'undefined' && MathJax.typesetPromise) {
+                MathJax.typesetPromise();
+            }
+        }
+
+        // Hàm xử lý khi chọn câu trả lời
+        function selectAnswer(questionBlock, selectedOption, correctAnswer, explanation) {
+            // Đánh dấu câu hỏi này là đã trả lời
+            questionBlock.classList.add('answered');
+
+            // Tìm tất cả các lựa chọn trong câu hỏi này
+            const allOptions = questionBlock.querySelectorAll('.option');
+
+            allOptions.forEach(option => {
+                // Highlight đáp án đúng
+                if (option.dataset.correct === "true") {
+                    option.classList.add('correct');
+                }
+                // Highlight đáp án sai (nếu người dùng chọn sai)
+                else if (option === selectedOption) {
+                    option.classList.add('incorrect');
+                }
+            });
+
+            // Hiển thị khung giải thích
+            const explanationBox = questionBlock.querySelector('.explanation');
+            explanationBox.style.display = 'block';
+        }
+
+        // Bắt đầu xây dựng bài kiểm tra khi trang được tải
+        document.addEventListener('DOMContentLoaded', buildQuiz);
+    </script>
+
+</body>
+</html>
