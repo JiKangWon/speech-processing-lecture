@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài giảng: Chương 1 - Khái niệm Cơ bản Xử lý Tiếng nói</title>
+
+    <!-- Thư viện render công thức toán học MathJax -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <!-- Cấu hình MathJax để nhận $ cho inline math -->
+    <script>
+    MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        }
+    };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <!-- CSS cho giao diện -->
+    <style>
+        :root {
+            --primary-color: #005a9c;
+            --secondary-color: #007bff;
+            --text-color: #333;
+            --bg-color: #ffffff;
+            --sidebar-bg: #f4f7f6;
+            --border-color: #e0e0e0;
+            --placeholder-bg: #fafafa;
+            /* Font hệ thống, hiển thị tốt tiếng Việt */
+            --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        body {
+            font-family: var(--font-stack);
+            line-height: 1.7;
+            background-color: var(--sidebar-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            display: flex;
+            max-width: 1600px;
+            margin: 20px auto;
+            background: var(--bg-color);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        
+        /* === Thanh Điều Hướng (Sidebar) === */
+        .sidebar {
+            width: 320px;
+            min-width: 320px;
+            background: var(--bg-color);
+            border-right: 1px solid var(--border-color);
+            position: sticky;
+            top: 20px;
+            height: 95vh;
+            overflow-y: auto;
+            padding: 25px 15px 25px 20px;
+        }
+        .sidebar h3 {
+            font-family: var(--font-stack);
+            color: var(--primary-color);
+            font-size: 1.3em;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 10px;
+            font-weight: 600;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding-left: 0;
+            margin-top: 15px;
+        }
+        .sidebar li {
+            margin-bottom: 5px;
+        }
+        .sidebar a {
+            text-decoration: none;
+            color: #444;
+            display: block;
+            padding: 8px 10px;
+            border-radius: 5px;
+            transition: all 0.2s ease;
+        }
+        .sidebar a:hover,
+        .sidebar a:focus {
+            background-color: #e9f5ff;
+            color: var(--secondary-color);
+            font-weight: 600;
+        }
+        .sidebar ul ul {
+            padding-left: 20px;
+            margin-top: 5px;
+        }
+        .sidebar ul ul a {
+            font-size: 0.9em;
+            padding: 5px 10px;
+            color: #555;
+        }
+
+        /* === Nội dung Bài giảng (Main Content) === */
+        .content {
+            flex-grow: 1;
+            padding: 20px 40px;
+            max-width: calc(100% - 380px);
+        }
+        .content header {
+            border-bottom: 3px solid var(--primary-color);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        .content h1 {
+            font-family: var(--font-stack);
+            color: var(--primary-color);
+            font-size: 2.2em;
+            margin: 0;
+            font-weight: 700;
+        }
+        .content h2 {
+            font-family: var(--font-stack);
+            color: var(--secondary-color);
+            font-size: 1.8em;
+            margin: 10px 0 0 0;
+            font-weight: 700;
+        }
+
+        /* Định dạng các phần học */
+        .content section {
+            margin-bottom: 40px;
+        }
+        .content h3 { /* 1.1, 1.2 */
+            font-family: var(--font-stack);
+            font-size: 1.7em;
+            color: var(--primary-color);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        .content h4 { /* 1.1.1, 1.1.2 */
+            font-family: var(--font-stack);
+            font-size: 1.4em;
+            color: #333;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        /* === Các thành phần chi tiết === */
+        mjx-container {
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .data-table th,
+        .data-table td {
+            border: 1px solid var(--border-color);
+            padding: 12px 15px;
+            text-align: left;
+        }
+        .data-table th {
+            background-color: #e9f5ff;
+            color: var(--primary-color);
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+        .data-table tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        /* Hình minh họa */
+        .image-placeholder {
+            width: 80%;
+            margin: 25px auto;
+            padding: 15px;
+            border: 1px solid var(--border-color);
+            background: var(--placeholder-bg);
+            border-radius: 8px;
+            text-align: center;
+        }
+        .image-placeholder img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        .image-placeholder figcaption {
+            font-style: italic;
+            color: #555;
+            font-size: 0.95em;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1000px) {
+            .container {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                position: static;
+                height: auto;
+                max-height: 350px;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+                box-sizing: border-box;
+                margin-bottom: 20px;
+            }
+            .content {
+                max-width: 100%;
+                padding: 20px;
+            }
+            .image-placeholder {
+                width: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- === THANH ĐIỀU HƯỚNG BÊN TRÁI === -->
+        <nav class="sidebar">
+            <h3>Nội dung chương 1</h3>
+            <ul>
+                <li><a href="#1-1">1.1. Mở đầu</a>
+                    <ul>
+                        <li><a href="#1-1-1">1.1.1. Vai trò của Tiếng nói</a></li>
+                        <li><a href="#1-1-2">1.1.2. Mục đích nghiên cứu</a></li>
+                    </ul>
+                </li>
+                <li><a href="#1-2">1.2. Tổng quan về Xử lý tiếng nói</a>
+                    <ul>
+                        <li><a href="#1-2-1">1.2.1. Quá trình giao tiếp</a></li>
+                        <li><a href="#1-2-2">1.2.2. Bản chất và Lĩnh vực</a></li>
+                    </ul>
+                </li>
+                <li><a href="#1-3">1.3. Quá trình tạo và cảm nhận</a>
+                    <ul>
+                        <li><a href="#1-3-1">1.3.1. Bản chất của tiếng nói</a></li>
+                        <li><a href="#1-3-2">1.3.2. Cấu tạo hệ thống phát âm</a></li>
+                        <li><a href="#1-3-3">1.3.3. Phân loại tiếng nói</a></li>
+                        <li><a href="#1-3-4">1.3.4. Cấu tạo hệ thống cảm nhận</a></li>
+                        <li><a href="#1-3-5">1.3.5. Đặc điểm cảm nhận</a></li>
+                    </ul>
+                </li>
+                <li><a href="#1-4">1.4. Mô hình hóa hệ thống</a>
+                    <ul>
+                        <li><a href="#1-4-1">1.4.1. Mô hình Nguồn-Bộ lọc</a></li>
+                    </ul>
+                </li>
+                <li><a href="#1-5">1.5. Biểu diễn tín hiệu</a>
+                    <ul>
+                        <li><a href="#1-5-1">1.5.1. Miền thời gian</a></li>
+                        <li><a href="#1-5-2">1.5.2. Miền tần số (Phổ)</a></li>
+                        <li><a href="#1-5-3">1.5.3. Spectrogram</a></li>
+                    </ul>
+                </li>
+                <li><a href="#1-6">1.6. Các tham số cơ bản</a>
+                    <ul>
+                        <li><a href="#1-6-1">1.6.1. Tần số cơ bản (Pitch)</a></li>
+                        <li><a href="#1-6-2">1.6.2. Tần số Formant</a></li>
+                    </ul>
+                </li>
+                <li><a href="#1-7">1.7. Đặc điểm ngữ âm</a>
+                    <ul>
+                        <li><a href="#1-7-1">1.7.1. Định nghĩa đơn vị</a></li>
+                        <li><a href="#1-7-2">1.7.2. Đặc điểm tiếng Việt</a></li>
+                    </ul>
+                </li>
+                <li><a href="#1-8">1.8. Câu hỏi và Bài tập</a></li>
+            </ul>
+        </nav>
+
+        <!-- === NỘI DUNG BÀI GIẢNG CHÍNH === -->
+        <main class="content">
+            <header>
+                <h1>BÀI GIẢNG MÔN HỌC: XỬ LÝ TIẾNG NÓI</h1>
+                <h2>CHƯƠNG 1. MỘT SỐ KHÁI NIỆM CƠ BẢN</h2>
+            </header>
+
+            <section id="1-1">
+                <h3>1.1. MỞ ĐẦU</h3>
+                <h4 id="1-1-1">1.1.1. Vai trò của Tiếng nói</h4>
+                <p>Tiếng nói là phương tiện trao đổi thông tin chính yếu giữa con người và con người, được sử dụng rộng rãi.</p>
+                <ul>
+                    <li><b>Hiệu quả và tốc độ:</b> Trao đổi thông tin qua tín hiệu tiếng nói nhanh chóng hơn. Một người bình thường có thể nói trung bình hơn 100 từ trong một phút, trong khi chỉ có thể viết được khoảng 50 từ trong vòng một phút.</li>
+                    <li><b>Truyền tải cảm xúc:</b> Tiếng nói truyền tải cả sắc thái, thái độ (vui, buồn,...) ngoài bản thân ngôn từ.</li>
+                    <li><b>Nhu cầu công nghệ:</b> Nhu cầu sử dụng tiếng nói thay vì các thao tác bằng tay để thực hiện công việc (như điều khiển) đang tăng mạnh, đặc biệt trong công nghệ hiện đại. Ví dụ: điều khiển thiết bị trong nhà thông minh bằng giọng nói và cử chỉ, hay lái xe bằng lệnh giọng nói (Google).</li>
+                </ul>
+
+                <h4 id="1-1-2">1.1.2. Mục đích nghiên cứu</h4>
+                <p>Để phát huy thế mạnh và sự tiện dụng của giao tiếp bằng tiếng nói, và để có khả năng xây dựng, triển khai các hệ thống giao tiếp bằng giọng nói, cần thiết phải có những kiến thức cơ bản về xử lý tiếng nói. Chương này giới thiệu các khái niệm cơ bản làm nền tảng cho việc nghiên cứu sâu hơn.</p>
+            </section>
+
+            <section id="1-2">
+                <h3>1.2. TỔNG QUAN VỀ XỬ LÝ TIẾNG NÓI</h3>
+                <h4 id="1-2-1">1.2.1. Quá trình giao tiếp bằng giọng nói của con người</h4>
+                <p>Khi giao tiếp bằng giọng nói:</p>
+                <ul>
+                    <li><b>Phía người nói:</b> Thông điệp được định hình tại bộ não, sau đó não phân tích thông điệp và đưa tín hiệu điều khiển các bộ phận phát âm hoạt động nhằm "tổng hợp" ra âm thanh.</li>
+                    <li><b>Phía người nghe:</b> Âm thanh mang thông tin được cơ quan cảm thụ thu nhận, qua tín hiệu thần kinh truyền đến não để "nhận dạng" và "suy diễn" nhằm hiểu thông tin.</li>
+                </ul>
+                <p>Hệ thống thông tin bằng tiếng nói của con người được mô tả sơ lược qua Hình 1.1 và tóm lược các quá trình xử lý qua Hình 1.2.</p>
+                
+                <figure class="image-placeholder">
+                    
+                    <figcaption><b>Hình 1.1 & 1.2 (Minh họa):</b> Sơ đồ khối mô tả hệ thống thông tin bằng tiếng nói của con người.</figcaption>
+                </figure>
+
+                <h4 id="1-2-2">1.2.2. Bản chất và Lĩnh vực của Xử lý tiếng nói</h4>
+                <p><b>Bản chất:</b> "Xử lý tiếng nói" là việc thực hiện các phép thao tác nhằm tạo ra tiếng nói để truyền tải tin tức, và/hoặc bóc tách thông tin từ tín hiệu tiếng nói.</p>
+                <p><b>Định nghĩa:</b> Xử lý tiếng nói là lĩnh vực khoa học nghiên cứu về tiếng nói (cả khía cạnh ngôn ngữ và khía cạnh tín hiệu), và các phương pháp xử lý các khía cạnh của tiếng nói.</p>
+                <p>Các lĩnh vực cơ bản của Xử lý tiếng nói số (Minh họa Hình 1.3):</p>
+                <ul>
+                    <li><b>Tăng cường nâng cao chất lượng tiếng nói:</b> Xử lý tín hiệu tiếng nói về mặt vật lý như giảm/loại bỏ nhiễu, giảm méo, nhằm cải thiện tín hiệu dễ nghe dễ hiểu.</li>
+                    <li><b>Mã hóa lưu trữ và truyền tải tín hiệu thoại:</b> Tìm cách biểu diễn tín hiệu tiếng nói ở dạng tín hiệu số sao cho dung lượng nhỏ nhất.</li>
+                    <li><b>Tổng hợp tiếng nói (Speech Synthesis):</b> Tái tạo tiếng nói.</li>
+                    <li><b>Nhận dạng tiếng nói (Speech Recognition):</b> Hiểu được tiếng nói.</li>
+                </ul>
+                
+                <figure class="image-placeholder">
+                    
+                    <figcaption><b>Hình 1.3 (Minh họa):</b> Các lĩnh vực cơ bản của Xử lý tiếng nói số.</figcaption>
+                </figure>
+            </section>
+
+            <section id="1-3">
+                <h3>1.3. QUÁ TRÌNH TẠO VÀ CẢM NHẬN TIẾNG NÓI</h3>
+                
+                <h4 id="1-3-1">1.3.1. Bản chất của tiếng nói</h4>
+                <ul>
+                    <li><b>Bản chất vật lý:</b> Âm thanh tiếng nói là những sóng âm được lan truyền trong môi trường vật lý nhất định (thường là không khí).</li>
+                    <li><b>Cơ chế tạo âm:</b> Nguồn gốc là quá trình hoạt động của hệ thống phát âm. Dây thanh trong hầu dao động, truyền qua hệ thống tuyến âm (bộ lọc cơ học), tạo nên sóng âm. Sóng âm là dao động cơ học, thuộc loại sóng dọc và là sóng cơ học.</li>
+                    <li><b>Tham số sóng:</b> Tần số, chu kỳ, bước sóng (Minh họa Hình 1.4). Các tham số này luôn thay đổi liên tục trong tiếng nói.</li>
+                    <li><b>Dải tần:</b> Sóng âm thanh mà con người có thể cảm nhận được nằm trong dải tần số khoảng từ 16Hz đến 20000Hz.
+                        <ul>
+                            <li>Sóng hạ âm: Tần số nhỏ hơn 16Hz.</li>
+                            <li>Sóng siêu âm: Tần số lớn hơn 20000Hz (có ứng dụng trong y tế, sonar).</li>
+                        </ul>
+                    </li>
+                </ul>
+                <figure class="image-placeholder">
+                    
+                    <figcaption><b>Hình 1.4 (Minh họa):</b> Các tham số của sóng âm (tần số, chu kỳ, bước sóng).</figcaption>
+                </figure>
+
+                <h4 id="1-3-2">1.3.2. Cấu tạo của hệ thống phát âm</h4>
+                <p>Hệ thống phát âm gồm hai phần chính: phổi và hệ thống tuyến âm.</p>
+                <ul>
+                    <li><b>Phổi:</b> Nhiệm vụ giãn/ép hơi tạo lực cần thiết cho dây thanh dao động. Phổi được coi là nguồn kích thích dao động của dây thanh.</li>
+                    <li><b>Hệ thống tuyến âm (Vocal Tract):</b> Được coi như một ống âm học (bộ lọc cơ học). Đầu vào là dây thanh (thanh môn) và đầu ra là môi.
+                        <ul>
+                            <li>Tuyến âm thay đổi hình dạng và tiết diện theo thời gian, được điều khiển bởi vị trí của lưỡi, môi, hàm, vòm miệng. Tiết diện thay đổi từ $0cm^2$ (ngậm môi) đến khoảng $20cm^2$ (hở môi). (Minh họa cấu trúc Hình 1.5).</li>
+                            <li>Tuyến mũi: Tạo thành tuyến âm phụ trợ. Khi vòm miệng hạ thấp, tuyến mũi nối với tuyến âm và tạo nên tiếng nói âm mũi.</li>
+                        </ul>
+                    </li>
+                    <li><b>Thanh quản (Larynx):</b> Bao quanh khoang chứa dây thanh. Dây thanh là một đôi môi đối xứng, độ mở tạo thành hình tam giác gọi là thanh môn.
+                        <ul>
+                            <li><b>Âm hữu thanh (Voiced):</b> Cặp môi (dây thanh) đóng mở liên tục một cách không tuần hoàn (dao động).</li>
+                            <li><b>Âm câm/vô thanh (Unvoiced):</b> Không khí qua thanh quản tự do.</li>
+                        </ul>
+                    </li>
+                </ul>
+                <figure class="image-placeholder">
+                    
+                    <figcaption><b>Hình 1.5 (Minh họa):</b> Cấu trúc hệ thống tuyến âm (Vocal Tract).</figcaption>
+                </figure>
+                <p>Quá trình cơ bản tạo tín hiệu tiếng nói (Minh họa Hình 1.6):</p>
+                <p style="text-align: center; font-size: 1.2em; font-weight: bold;">Nguồn kích thích $\rightarrow$ Tuyến âm $\rightarrow$ Tán xạ môi $\rightarrow$ Tín hiệu tiếng nói</p>
+                <figure class="image-placeholder">
+                    
+                    <figcaption><b>Hình 1.6 (Minh họa):</b> Quá trình cơ bản tạo tín hiệu tiếng nói.</figcaption>
+                </figure>
+
+                <h4 id="1-3-3">1.3.3. Phân loại tiếng nói</h4>
+                <p>Dựa vào đặc trưng phát âm, tiếng nói được chia thành 3 loại cơ bản:</p>
+                <ul>
+                    <li><b>Âm hữu thanh (Voiced):</b> Âm khi phát ra có thanh (ví dụ: nguyên âm “i”, “a”, “o”). Tạo ra do không khí qua thanh môn với độ căng dây thanh tạo nên dao động với tần số cơ bản.</li>
+                    <li><b>Âm vô thanh (Unvoiced):</b> Âm khi phát ra không có thanh. Dây thanh không rung hoặc rung đôi chút/dao động không có tần số cơ bản (ví dụ: “h”, “p”, “th”).</li>
+                    <li><b>Âm bật (Plosive/Âm nổ):</b> Dây thanh đóng kín tạo áp suất không khí lớn, sau đó mở đột ngột giải phóng không khí tạo ra âm thanh bật.</li>
+                </ul>
+
+                <h4 id="1-3-4">1.3.4. Cấu tạo của hệ thống cảm nhận tiếng nói</h4>
+                <p>Tai là bộ phận quan trọng và là khối đầu tiên trong hệ thống. Tai người nhạy cảm nhất với tần số tiếng nói trong vùng nghe (xấp xỉ 200 – 5600Hz).</p>
+                <ul>
+                    <li><b>Tai ngoài (Outer ear):</b> Gồm loa tai (vành tai) và lỗ tai (ống tai ngoài).
+                        <ul>
+                            <li>Loa tai: Thu tập năng lượng âm và dẫn hướng vào tai giữa.</li>
+                            <li>Ống tai ngoài: Bảo vệ tai giữa và hoạt động như một bộ lọc cơ học cộng hưởng (ưu tiên tần số 3000-12000Hz).</li>
+                        </ul>
+                    </li>
+                    <li><b>Tai giữa (Middle ear):</b> Chứa màng nhĩ, bộ ba khúc xương liên kết (xương vồ/búa, xương đe, xương bàn đạp). (Minh họa Hình 1.7).
+                        <ul>
+                            <li>Mục đích: Biến đổi thay đổi áp suất âm thành dịch chuyển cơ khí.</li>
+                            <li>Cơ chế đòn bẩy và chênh lệch diện tích đảm bảo truyền năng lượng tối đa ở vùng 500Hz và 4000Hz.</li>
+                            <li>Vòi ốc tai (eustachian tube): Cân bằng áp suất khí nền.</li>
+                        </ul>
+                    </li>
+                    <li><b>Tai trong (Inner ear):</b> Ốc tai (cochlea). (Minh họa Hình 1.8).
+                        <ul>
+                            <li>Ốc tai: Biến đổi sự chuyển dịch cơ khí thành tín hiệu thần kinh.</li>
+                            <li>Màng nền (basilar membrane): Dịch chuyển phụ thuộc tần số (tần số cao ở đầu cứng, tần số thấp ở đầu mềm).</li>
+                            <li>Cơ quan vỏ não (organ of corti): Chứa tế bào tóc, biến dịch chuyển màng nền thành tín hiệu thần kinh.</li>
+                        </ul>
+                    </li>
+                </ul>
+                <figure class="image-placeholder">
+                    
+                    <figcaption><b>Hình 1.7 & 1.8 (Minh họa):</b> Cấu tạo của hệ thống tai người (Tai giữa và Ốc tai).</figcaption>
+                </figure>
+
+                <h4 id="1-3-5">1.3.5. Đặc điểm cảm nhận tiếng nói của người</h4>
+                <p>Tai con người có thể cảm nhận dải áp suất âm rộng:</p>
+                <ul>
+                    <li><b>Ngưỡng nghe (TOH – Threshold of hearing):</b> $10^{-5}Pa$.</li>
+                    <li><b>Ngưỡng nghe gây đau:</b> $10^2Pa$.</li>
+                </ul>
+                <p><b>Công thức Mức áp suất âm (SPL) và Mức cường độ âm (SIL)</b></p>
+                <p>Mức áp suất âm (SPL, $L_p$ – Sound Pressure Level):</p>
+                $$ \text{SPL} = L_p = 10 \log_{10} \left[ \frac{P_{rms}^2}{P_0^2} \right] = 20 \log_{10} \left[ \frac{P_{rms}}{P_0} \right] \text{ [dB]} $$
+                <p>Mức cường độ âm (SIL, $L_i$ – Sound Intensity Level):</p>
+                $$ \text{SIL} = L_i = 10 \log_{10} \left[ \frac{I}{I_0} \right] \text{ [dB]} $$
+                
+                <p><b>Cảm nhận Độ to theo Tần số</b></p>
+                <p>Sự cảm nhận về cùng độ to của âm thanh không độc lập với tần số. (Minh họa Hình 1.10).</p>
+                <figure class="image-placeholder">
+                    
+                    <figcaption><b>Hình 1.10 (Minh họa):</b> Mức SPL cần thiết ở các tần số khác nhau để cảm nhận cùng độ to (Equal-loudness contours).</figcaption>
+                </figure>
+                <p>Hàm ngưỡng nghe tuyệt đối:</p>
+                $$ T(f) \approx 3.46(1000/f) - 6.5 \cdot e^{-0.8(1000/f - 3.3)^2} + 10^{-4}(1000/f)^4 $$
+
+                <p><b>Hiện tượng Che lấp âm thanh (Masking)</b></p>
+                <ul>
+                    <li><b>Che lấp thời gian:</b> Xảy ra khi một âm rất lớn tắt đột ngột, tai vẫn cảm nhận âm này trong một khoảng thời gian sau đó, che lấp âm nhỏ hơn.</li>
+                    <li><b>Che lấp tần số:</b> Một âm thanh bị làm mờ khi xuất hiện một âm thanh có tần số khác. Âm tần số thấp thường che lấp âm tần số cao.</li>
+                    <li><b>Băng tần cơ bản (Critical band):</b> Độ rộng vùng tần số che lấp.</li>
+                </ul>
+
+                <p><b>Thang tần số</b></p>
+                <ul>
+                    <li><b>Thang tần số Bark:</b> 1 Bark = độ rộng của một băng tần cơ bản.
+                        $$ \text{Bark} = 13 \arctan(0.00076f) + 3.5 \arctan((f/7500)^2) $$
+                    </li>
+                    <li><b>Thang tần số Mel:</b> Mô phỏng gần với độ nhạy của tai hơn.
+                        $$ m = 2595 \log_{10} \left( 1 + \frac{f}{700} \right) \text{ [Mel]} $$
+                        $$ f = 700 \left( 10^{m/2595} - 1 \right) \text{ [Hz]} $$
+                    </li>
+                </ul>
+                
+                <p><b>Liên quan giữa Đại lượng Vật lý và Chất lượng Cảm nhận</b></p>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Đại lượng vật lý</th>
+                            <th>Chất lượng cảm nhận</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Mức cường độ âm</td>
+                            <td>Độ to (loudness)</td>
+                        </tr>
+                        <tr>
+                            <td>Tần số cơ bản</td>
+                            <td>Cao độ (pitch)</td>
+                        </tr>
+                        <tr>
+                            <td>Hình dạng phổ</td>
+                            <td>Âm sắc (timbre)</td>
+                        </tr>
+                        <tr>
+                            <td>Độ lệch thời gian</td>
+                            <td>Cảm giác về thời gian (timing)</td>
+                        </tr>
+                        <tr>
+                            <td>Sự lệch pha</td>
+                            <td>Vị trí âm (location)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section id="1-4">
+                <h3>1.4. MÔ HÌNH HÓA HỆ THỐNG CƠ QUAN PHÁT ÂM</h3>
+                <p>Cơ chế phát âm được mô hình hóa dựa trên hai quá trình: nguồn tạo dao động âm và cấu trúc phổ định hình (bộ lọc) (Minh họa Hình 1.12).</p>
+                <h4 id="1-4-1">Mô hình Nguồn-Bộ lọc (Source-Filter Model)</h4>
+                <p>Quá trình làm việc của bộ máy phát âm được mô hình hóa theo sơ đồ Hình 1.13.</p>
+                <ul>
+                    <li><b>Nguồn (Source):</b> Mô tả dao động dây thanh.
+                        <ul>
+                            <li>Âm hữu thanh: Nguồn là dãy xung tuần hoàn.</li>
+                            <li>Âm vô thanh: Nguồn là nhiễu trắng.</li>
+                        </ul>
+                    </li>
+                    <li><b>Bộ lọc tuyến âm (Vocal Tract Filter):</b> Lọc tín hiệu dao động dây thanh.
+                        <ul>
+                            <li>Bản chất là bộ lọc cơ học $h(n)$.</li>
+                            <li>Xấp xỉ bằng bộ lọc toàn điểm cực (all-pole) để nhấn các đỉnh cộng hưởng (formant).</li>
+                        </ul>
+                    </li>
+                </ul>
+                <figure class="image-placeholder">
+                    
+                    <figcaption><b>Hình 1.12 & 1.13 (Minh họa):</b> Mô hình Nguồn-Bộ lọc (Source-Filter Model) cho việc tạo âm.</figcaption>
+                </figure>
+            </section>
+
+            <section id="1-5">
+                <h3>1.5. BIỂU DIỄN TÍN HIỆU TIẾNG NÓI</h3>
+                <p>Có 3 phương pháp cơ bản để biểu diễn tín hiệu tiếng nói:</p>
+                
+                <h4 id="1-5-1">1.5.1. Biểu diễn dạng sóng tín hiệu trong miền thời gian</h4>
+                <p>Tín hiệu tiếng nói số $s(n)$ là kết quả lấy mẫu và lượng tử hóa của $s(t)$. (Minh họa Hình 1.14 & 1.15).</p>
+                <ul>
+                    <li><b>Khoảng lặng (silent):</b> Biên độ rất nhỏ.</li>
+                    <li><b>Âm vô thanh:</b> Biên độ thấp, dạng ngẫu nhiên.</li>
+                    <li><b>Âm hữu thanh:</b> Biên độ cao, có dạng tuần hoàn.</li>
+                </ul>
+                <figure class="image-placeholder">
+                    
+                    <figcaption><b>Hình 1.14 & 1.15 (Minh họa):</b> Biểu diễn dạng sóng của âm hữu thanh và âm vô thanh trong miền thời gian.</figcaption>
+                </figure>
+
+                <h4 id="1-5-2">1.5.2. Biểu diễn phổ tín hiệu tiếng nói</h4>
+                <p>Biến đổi Fourier (cho tín hiệu số $s(n)$):</p>
+                $$ S(j\omega) = \sum_{n=-\infty}^{\infty} s(n) e^{-j\omega n} $$
+                <p>Phổ Biên độ $|S(j\omega)|$ tách thành hai thành phần:</p>
+                <ul>
+                    <li><b>Đường bao phổ (Spectral Envelope):</b> Biến đổi chậm, đại diện cho bộ lọc tuyến âm.</li>
+                    <li><b>Phổ nhỏ (Fine Structure):</b> Biến đổi nhanh, đại diện cho dao động dây thanh.</li>
+                </ul>
+                <p>Phân biệt Âm hữu thanh và Vô thanh dựa trên Phổ (Hình 1.17):</p>
+                <ul>
+                    <li><b>Âm hữu thanh:</b> Xuất hiện đỉnh formant, năng lượng tập trung ở tần thấp.</li>
+                    <li><b>Âm vô thanh:</b> Không có formant, năng lượng trải đều và tập trung ở tần số cao.</li>
+                </ul>
+                <figure class="image-placeholder">
+                    
+                    <figcaption><b>Hình 1.16 & 1.17 (Minh họa):</b> Phổ biên độ của âm hữu thanh (có formant) và âm vô thanh.</figcaption>
+                </figure>
+
+                <h4 id="1-5-3">1.5.3. Biểu diễn Spectrogram</h4>
+                <p>Spectrogram (Sonogram): Là một phân tích thời gian-tần số (hai chiều), cho phép quan sát các đặc trưng phổ thay đổi theo thời gian. (Minh họa Hình 1.18).</p>
+                <ul>
+                    <li><b>Âm hữu thanh:</b> Dải đậm màu có vằn (thể hiện tính tuần hoàn và formant).</li>
+                    <li><b>Âm vô thanh:</b> Dải đặc nhạt màu, phân bố đều (nhiễu).</li>
+                </ul>
+                <figure class="image-placeholder">
+                    
+                    <figcaption><b>Hình 1.18 (Minh họa):</b> Biểu diễn Spectrogram cho thấy sự thay đổi của phổ theo thời gian.</figcaption>
+                </figure>
+            </section>
+
+            <section id="1-6">
+                <h3>1.6. CÁC THAM SỐ CƠ BẢN CỦA TÍN HIỆU TIẾNG NÓI</h3>
+                
+                <h4 id="1-6-1">1.6.1. Tần số cơ bản (Fundamental Frequency - Pitch)</h4>
+                <ul>
+                    <li>Chu kỳ cơ bản ($T_0$): Chu kỳ của phần tín hiệu bán tuần hoàn (đóng mở dây thanh).</li>
+                    <li>Tần số cơ bản ($F_0$): $F_0 = 1/T_0$.</li>
+                    <li>Nam giới: Khoảng 85-180Hz.</li>
+                    <li>Nữ giới: Khoảng 165-255Hz.</li>
+                    <li>Trẻ em: Khoảng 350-850Hz.</li>
+                </ul>
+                <figure class="image-placeholder">
+                    
+                    <figcaption><b>Hình 1.19 (Minh họa):</b> Minh họa chu kỳ cơ bản (Pitch) $T_0$ trên dạng sóng âm hữu thanh.</figcaption>
+                </figure>
+
+                <h4 id="1-6-2">1.6.2. Tần số Formant</h4>
+                <ul>
+                    <li><b>Định nghĩa:</b> Là những đỉnh cực đại trên đường bao phổ tần số (tần số cộng hưởng).</li>
+                    <li><b>Vai trò:</b> Đặc trưng quan trọng xác định nội dung âm học (ví dụ: phân biệt nguyên âm).</li>
+                    <li><b>Ký hiệu:</b> $F_1, F_2, F_3, ...$</li>
+                    <li><b>Phân biệt nguyên âm:</b> $F_1$ và $F_2$ là đủ để phân biệt các nguyên âm.</li>
+                </ul>
+            </section>
+
+            <section id="1-7">
+                <h3>1.7. MỘT SỐ ĐẶC ĐIỂM NGỮ ÂM</h3>
+                <h4 id="1-7-1">1.7.1. Một số định nghĩa cơ bản về đơn vị ngữ âm</h4>
+                <ul>
+                    <li><b>Âm vị (phoneme):</b> Đơn vị trừu tượng phân biệt nhỏ nhất của âm thanh.</li>
+                    <li><b>Âm tố (phone):</b> Thực hiện vật lý (âm học) của một âm vị.</li>
+                    <li><b>Bán âm tố kép (diphone):</b> Nửa cuối âm tố trước + nửa đầu âm tố sau.</li>
+                    <li><b>Âm tiết (syllable):</b> Đơn vị phát âm (thường có một nguyên âm).</li>
+                    <li><b>Từ (word):</b> Đơn vị ngôn ngữ mang ý nghĩa.</li>
+                    <li><b>Câu (sentence):</b> Tập hợp các từ mang ý hoàn chỉnh.</li>
+                </ul>
+
+                <h4 id="1-7-2">1.7.2. Đặc điểm ngữ âm của tiếng Việt</h4>
+                <ul>
+                    <li><b>Ngôn ngữ đơn lập (mono-syllabic):</b> Mỗi âm tiết là một từ.</li>
+                    <li><b>Thanh điệu:</b> Ngữ nghĩa thay đổi khi thanh điệu thay đổi (6 thanh điệu).</li>
+                    <li><b>Cấu trúc âm tiết:</b> Ngôn ngữ đánh vần được (Phụ âm – Nguyên âm – Phụ âm).</li>
+                </ul>
+            </section>
+
+            <section id="1-8">
+                <h3>1.8. CÂU HỎI VÀ BÀI TẬP CUỐI CHƯƠNG</h3>
+                <h4>Câu hỏi ôn tập lý thuyết</h4>
+                <ol>
+                    <li>Các bộ phận chính và vai trò của chúng trong bộ máy phát âm?</li>
+                    <li>Môi, khoang mũi có vai trò gì trong quá trình phát âm?</li>
+                    <li>Các bộ phận chính và vai trò của chúng trong cơ quan cảm nhận tiếng nói?</li>
+                    <li>Đặc điểm nghe của tai người? Mối quan hệ giữa các đặc tính cảm nhận âm và các đại lượng vật lý của âm?</li>
+                    <li>Mô hình nguồn-bộ lọc mô phỏng bộ máy phát âm?</li>
+                    <li>Hiện tượng che lấp là gì? Hiện tượng này có vai trò gì?</li>
+                    <li>Các phương pháp biểu diễn cơ bản tín hiệu tiếng nói?</li>
+                    <li>Một số khái niệm ngữ âm cơ bản? Đặc điểm ngữ âm tiếng Việt?</li>
+                    <li>Các tham số cơ bản của tín hiệu tiếng nói?</li>
+                    <li>Phân biệt âm vô thanh và hữu thanh?</li>
+                </ol>
+
+                <h4>Bài tập thực hành (Matlab/Octave)</h4>
+                <ol type="a">
+                    <li>Ghi âm một đoạn tiếng nói sao cho có cả âm vô thanh và hữu thanh và lưu dưới dạng file .wav.</li>
+                    <li>Đọc file vừa ghi và thực hiện biểu diễn dạng sóng tín hiệu trong miền thời gian.</li>
+                    <li>Đọc file vừa ghi, tách các phân đoạn tương ứng với âm vô thanh, hữu thanh và biểu diễn phổ tương ứng.</li>
+                    <li>Đọc file vừa ghi, thực hiện biểu diễn spectrogram và quan sát đặc điểm của nó. Đối chiếu với những nhận xét có được trong phần học lý thuyết ở trên.</li>
+                </ol>
+            </section>
+        </main>
+    </div>
+
+</body>
+</html>

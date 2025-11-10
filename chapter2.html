@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài giảng: Phân tích Tín hiệu Tiếng nói</title>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script>
+    MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        }
+    };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        :root {
+            --primary-color: #005a9c;
+            --secondary-color: #007bff;
+            --text-color: #333;
+            --bg-color: #ffffff;
+            --sidebar-bg: #f4f7f6;
+            --border-color: #e0e0e0;
+            /* Sửa lỗi font: Sử dụng font hệ thống an toàn, hiển thị tốt tiếng Việt */
+            --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        body {
+            font-family: var(--font-stack);
+            line-height: 1.7;
+            background-color: var(--sidebar-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            display: flex;
+            max-width: 1500px;
+            margin: 20px auto;
+            background: var(--bg-color);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        
+        /* === Thanh Điều Hướng (Sidebar) === */
+        .sidebar {
+            width: 280px;
+            min-width: 280px;
+            background: var(--bg-color);
+            border-right: 1px solid var(--border-color);
+            position: sticky;
+            top: 20px;
+            height: 95vh;
+            overflow-y: auto;
+            padding: 25px 15px 25px 20px;
+        }
+        .sidebar h3 {
+            font-family: var(--font-stack);
+            color: var(--primary-color);
+            font-size: 1.3em;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 10px;
+            font-weight: 600;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding-left: 0;
+            margin-top: 15px;
+        }
+        .sidebar li {
+            margin-bottom: 5px;
+        }
+        .sidebar a {
+            text-decoration: none;
+            color: #444;
+            display: block;
+            padding: 8px 10px;
+            border-radius: 5px;
+            transition: all 0.2s ease;
+        }
+        .sidebar a:hover,
+        .sidebar a:focus {
+            background-color: #e9f5ff;
+            color: var(--secondary-color);
+            font-weight: 600;
+        }
+        /* Cấp độ con */
+        .sidebar ul ul {
+            padding-left: 20px;
+            margin-top: 5px;
+        }
+        .sidebar ul ul a {
+            font-size: 0.9em;
+            padding: 5px 10px;
+            color: #555;
+        }
+
+        /* === Nội dung Bài giảng (Main Content) === */
+        .content {
+            flex-grow: 1;
+            padding: 20px 40px;
+            max-width: calc(100% - 320px); /* Ngăn nội dung quá rộng */
+        }
+        .content header {
+            border-bottom: 3px solid var(--primary-color);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        .content h1 {
+            font-family: var(--font-stack);
+            color: var(--primary-color);
+            font-size: 2.2em;
+            margin: 0;
+            font-weight: 700;
+        }
+        .content h2 {
+            font-family: var(--font-stack);
+            color: var(--secondary-color);
+            font-size: 1.8em;
+            margin: 10px 0 0 0;
+            font-weight: 700;
+        }
+
+        /* Định dạng các phần học */
+        .content section {
+            margin-bottom: 40px;
+        }
+        .content h3 { /* Tiêu đề mục lớn (2.1, 2.2) */
+            font-family: var(--font-stack);
+            font-size: 1.7em;
+            color: var(--primary-color);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        .content h4 { /* Tiêu đề mục con (2.1.1, 2.1.2) */
+            font-family: var(--font-stack);
+            font-size: 1.4em;
+            color: #333;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        /* === Các thành phần chi tiết === */
+        /* Danh sách mục tiêu */
+        .objective-list {
+            list-style: '✔ ';
+            padding-left: 25px;
+        }
+        .objective-list li {
+            margin-bottom: 10px;
+            padding-left: 10px;
+        }
+
+        /* Công thức toán học (MathJax) */
+        /* MathJax tự động canh giữa cho $$...$$ */
+        mjx-container {
+            margin: 15px 0;
+            overflow-x: auto; /* Cho phép cuộn ngang nếu công thức quá dài */
+        }
+        
+        /* Bảng biểu */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .data-table th,
+        .data-table td {
+            border: 1px solid var(--border-color);
+            padding: 12px 15px;
+            text-align: left;
+        }
+        .data-table th {
+            background-color: #e9f5ff;
+            color: var(--primary-color);
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+        .data-table tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 900px) {
+            .container {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                position: static;
+                height: auto;
+                max-height: 300px; /* Giới hạn chiều cao mục lục trên mobile */
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+                box-sizing: border-box; /* Đảm bảo padding không làm vỡ layout */
+                margin-bottom: 20px;
+            }
+            .content {
+                max-width: 100%;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <nav class="sidebar">
+            <h3>Nội dung chương 2</h3>
+            <ul>
+                <li><a href="#muc-tieu">Mục tiêu Chương học</a></li>
+                <li><a href="#2-1">2.1. Mở đầu và Khái niệm chung</a>
+                    <ul>
+                        <li><a href="#2-1-1">2.1.1. Mục tiêu và Vấn đề</a></li>
+                        <li><a href="#2-1-2">2.1.2. Mô hình Tổng quát</a></li>
+                        <li><a href="#2-1-3">2.1.3. Phân tích Ngắn hạn</a></li>
+                    </ul>
+                </li>
+                <li><a href="#2-2">2.2. Phân tích Miền Thời gian</a>
+                    <ul>
+                        <li><a href="#2-2-1">2.2.1. Năng lượng ngắn hạn</a></li>
+                        <li><a href="#2-2-2">2.2.2. Độ lớn biên độ</a></li>
+                        <li><a href="#2-2-3">2.2.3. Vi sai độ lớn (AMDF)</a></li>
+                        <li><a href="#2-2-4">2.2.4. Tốc độ trở về không (ZCR)</a></li>
+                        <li><a href="#2-2-5">2.2.5. Tự tương quan</a></li>
+                    </ul>
+                </li>
+                <li><a href="#2-3">2.3. Phân tích Phổ</a>
+                    <ul>
+                        <li><a href="#2-3-1">2.3.1. Cấu trúc Phổ</a></li>
+                        <li><a href="#2-3-2">2.3.2. Phân tích Spectrogram</a></li>
+                    </ul>
+                </li>
+                <li><a href="#2-4">2.4. Phân tích Dự đoán Tuyến tính (LPC)</a>
+                    <ul>
+                        <li><a href="#2-4-1">2.4.1. Nguyên lý và Mô hình</a></li>
+                        <li><a href="#2-4-2">2.4.2. Sai số Dự đoán</a></li>
+                        <li><a href="#2-4-3">2.4.3. Hệ phương trình LPC</a></li>
+                        <li><a href="#2-4-4">2.4.4. PP Tự tương quan</a></li>
+                        <li><a href="#2-4-5">2.4.5. PP Covariance</a></li>
+                    </ul>
+                </li>
+                <li><a href="#2-5">2.5. Xử lý Đồng hình (Cepstrum)</a>
+                    <ul>
+                        <li><a href="#2-5-1">2.5.1. Khái niệm Cepstrum</a></li>
+                    </ul>
+                </li>
+                <li><a href="#2-6">2.6. Áp dụng Xác định Tham số</a>
+                    <ul>
+                        <li><a href="#2-6-1">2.6.1. Xác định Formant</a></li>
+                        <li><a href="#2-6-2">2.6.2. Xác định Tần số $F_0$</a></li>
+                    </ul>
+                </li>
+                <li><a href="#tom-ket">Tóm kết và Bài tập</a></li>
+            </ul>
+        </nav>
+
+        <main class="content">
+            <header>
+                <h1>BÀI GIẢNG MÔN HỌC: PHÂN TÍCH TÍN HIỆU TIẾNG NÓI</h1>
+                <h2>CHƯƠNG 2: PHÂN TÍCH TÍN HIỆU TIẾNG NÓI</h2>
+            </header>
+
+            <section id="muc-tieu">
+                <h3>Mục tiêu Chương học</h3>
+                <p>Sau khi hoàn thành chương học này, người học có khả năng:</p>
+                <ul class="objective-list">
+                    <li>Hiểu và áp dụng các phương pháp phân tích tín hiệu tiếng nói nhằm tìm ra một dạng thức tối ưu để biểu diễn tín hiệu một cách hiệu quả.</li>
+                    <li>Trích chọn được các đặc trưng quan trọng của tín hiệu tiếng nói, làm cơ sở cho việc phát triển các kỹ thuật tổng hợp, nhận dạng và nâng cao chất lượng tín hiệu.</li>
+                    <li>Thực hiện được các phân tích cơ bản trong miền thời gian (Năng lượng, ZCR, Tự tương quan) và miền tần số (STFT, Spectrogram).</li>
+                    <li>Nắm vững nguyên lý và áp dụng được thuật toán Dự đoán Tuyến tính (LPC) và Xử lý Đồng hình (Cepstrum).</li>
+                    <li>Sử dụng các công cụ phân tích để xác định các tham số cơ bản như Formant và Tần số cơ bản $F_0$.</li>
+                </ul>
+            </section>
+
+            <hr>
+
+            <section id="2-1">
+                <h3>2.1. MỞ ĐẦU VÀ KHÁI NIỆM CHUNG</h3>
+                
+                <h4 id="2-1-1">2.1.1. Mục tiêu và Vấn đề trọng tâm của Phân tích Tiếng nói</h4>
+                <p>Phân tích tiếng nói thường thực hiện việc trích chọn hoặc chuyển đổi tín hiệu tiếng nói sang một dạng thức biểu diễn khác để thông tin tiếng nói được biểu diễn tốt hơn theo nhuạ cầu.</p>
+                <p>Hầu hết các phương pháp phân tích tín hiệu tiếng nói tập trung vào ba vấn đề chính:</p>
+                <ul>
+                    <li><b>Loại bỏ ảnh hưởng của pha:</b> Pha không đóng vai trò quan trọng trong việc truyền tải thông tin tiếng nói.</li>
+                    <li><b>Chia tách nguồn âm và mạch lọc (Mô hình tuyến âm):</b> Nhằm nghiên cứu biên phổ của tín hiệu một cách độc lập.</li>
+                    <li><b>Chuyển đổi tín hiệu:</b> Chuyển tín hiệu hoặc biên phổ tín hiệu sang một dạng biểu diễn khác hiệu quả hơn.</li>
+                </ul>
+
+                <h4 id="2-1-2">2.1.2. Mô hình Tổng quát cho việc Phân tích Tiếng nói</h4>
+                <p>Quá trình phân tích tiếng nói bao gồm các bước sau:</p>
+                <ol>
+                    <li><b>Tiền xử lý (Pre-processing):</b> Tín hiệu tiếng nói tương tự được cho qua bộ lọc thông thấp (tần số cắt khoảng 8kHz).</li>
+                    <li><b>Chuyển đổi ADC (Analog-to-Digital Converter):</b> Tín hiệu được biến đổi sang dạng số. Thông thường sử dụng tần số lấy mẫu $F_s = 16$kHz và tốc độ bit lượng tử hóa là 16bit.</li>
+                    <li><b>Phân khung (Framing):</b> Tín hiệu số được phân thành các khung. Chiều dài khung thường tương ứng khoảng 30ms.</li>
+                    <li><b>Khoảng lệch khung (Overlap):</b> Khoảng lệch giữa các khung thường bằng $\frac{1}{2}$ đến $\frac{1}{3}$ chiều dài khung phân tích (khoảng 10ms).</li>
+                    <li><b>Lấy cửa sổ (Windowing):</b> Khung tín hiệu được chỉnh biên bằng cách lấy cửa sổ với các hàm phổ biến như Hamming hoặc Hanning.</li>
+                    <li><b>Phân tích/Trích chọn đặc trưng:</b> Phân tích với các phương pháp thích hợp (STFT, LPC,...) hoặc trích chọn các đặc trưng từ kết quả phân tích cơ bản.</li>
+                </ol>
+
+                <h4 id="2-1-3">2.1.3. Khái niệm Phân tích Ngắn hạn (Short-term Analysis)</h4>
+                <p>Tín hiệu tiếng nói được tạo ra từ một hệ thống tuyến âm thay đổi theo thời gian. Hầu hết các công cụ xử lý tín hiệu giả thiết rằng chúng là các thể hiện của quá trình dừng (không đổi theo thời gian).</p>
+                <p>Do đó, các phân tích tín hiệu tiếng nói mặc định được tiến hành trong một phân đoạn tín hiệu rất nhỏ, cỡ khoảng 10-30ms, và được gọi là <b>phân tích ngắn hạn</b>.</p>
+                <p>Sở dĩ phải thực hiện phân tích ngắn hạn là vì bản chất của tín hiệu tiếng nói là <b>bán tĩnh (semi-stationary)</b>: các tham số chỉ có thể coi là không thay đổi nếu thời gian quan sát đủ ngắn.</p>
+                <p>Công thức tổng quát cho phép phân tích ngắn hạn (2.1):</p>
+                $$X(n) = \sum_{m=-\infty}^{\infty} T{s(m)} w(n-m)$$
+                <p>Trong đó $X(n)$ biểu diễn tham số phân tích tại thời điểm $n$, và $T{}$ định nghĩa một hàm phân tích ngắn hạn. Tổng được tính trong vùng xác định (support) của hàm cửa sổ $w(n-m)$.</p>
+                <p>Phân đoạn tín hiệu sau khi lấy cửa sổ (2.2):</p>
+                $$s_N(n) = s(m) \times w(n-m)$$
+                <p>Trong đó $w(n)$ là hàm cửa sổ có độ dài $N$ mẫu.</p>
+            </section>
+
+            <hr>
+
+            <section id="2-2">
+                <h3>2.2. CÁC PHÂN TÍCH CƠ BẢN TRONG MIỀN THỜI GIAN</h3>
+                <p>Các phân tích trong miền thời gian được thực hiện trực tiếp trên dạng sóng tín hiệu sau khi lấy cửa sổ ngắn hạn.</p>
+
+                <h4 id="2-2-1">2.2.1. Năng lượng ngắn hạn (Short-term Energy)</h4>
+                <p>Năng lượng của một phân đoạn tín hiệu tiếng nói gồm $N$ mẫu được xác định bởi công thức tổng quát:</p>
+                $$E_T = \sum_{n=0}^{N-1} s^2(n)$$
+                <p>Công thức tính năng lượng ngắn hạn (2.3):</p>
+                $$E_n = \sum_{m=-\infty}^{\infty} (s(m)w(n-m))^2 = \sum_{m=-\infty}^{\infty} s_n^2(m)$$
+                <p><b>Ứng dụng:</b></p>
+                <ul>
+                    <li>Phát hiện các đặc tính của âm:
+                        <ul>
+                            <li><b>Âm hữu thanh (nguyên âm):</b> Mức năng lượng lớn.</li>
+                            <li><b>Âm vô thanh:</b> Mức năng lượng nhỏ.</li>
+                            <li><b>Khoảng lặng:</b> Mức năng lượng bằng không (xấp xỉ không).</li>
+                        </ul>
+                    </li>
+                    <li>Hữu ích trong việc phát hiện âm hữu thanh, âm vô thanh hay khoảng lặng.</li>
+                </ul>
+
+                <h4 id="2-2-2">2.2.2. Độ lớn biên độ ngắn hạn (Short-term Magnitude)</h4>
+                <p>Được sử dụng như một đại lượng thay thế cho năng lượng ngắn hạn do ít nhạy cảm với độ lớn của tín hiệu:</p>
+                $$M_n = \sum_{m=-\infty}^{\infty} |s(m)w(n-m)|$$
+
+                <h4 id="2-2-3">2.2.3. Vi sai độ lớn biên độ ngắn hạn (Short-term Magnitude Difference - AMDF)</h4>
+                <p>Hàm vi sai biên độ trung bình được định nghĩa là:</p>
+                $$\Delta M_{n\eta} = \sum_{m=-\infty}^{\infty} |s(m) - s(m-\eta)| w(n-m)$$
+                <p><b>Ứng dụng:</b> $\Delta M_{n\eta}$ rất nhỏ khi $\eta$ tiến đến chu kỳ của tín hiệu $s(n)$. Đây là công cụ hữu ích để xác định tần số cơ bản của tín hiệu tiếng nói.</p>
+
+                <h4 id="2-2-4">2.2.4. Tốc độ trở về không (Zero-Crossing Rate - ZCR)</h4>
+                <p>Sự kiện trở về không xảy ra khi dạng sóng tín hiệu cắt trục hoành (mẫu liên tục có dấu khác nhau).</p>
+                <p>Công thức tính tốc độ trở về không (2.4):</p>
+                $$Z_n = \sum_{m=-\infty}^{\infty} 0.5 |\text{sgn}{s(m)} - \text{sgn}{s(m-1)}| w(n-m)$$
+                <p><b>Ứng dụng:</b></p>
+                <ul>
+                    <li>Là một đo lường của tần số.</li>
+                    <li>Phân biệt âm vô thanh (năng lượng lớn ở tần cao) và âm hữu thanh (suy giảm lớn ở tần cao do đặc tính thông thấp của xung dây thanh).</li>
+                </ul>
+
+                <h4 id="2-2-5">2.2.5. Giá trị hàm tự tương quan (Short-term Autocorrelation)</h4>
+                <p>Hàm tự tương quan được sử dụng để xác định tính chu kỳ của tín hiệu.</p>
+                <p>Công thức hàm tự tương quan ngắn hạn (2.5):</p>
+                $$\Phi_n^w(k) = \sum_{m=-\infty}^{\infty} s_n(m) s_n(m-k) = \sum_{m=-\infty}^{\infty} s(m)w(n-m) s(m-k)w(n-m+k)$$
+                <p>Mối quan hệ với Năng lượng:</p>
+                $$\Phi_n^w(0) = \sum_{m=-\infty}^{\infty} s^2(m)w^2(n-m) = E_n^2$$
+                <p><b>Ứng dụng:</b> $\Phi_n(k)$ đạt các giá trị cực khi $k$ là bội của chu kỳ cơ bản của tín hiệu, giúp xác định tần số cơ bản $F_0$.</p>
+            </section>
+            
+            <hr>
+
+            <section id="2-3">
+                <h3>2.3. PHÂN TÍCH PHỔ TÍN HIỆU TIẾNG NÓI</h3>
+                
+                <h4 id="2-3-1">2.3.1. Cấu trúc Phổ của Tín hiệu Tiếng nói</h4>
+                <p>Việc phân tích phổ quan trọng vì cảm nhận tiếng nói của con người liên quan trực tiếp đến thông tin phổ của tín hiệu nhiều hơn là thông tin về pha (pha không có vai trò quyết định).</p>
+                <p>Biến đổi Fourier ngắn hạn (STFT) (2.8):</p>
+                $$S_n(e^{j\omega}) = \sum_{m=-\infty}^{\infty} s(m)w(n-m) e^{-j\omega m}$$
+                <p>Mật độ phổ công suất (Phổ ngắn hạn) có thể xem là tích của hai thành phần:</p>
+                <ul>
+                    <li><b>Đường biên phổ (Spectral Envelope):</b> Thay đổi chậm theo tần số, mô tả đặc tính cộng hưởng (resonance) và phản cộng hưởng (anti-resonance) của cơ quan phát âm.</li>
+                    <li><b>Cấu trúc phổ mịn (Spectral Fine Structure):</b> Thay đổi rất nhanh theo tần số. Đối với âm hữu thanh thì tạo thành các mẫu tuần hoàn, còn đối với âm vô thanh thì không. Cấu trúc này mô tả tính tuần hoàn của nguồn âm.</li>
+                </ul>
+                <p>Công thức STFT Rời rạc (DTFT) (2.9) (Áp dụng tính toán thực tế):</p>
+                $$S_r(k) = \sum_{m=rR-L+1}^{rR} s(m)w(rR-m) e^{-j\frac{2\pi}{N} km}$$
+                <p>Trong đó $N$ là số các tần số cách đều, $L$ là độ dài hàm cửa sổ, $R$ là bước dịch chuyển.</p>
+
+                <h4 id="2-3-2">2.3.2. Phân tích Spectrogram</h4>
+                <p>Spectrogram là công cụ cơ bản chuyển đổi dạng sóng 2D (biên độ/thời gian) thành cấu trúc 3 chiều (biên độ/tần số/thời gian).</p>
+                <p>Cấu trúc biểu diễn:</p>
+                <ul>
+                    <li><b>Thời gian:</b> Trục ngang.</li>
+                    <li><b>Tần số:</b> Trục dọc (từ 0 đến $\pi$ hoặc $F_s/2$).</li>
+                    <li><b>Biên độ:</b> Độ đậm nhạt (thường theo thang tỷ lệ lô-ga-rít).</li>
+                </ul>
+                <p>Công thức tính biên độ phổ:</p>
+                $$10 \log_{10} 20 \log_{10} |S_r(k)|$$
+                <p>(Lưu ý: Công thức nguồn ghi $10, 20\log |S_r(k)|$).</p>
+                <p>Đặc điểm nhận dạng trên Spectrogram:</p>
+                <ul>
+                    <li><b>Formant:</b> Các đỉnh phổ, xuất hiện là các dải nằm ngang màu đậm.</li>
+                    <li><b>Âm hữu thanh:</b> Tạo ra các mảng dọc do sự tăng cường biên độ tín hiệu mỗi khi thanh quản đóng lại.</li>
+                    <li><b>Âm vô thanh:</b> Tạo ra các cấu trúc đậm hình chữ nhật và kết thúc ngẫu nhiên (nhiễu).</li>
+                </ul>
+                <p><b>Spectrogram Băng rộng vs. Băng hẹp:</b></p>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Đặc điểm</th>
+                            <th>Băng rộng</th>
+                            <th>Băng hẹp</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Chiều dài cửa sổ</td>
+                            <td>Ngắn (e.g., 10ms, 101 mẫu @ $F_s=10$kHz)</td>
+                            <td>Lớn (e.g., 40ms, 401 mẫu @ $F_s=10$kHz)</td>
+                        </tr>
+                        <tr>
+                            <td>Độ phân giải thời gian</td>
+                            <td>Cao</td>
+                            <td>Nhỏ</td>
+                        </tr>
+                        <tr>
+                            <td>Độ phân giải tần số</td>
+                            <td>Kém</td>
+                            <td>Cao</td>
+                        </tr>
+                        <tr>
+                            <td>Hiệu ứng trực quan</td>
+                            <td>Biểu hiện các vằn định hướng thẳng đứng (chu kỳ pitch riêng rẽ)</td>
+                            <td>Ít nhạy với sự thay đổi thời gian</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+            
+            <hr>
+
+            <section id="2-4">
+                <h3>2.4. PHÂN TÍCH DỰ ĐOÁN TUYẾN TÍNH (LPC)</h3>
+                <p>LPC là một trong các phương pháp phân tích tín hiệu tiếng nói mạnh nhất và phổ biến nhất, cung cấp ước lượng chính xác các tham số và khả năng tính toán nhanh.</p>
+
+                <h4 id="2-4-1">2.4.1. Nguyên lý và Mô hình</h4>
+                <p>Mô hình LPC sử dụng mô hình hóa toàn điểm cực (all-pole model), tức là kết quả biểu diễn phổ $X_n(e^{j\omega})$ được giới hạn trong dạng $\delta/A(e^{j\omega})$.</p>
+                <p>Đa thức dự đoán $A(z)$ (2.10):</p>
+                $$A(z) = 1 + a_1 z^{-1} + a_2 z^{-2} + ... + a_p z^{-p}$$
+                <p>$p$ là bậc phân tích LPC. $a_k$ là các hệ số LPC.</p>
+                <p>Ý tưởng cơ bản: Xấp xỉ một mẫu tín hiệu tiếng nói $s(n)$ tại thời điểm $n$ như là một tổ hợp tuyến tính của $p$ mẫu trước đó:</p>
+                $$s(n) \approx \hat{s}(n) = \sum_{i=1}^{p} a_i s(n-i)$$
+                <p>Nếu thêm thành phần kích thích $G u(n)$, ta có đẳng thức:</p>
+                $$s(n) = \sum_{i=1}^{p} a_i s(n-i) + G u(n)$$
+                <p>Hàm truyền đạt $H(z)$ (Mạch lọc) (2.12):</p>
+                $$H(z) = \frac{S(z)}{G U(z)} = \frac{1}{A(z)} = \frac{1}{1 + \sum_{i=1}^{p} a_i z^{-i}}$$
+                <p>Mô hình LPC mô phỏng tiếng nói sử dụng nguồn kích thích chuẩn $u(n)$ (dãy xung bán tuần hoàn cho âm hữu thanh, nhiễu ngẫu nhiên cho âm vô thanh) nhân với hệ số khuếch đại $G$, qua hệ thống toàn điểm cực $H(z)$ để tạo ra tín hiệu $s(n)$.</p>
+
+                <h4 id="2-4-2">2.4.2. Sai số Dự đoán và Tối thiểu hóa</h4>
+                <p>Sai số dự đoán $e(n)$ (2.13):</p>
+                $$e(n) = s(n) - \hat{s}(n) = s(n) - \sum_{i=1}^{p} a_i s(n-i)$$
+                <p>Hàm truyền đạt sai số (2.14):</p>
+                $$A(z) = \frac{E(z)}{S(z)} = 1 - \sum_{k=1}^{p} a_k z^{-k}$$
+                <p>Nếu $s(n)$ được tạo ra từ mô hình LPC, sai số dự đoán $e(n)$ sẽ bằng tín hiệu kích thích $G u(n)$.</p>
+                <p>Mục tiêu phân tích LPC: Tìm tập các hệ số $\hat{a}k$ làm tối thiểu hóa sai số dự đoán trung bình bình phương trên đoạn ngắn hạn.</p>
+                <p>Sai số trung bình bình phương ngắn hạn (2.15):</p>
+                $$\epsilon_n^2 = \sum_m e_n^2(m)$$
+                $$\epsilon_n^2 = \sum_m \left[ s_n(m) - \sum_{k=1}^{p} a_k s_n(m-k) \right]^2$$
+                <p>Để tìm cực tiểu, ta lấy đạo hàm theo $a_k$ và cho bằng không ($\frac{\partial \epsilon_n^2}{\partial a_i} = 0$ với $i=1, 2, ..., p$).</p>
+
+                <h4 id="2-4-3">2.4.3. Hệ phương trình LPC</h4>
+                <p>Sau khi giải đạo hàm, ta thu được hệ phương trình $p$ biểu thức cho $p$ biến số:</p>
+                $$\Psi_n(i, 0) = \sum_{k=1}^{p} \hat{a}_k \Psi_n(i, k) \quad (\text{với } i=1, 2, ..., p)$$
+                <p>Trong đó $\Psi_n(i, k)$ là covariance ngắn hạn (short-term covariance):</p>
+                $$\Psi_n(i, k) = \sum_m s_n(m-i) s_n(m-k)$$
+                <p>Giá trị sai số trung bình bình phương tối thiểu (2.17):</p>
+                $$\hat{\epsilon}_n^2 = \Psi_n(0, 0) - \sum_{k=1}^{p} \hat{a}_k \Psi_n(0, k)$$
+
+                <h4 id="2-4-4">2.4.4. Phương pháp Autocorrelation (Tự tương quan)</h4>
+                <p>Phương pháp này giả thiết tín hiệu $s_n(m)$ bằng 0 ở ngoài khoảng $0 \le m \le N-1$ (tương đương với việc nhân tín hiệu với hàm cửa sổ hữu hạn).</p>
+                <p>Trong trường hợp này, hàm covariance $\Psi_n(i,k)$ trở thành hàm tự tương quan vì nó chỉ phụ thuộc vào hiệu $i-k$:</p>
+                $$\Psi_n(i, k) = \Phi_n(|i-k|) = \sum_{m=0}^{N-1-(i-k)} s_n(m) s_n(m+i-k)$$
+                <p>Hệ phương trình LPC theo tự tương quan (2.19):</p>
+                $$\Phi_n(i) = \sum_{k=1}^{p} \hat{a}_k \Phi_n(|i-k|) \quad (\text{với } i=1, ..., p)$$
+                <p>Dạng ma trận của hệ phương trình (2.20):</p>
+                $$
+                \begin{bmatrix}
+                \Phi_n(0) & \Phi_n(1) & \Phi_n(2) & \cdots & \Phi_n(p-1) \\
+                \Phi_n(1) & \Phi_n(0) & \Phi_n(1) & \cdots & \Phi_n(p-2) \\
+                \Phi_n(2) & \Phi_n(1) & \Phi_n(0) & \cdots & \Phi_n(p-3) \\
+                \vdots & \vdots & \vdots & \ddots & \vdots \\
+                \Phi_n(p-1) & \Phi_n(p-2) & \Phi_n(p-3) & \cdots & \Phi_n(0)
+                \end{bmatrix}
+                \begin{bmatrix}
+                \hat{a}_1 \\
+                \hat{a}_2 \\
+                \hat{a}_3 \\
+                \vdots \\
+                \hat{a}_p
+                \end{bmatrix}
+                =
+                \begin{bmatrix}
+                \Phi_n(1) \\
+                \Phi_n(2) \\
+                \Phi_n(3) \\
+                \vdots \\
+                \Phi_n(p)
+                \end{bmatrix}
+                $$
+                <p>Ma trận các thành phần tự tương quan là <b>ma trận Toeplitz</b> (ma trận đối xứng với các thành phần đường chéo chính bằng nhau). Việc giải hệ phương trình này được thực hiện bằng các thuật toán tính toán hiệu quả (ví dụ: thuật toán Durbin hoặc Levinson).</p>
+
+                <h4 id="2-4-5">2.4.5. Phương pháp Covariance</h4>
+                <p>Phương pháp này cố định khoảng tính sai số $0 \le m \le N-1$ và sử dụng trực tiếp khung tín hiệu mà không thực hiện phép lấy cửa sổ.</p>
+                <p>Sai số trung bình bình phương (2.21):</p>
+                $$\epsilon_n^2 = \sum_{m=0}^{N-1} e_n^2(m)$$
+                <p>Covariance (2.22):</p>
+                $$\Psi_n(i, k) = \sum_{m=0}^{N-1} s_n(m-i) s_n(m-k) \quad (\text{với } 1 \le i \le p \text{ và } 0 \le k \le p)$$
+                <p>Lưu ý: Ma trận các hệ số covariance là ma trận đối xứng ($\Psi_n(i, k) = \Psi_n(k, i)$) nhưng không phải ma trận Toeplitz. Việc giải hệ phương trình được thực hiện bằng phân tích Cholesky.</p>
+            </section>
+
+            <hr>
+
+            <section id="2-5">
+                <h3>2.5. XỬ LÝ ĐỒNG HÌNH (HOMOMORPHIC PROCESSING)</h3>
+                
+                <h4 id="2-5-1">2.5.1. Khái niệm Cepstrum</h4>
+                <p><b>Cepstrum</b> được định nghĩa là biến đổi Fourier ngược (IFT) của lô-ga-rít độ lớn biên độ phổ của tín hiệu.</p>
+                <p>Công thức Cepstrum Độ lớn (Magnitude Cepstrum) (2.24):</p>
+                $$c_n(m) = \frac{1}{2\pi} \int_{-\pi}^{\pi} \log |S_n(e^{j\omega})| e^{j\omega m} d\omega$$
+                <p>Công thức Cepstrum Phức (Complex Cepstrum) (2.25):</p>
+                $$\hat{c}_n(m) = \frac{1}{2\pi} \int_{-\pi}^{\pi} \hat{\log}{S_n(e^{j\omega})} e^{j\omega m} d\omega$$
+                <p>Trong đó lô-ga-rít phức $\hat{\log}{S_n(e^{j\omega})} = \log |S_n(e^{j\omega})| + j \arg{S_n(e^{j\omega})}$.</p>
+                <p><b>Đặc điểm quan trọng:</b> Phép toán với cepstrum đã chuyển tích chập thành phép cộng. Nếu $s(n)=s_1(n)*s_2(n)$, thì $\hat{c}(n) = \hat{c}_1(n) + \hat{c}_2(n)$. Điều này rất hữu ích cho việc phân tích tiếng nói (tách nguồn âm và tuyến âm).</p>
+                <p>Tính toán Rời rạc (sử dụng DFT/IDFT):</p>
+                <ol>
+                    <li>Tính DFT: $S(k) = \sum_{n=0}^{N-1} s(n) e^{-j \frac{2\pi}{N} kn}$.</li>
+                    <li>Tính lô-ga-rít phức: $\hat{X}(k) = \log |S(k)| + j \arg{S(k)}$.</li>
+                    <li>Tính IDFT: $s(n) = \frac{1}{N} \sum_{k=0}^{N-1} \hat{X}(k) e^{j \frac{2\pi}{N} kn}$ (ký hiệu trong nguồn là $s(n)$ là cepstrum).</li>
+                </ol>
+            </section>
+            
+            <hr>
+
+            <section id="2-6">
+                <h3>2.6. ÁP DỤNG XÁC ĐỊNH CÁC THAM SỐ CƠ BẢN</h3>
+                
+                <h4 id="2-6-1">2.6.1. Xác định Tần số Formant</h4>
+                <p><b>Formant</b> là các tần số cộng hưởng của tuyến âm (vocal tract). Formant là tham số hữu ích vì nó có thể miêu tả các khía cạnh quan trọng nhất của tiếng nói bằng một tập hạn chế các đặc trưng.</p>
+                <p>Phương pháp xác định Formant:</p>
+                <ul>
+                    <li><b>Từ phân tích STFT:</b> Formant trực tiếp là các đỉnh rõ ràng trong biên độ phổ.</li>
+                    <li><b>Từ phân tích LPC:</b> Formant được ước lượng từ các tham số dự đoán bằng hai cách:
+                        <ul>
+                            <li>Phân tích nhân tử đa thức dự đoán $A(z)$ và dựa trên các nghiệm thu được để quyết định nghiệm nào tương ứng với formant.</li>
+                            <li>Sử dụng phân tích phổ (từ LPC) và chọn các đỉnh nhọn.</li>
+                        </ul>
+                    </li>
+                    <li><b>Ưu điểm của LPC:</b> Xác định chính xác tần số trung tâm và băng tần của formant.</li>
+                </ul>
+
+                <h4 id="2-6-2">2.6.2. Xác định Tần số Cơ bản ($F_0$)</h4>
+                <p>Tần số cơ bản $F_0$ là tần số dao động của dây thanh.</p>
+                <ul>
+                    <li><b>Giọng nam:</b> Thường khoảng 80-250Hz.</li>
+                    <li><b>Giọng nữ:</b> Thường khoảng 150-500Hz.</li>
+                </ul>
+                <p>Các phương pháp xác định $F_0$:</p>
+                <ul>
+                    <li><b>Sử dụng Hàm tự tương quan ($\Phi_n(k)$):</b> $F_0$ được xác định dựa trên chu kỳ $k$ mà tại đó $\Phi_n(k)$ đạt giá trị cực đại (là bội của chu kỳ cơ bản).</li>
+                    <li><b>Sử dụng Vi sai độ lớn biên độ ngắn hạn ($\Delta M_{n\eta}$):</b> Hàm AMDF sẽ triệt tiêu tại các giá trị $\eta$ là bội của chu kỳ $T$ của tín hiệu. Xác định hai điểm cực tiểu gần nhau nhất để suy ra chu kỳ và $F_0$.</li>
+                    <li><b>Sử dụng Tốc độ trở về không (ZCR):</b> $Z_n$ là đo lường đơn giản của tần số.</li>
+                    <li><b>Sử dụng Phân tích STFT (Phổ tích các hài):</b> Nguồn kích thích của âm hữu thanh được tăng cường ở những đỉnh nhọn là bội số của $F_0$. Việc nén tần số bởi các hệ số nguyên sẽ làm các hài của $F_0$ trùng với $F_0$.</li>
+                    <li><b>Sử dụng Phân tích Cepstral:</b>
+                        <ul>
+                            <li>Với âm hữu thanh, có một đỉnh nhọn tại chu kỳ cơ bản (quefrency) của tín hiệu.</li>
+                            <li>Nếu đỉnh cepstrum lớn hơn ngưỡng định trước, tín hiệu có khả năng là âm hữu thanh, và vị trí đỉnh đó là ước lượng chu kỳ tín hiệu cơ bản (xác định $F_0$).</li>
+                            <li>Với âm vô thanh, đỉnh nhọn này không xuất hiện.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+
+            <hr>
+
+            <section id="tom-ket">
+                <h3>TÓM KẾT VÀ BÀI TẬP CỦNG CỐ</h3>
+                
+                <h4>Tổng kết</h4>
+                <p>Chương 2 đã trình bày các phương pháp cơ bản và nâng cao để phân tích tín hiệu tiếng nói. Phân tích ngắn hạn là bắt buộc do tính bán tĩnh của tiếng nói. Các công cụ trong miền thời gian (Năng lượng, ZCR, Tự tương quan) hữu ích cho việc phát hiện và xác định chu kỳ, trong khi các công cụ miền tần số (STFT, LPC, Cepstrum) giúp tách và mô hình hóa phổ tín hiệu, là nền tảng để trích chọn các đặc trưng quan trọng như Formant và Tần số cơ bản $F_0$.</p>
+
+                <h4>Câu hỏi và Bài tập cuối chương (Tham khảo)</h4>
+                <ol>
+                    <li>Mục đích của việc Xử lý tiếng nói? Liệt kê một số phép xử lý phân tích tiếng nói cơ bản.</li>
+                    <li>Tại sao với tiếng nói phải thực hiện phân tích ngắn hạn?</li>
+                    <li>Phân tích LPC: trình bày nguyên lý, hệ phương trình theo phương pháp tự tương quan và covariance, và áp dụng.</li>
+                    <li>Phân tích cepstral: trình bày nguyên lý, công thức tính cepstrum, và áp dụng.</li>
+                    <li><b>Bài tập tính toán:</b> Xét một phân đoạn tín hiệu tiếng nói sau {0, 0.6442, 0.9854, 0.8632, 0.3350, -0.3508, -0.8716, -0.9825, -0.6313}. Biết $F_s=8000$Hz. Hãy xác định các thông số cơ bản (Năng lượng ngắn hạn, ZCR) cho phân đoạn tín hiệu bằng phân tích trong miền thời gian. Giả sử cửa sổ phân tích là cửa sổ chữ nhật có chiều rộng $N=4$ điểm mẫu.</li>
+                </ol>
+            </section>
+
+        </main>
+    </div>
+
+</body>
+</html>

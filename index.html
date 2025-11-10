@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mục lục - Môn học Xử lý Tiếng nói</title>
+    
+    <style>
+        :root {
+            --primary-color: #005a9c;
+            --secondary-color: #007bff;
+            --text-color: #333;
+            --bg-color: #ffffff;
+            --page-bg: #f4f7f6;
+            --border-color: #e0e0e0;
+            --card-bg: #ffffff;
+            --card-hover-bg: #e9f5ff;
+            /* Font hệ thống, hiển thị tốt tiếng Việt */
+            --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            font-family: var(--font-stack);
+            line-height: 1.6;
+            background-color: var(--page-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            background: var(--bg-color);
+            border-radius: 10px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.07);
+            overflow: hidden;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 30px 40px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: 700;
+        }
+
+        header h2 {
+            margin: 10px 0 0;
+            font-size: 1.5em;
+            font-weight: 400;
+            opacity: 0.9;
+        }
+
+        main {
+            padding: 40px;
+        }
+
+        /* Tiêu đề cho các khu vực */
+        .section-header {
+            font-family: var(--font-stack);
+            color: var(--primary-color);
+            font-size: 1.8em;
+            font-weight: 600;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 10px;
+            margin-top: 20px;
+            margin-bottom: 25px;
+        }
+        /* Bỏ lề trên cho tiêu đề đầu tiên */
+        main .section-header:first-of-type {
+            margin-top: 0;
+        }
+
+        .course-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .course-menu li {
+            margin-bottom: 15px;
+        }
+
+        .course-menu a {
+            display: flex;
+            align-items: center;
+            padding: 20px 25px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--primary-color);
+            font-size: 1.25em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .course-menu a:hover,
+        .course-menu a:focus {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0, 90, 156, 0.15);
+            background-color: var(--card-hover-bg);
+            border-color: var(--secondary-color);
+        }
+
+        .chapter-tag {
+            display: inline-block;
+            font-size: 0.8em;
+            font-weight: 700;
+            padding: 6px 12px;
+            background-color: var(--secondary-color);
+            color: white;
+            border-radius: 5px;
+            margin-right: 20px;
+            min-width: 90px;
+            text-align: center;
+        }
+
+        .course-menu a:hover .chapter-tag,
+        .course-menu a:focus .chapter-tag {
+            background-color: var(--primary-color);
+        }
+
+        /* === CSS CHO CÁC BÀI THI CHƯA CÓ === */
+        .course-menu a.coming-soon {
+            color: #aaa;
+            background-color: #f8f8f8;
+            border-color: #eee;
+            cursor: not-allowed; /* Đổi con trỏ chuột */
+        }
+        
+        .course-menu a.coming-soon:hover {
+            /* Vô hiệu hóa hiệu ứng hover */
+            transform: none;
+            box-shadow: none;
+            background-color: #f8f8f8;
+        }
+
+        .course-menu a.coming-soon .chapter-tag {
+            background-color: #ccc; /* Làm mờ tag */
+        }
+
+        .status-tag {
+            font-size: 0.8em;
+            font-weight: 500;
+            font-style: italic;
+            color: #999;
+            margin-left: auto;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 20px;
+            }
+            main {
+                padding: 20px;
+            }
+            .course-menu a {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 15px;
+            }
+            .chapter-tag {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+            .status-tag {
+                margin-left: 0;
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Môn học: Xử lý Tín hiệu Tiếng nói</h1>
+            <h2>Mục lục Tổng quan</h2>
+        </header>
+        
+        <main>
+            <h2 class="section-header">📚 Danh mục bài giảng</h2>
+            <ul class="course-menu">
+                <li>
+                    <a href="chapter1.html">
+                        <span class="chapter-tag">Chương 1</span>
+                        Một Số Khái Niệm Cơ Bản
+                    </a>
+                </li>
+                <li>
+                    <a href="chapter2.html">
+                        <span class="chapter-tag">Chương 2</span>
+                        Phân Tích Tín Hiệu Tiếng Nói
+                    </a>
+                </li>
+                <li>
+                    <a href="chapter3.html">
+                        <span class="chapter-tag">Chương 3</span>
+                        Mã Hóa Tiếng Nói
+                    </a>
+                </li>
+                <li>
+                    <a href="chapter4.html">
+                        <span class="chapter-tag">Chương 4</span>
+                        Tổng Hợp Tiếng Nói
+                    </a>
+                </li>
+                <li>
+                    <a href="chapter5.html">
+                        <span class="chapter-tag">Chương 5</span>
+                        Nhận Dạng Tiếng Nói
+                    </a>
+                </li>
+                <li>
+                    <a href="phuluc.html">
+                        <span class="chapter-tag">Phụ Lục</span>
+                        Mạng Nơ-ron và Mô hình Markov Ẩn
+                    </a>
+                </li>
+            </ul>
+
+            <h2 class="section-header">✍️ Danh mục bài thi</h2>
+            <ul class="course-menu">
+                <li>
+                    <a href="#" class="coming-soon">
+                        <span class="chapter-tag">Bài thi 1</span>
+                        Kiểm tra Giữa kỳ
+                        <span class="status-tag">(Sắp có)</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="coming-soon">
+                        <span class="chapter-tag">Bài thi 2</span>
+                        Kiểm tra Cuối kỳ
+                        <span class="status-tag">(Sắp có)</span>
+                    </a>
+                </li>
+            </ul>
+        </main>
+    </div>
+
+</body>
+</html>

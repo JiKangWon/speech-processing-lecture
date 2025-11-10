@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài giảng: Chương 3 - Mã Hóa Tiếng Nói</title>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script>
+    MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        }
+    };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        :root {
+            --primary-color: #005a9c;
+            --secondary-color: #007bff;
+            --text-color: #333;
+            --bg-color: #ffffff;
+            --sidebar-bg: #f4f7f6;
+            --border-color: #e0e0e0;
+            /* Font hệ thống, hiển thị tốt tiếng Việt */
+            --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        body {
+            font-family: var(--font-stack);
+            line-height: 1.7;
+            background-color: var(--sidebar-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            display: flex;
+            max-width: 1600px;
+            margin: 20px auto;
+            background: var(--bg-color);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        
+        /* === Thanh Điều Hướng (Sidebar) === */
+        .sidebar {
+            width: 320px;
+            min-width: 320px;
+            background: var(--bg-color);
+            border-right: 1px solid var(--border-color);
+            position: sticky;
+            top: 20px;
+            height: 95vh;
+            overflow-y: auto;
+            padding: 25px 15px 25px 20px;
+        }
+        .sidebar h3 {
+            font-family: var(--font-stack);
+            color: var(--primary-color);
+            font-size: 1.3em;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 10px;
+            font-weight: 600;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding-left: 0;
+            margin-top: 15px;
+        }
+        .sidebar li {
+            margin-bottom: 5px;
+        }
+        .sidebar a {
+            text-decoration: none;
+            color: #444;
+            display: block;
+            padding: 8px 10px;
+            border-radius: 5px;
+            transition: all 0.2s ease;
+        }
+        .sidebar a:hover,
+        .sidebar a:focus {
+            background-color: #e9f5ff;
+            color: var(--secondary-color);
+            font-weight: 600;
+        }
+        .sidebar ul ul {
+            padding-left: 20px;
+            margin-top: 5px;
+        }
+        .sidebar ul ul a {
+            font-size: 0.9em;
+            padding: 5px 10px;
+            color: #555;
+        }
+
+        /* === Nội dung Bài giảng (Main Content) === */
+        .content {
+            flex-grow: 1;
+            padding: 20px 40px;
+            max-width: calc(100% - 380px);
+        }
+        .content header {
+            border-bottom: 3px solid var(--primary-color);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        .content h1 {
+            font-family: var(--font-stack);
+            color: var(--primary-color);
+            font-size: 2.2em;
+            margin: 0;
+            font-weight: 700;
+        }
+        .content h2 {
+            font-family: var(--font-stack);
+            color: var(--secondary-color);
+            font-size: 1.8em;
+            margin: 10px 0 0 0;
+            font-weight: 700;
+        }
+
+        /* Định dạng các phần học */
+        .content section {
+            margin-bottom: 40px;
+        }
+        .content h3 { /* 3.1, 3.2 */
+            font-family: var(--font-stack);
+            font-size: 1.7em;
+            color: var(--primary-color);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        .content h4 { /* 3.1.1, 3.1.2 */
+            font-family: var(--font-stack);
+            font-size: 1.4em;
+            color: #333;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        /* === Các thành phần chi tiết === */
+        mjx-container {
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+        
+        .data-table {
+            width: 100%;
+            max-width: 600px;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .data-table th,
+        .data-table td {
+            border: 1px solid var(--border-color);
+            padding: 12px 15px;
+            text-align: left;
+        }
+        .data-table th {
+            background-color: #e9f5ff;
+            color: var(--primary-color);
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+        .data-table tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        /* Blockquote cho analogy */
+        blockquote {
+            border-left: 5px solid var(--secondary-color);
+            background-color: #f9f9f9;
+            padding: 15px 20px;
+            margin: 20px 0;
+            font-style: italic;
+            color: #555;
+        }
+        blockquote strong {
+            font-style: normal;
+            color: var(--primary-color);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1000px) {
+            .container {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                position: static;
+                height: auto;
+                max-height: 350px;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+                box-sizing: border-box;
+                margin-bottom: 20px;
+            }
+            .content {
+                max-width: 100%;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <nav class="sidebar">
+            <h3>Nội dung chương 3</h3>
+            <ul>
+                <li><a href="#3-1">3.1. Khái niệm chung</a>
+                    <ul>
+                        <li><a href="#3-1-1">3.1.1. Khái niệm và Lịch sử</a></li>
+                        <li><a href="#3-1-2">3.1.2. Mục tiêu và Nguyên tắc</a></li>
+                        <li><a href="#3-1-3">3.1.3. Quá trình Số hóa</a></li>
+                        <li><a href="#3-1-4">3.1.4. Phân loại Phương pháp</a></li>
+                    </ul>
+                </li>
+                <li><a href="#3-2">3.2. Mã hóa Dạng sóng</a>
+                    <ul>
+                        <li><a href="#3-2-1">3.2.1. PCM</a></li>
+                        <li><a href="#3-2-2">3.2.2. DPCM</a></li>
+                        <li><a href="#3-2-3">3.2.3. DM</a></li>
+                        <li><a href="#3-2-4">3.2.4. APCM</a></li>
+                        <li><a href="#3-2-5">3.2.5. ADPCM</a></li>
+                        <li><a href="#3-2-6">3.2.6. ADM</a></li>
+                        <li><a href="#3-2-7">3.2.7. Mã hóa miền Tần số</a></li>
+                    </ul>
+                </li>
+                <li><a href="#3-3">3.3. Mã hóa Tham số (Vocoder)</a></li>
+                <li><a href="#3-4">3.4. Mã hóa Lai ghép</a></li>
+                <li><a href="#3-5">3.5. Mã hóa Tốc độ thấp</a></li>
+                <li><a href="#3-6">3.6. Đánh giá chất lượng</a>
+                    <ul>
+                        <li><a href="#3-6-1">3.6.1. Đánh giá Định lượng</a></li>
+                        <li><a href="#3-6-2">3.6.2. Đánh giá Chủ quan</a></li>
+                        <li><a href="#3-6-3">3.6.3. Các Yếu tố khác</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+
+        <main class="content">
+            <header>
+                <h1>BÀI GIẢNG MÔN HỌC</h1>
+                <h2>CHƯƠNG 3: MÃ HÓA TIẾNG NÓI</h2>
+            </header>
+
+            <section id="3-1">
+                <h3>3.1. KHÁI NIỆM CHUNG VỀ MÃ HÓA TIẾNG NÓI</h3>
+                
+                <h4 id="3-1-1">3.1.1. Khái niệm và Lịch sử</h4>
+                <p>Mã hóa là quá trình biến đổi các giá trị rời rạc thành các mã tương ứng. Mã hóa tín hiệu tiếng nói (hay còn gọi là mã hóa tín hiệu thoại) đã được quan tâm từ rất sớm, ngay từ những năm 1930. Sự bùng nổ của các thuật toán mã hóa tín hiệu thoại diễn ra mạnh mẽ khi có sự phát triển của hệ thống thông tin di động và sự tích hợp dịch vụ đa phương tiện. Mã hóa tiếng nói có vai trò quan trọng trong hầu hết các hệ thống thông tin số cả dân sự và quân sự.</p>
+
+                <h4 id="3-1-2">3.1.2. Mục tiêu và Nguyên tắc</h4>
+                <p>Mục tiêu chính của mã hóa tiếng nói là giảm nhỏ lượng dữ liệu biểu diễn thông tin tiếng nói cần lưu trữ hoặc truyền tải mà không làm giảm chất lượng cảm thụ của tiếng nói khôi phục được.</p>
+                <p>Nói cách khác, mã hóa tiếng nói là quá trình tìm kiếm biểu diễn số nhỏ gọn nhất có thể của tín hiệu tiếng nói mà vẫn không làm mất hoặc làm mất đi thông tin (méo) ít nhất có thể.</p>
+                <p>Mặc dù tương tự mã hóa dữ liệu thông thường, mã hóa tiếng nói có nhiều điểm khác biệt và cần cách tiếp cận riêng biệt do đặc trưng của tín hiệu tiếng nói và quá trình tạo, cảm nhận tiếng nói của con người.</p>
+
+                <h4 id="3-1-3">3.1.3. Quá trình Số hóa và Đặc trưng Tín hiệu</h4>
+                <p>Mã hóa tiếng nói liên quan đến quá trình xử lý số tín hiệu tiếng nói, bao gồm việc lấy mẫu và lượng tử hóa.</p>
+                <ul>
+                    <li><b>Đặc trưng tần số:</b> Tai người nhạy với vùng tín hiệu tiếng nói ở tần số 0.3–3.4kHz.</li>
+                    <li><b>Tần số lấy mẫu:</b> Theo định lý lấy mẫu Shannon/Nyquist, tần số lấy mẫu tối thiểu cho tín hiệu tiếng nói là 8kHz.</li>
+                    <li><b>Sơ đồ tổng quan:</b> Tín hiệu tiếng nói tương tự được tiền xử lý (lọc hạn biên, tiền nhấn, khuếch đại,...) sau đó được số hóa (lấy mẫu và lượng tử hóa).</li>
+                    <li><b>Lượng tử hóa:</b> Đây là khâu không thể thực hiện quá trình ngược lại chính xác, và là khâu gây tổn thất thông tin (méo) trong quá trình mã hóa.</li>
+                </ul>
+
+                <h4 id="3-1-4">3.1.4. Phân loại các Phương pháp Mã hóa</h4>
+                <p>Việc phân loại các phương pháp mã hóa không hề đơn giản và tùy thuộc vào cách nhìn nhận vấn đề.</p>
+                <p><b>A. Phân loại dựa trên cách tiếp cận và miền tín hiệu:</b></p>
+                <ul>
+                    <li>Mã hóa trực tiếp dạng sóng miền thời gian (Waveform coding): Khai thác đặc trưng về hình dạng sóng tín hiệu trực tiếp.</li>
+                    <li>Mã hóa dạng sóng miền tần số (Transform coding): Mã hóa tín hiệu dựa trên các đặc trưng phổ của tín hiệu.</li>
+                </ul>
+                <p><b>B. Phân loại dựa trên tốc độ mã hóa:</b></p>
+                <ul>
+                    <li>Mã hóa tốc độ cao.</li>
+                    <li>Mã hóa tốc độ trung bình.</li>
+                    <li>Mã hóa tốc độ thấp.</li>
+                    <li>Mã hóa tốc độ rất thấp: Xu hướng phát triển hiện nay, khoảng 2.4kbps hoặc thấp hơn.</li>
+                </ul>
+                <p><b>C. Phân loại dựa trên phương thức tiếp cận:</b></p>
+                <ul>
+                    <li>Mã hóa trực tiếp dạng sóng (Waveform coding): (Đã đề cập).</li>
+                    <li>Mã hóa dựa trên tham số tín hiệu tiếng nói (Parametric coding/Vocoder): Sử dụng nguyên lý của mô hình nguồn-bộ lọc mô tả bộ máy phát âm.</li>
+                    <li>Phương pháp mã hóa lai ghép (Hybrid coding): Kết hợp mã hóa dạng sóng và mã hóa tham số để tận dụng ưu điểm, nhằm đạt được hiệu quả mã hóa tốt nhất.</li>
+                </ul>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Phương pháp</th>
+                            <th>Đặc điểm</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Dạng sóng</td>
+                            <td>Độ trung thực cao, không hiệu quả nén</td>
+                        </tr>
+                        <tr>
+                            <td>Tham số</td>
+                            <td>Tốc độ thấp (hiệu quả nén cao), kém tự nhiên</td>
+                        </tr>
+                        <tr>
+                            <td>Lai ghép</td>
+                            <td>Cân bằng chất lượng và tốc độ</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <hr>
+
+            <section id="3-2">
+                <h3>3.2. MỘT SỐ PHƯƠNG PHÁP MÃ HÓA DẠNG SÓNG</h3>
+                <p>Mã hóa dạng sóng cố gắng bảo toàn dạng sóng của tín hiệu gốc bằng cách tối thiểu hóa sai số giữa tín hiệu mã hóa và dạng sóng tín hiệu gốc. Nhóm này cho chất lượng cảm nhận cao và thường được sử dụng cho âm thanh, âm nhạc chất lượng cao.</p>
+
+                <h4 id="3-2-1">3.2.1. PCM (Pulse Code Modulation - Điều chế xung mã)</h4>
+                <p>PCM là phương pháp mã hóa dạng sóng đơn giản nhất, được biết đến với chuẩn ITU G.711, 64kbps. PCM đơn thuần bao gồm việc lấy mẫu và lượng tử hóa.</p>
+                
+                <p><b>Lượng tử hóa Tuyến tính (Đều)</b></p>
+                <p>Khoảng tín hiệu quan tâm ($s_{\min}$ đến $s_{\max}$) được chia đều thành $2^b$ mức, với $b$ là số bit sử dụng để biểu diễn một mẫu.</p>
+                <p>Bước lượng tử hóa ($\Delta$):</p>
+                $$ \Delta = \frac{s_{\max} - s_{\min}}{2^b} $$
+                <p>Các loại đặc tuyến lượng tử hóa tuyến tính:</p>
+                <ul>
+                    <li>Lượng tử hóa bước cân (midtread quantizer): Dùng khi số mức lượng tử lẻ, có mức giá trị bằng 0.</li>
+                    <li>Lượng tử hóa bước lệch (midrise quantizer): Dùng khi số mức lượng tử chẵn, trong các mức lượng tử có mức giá trị bằng 0.</li>
+                </ul>
+                <p>Sai số lượng tử $e(n)$: $e(n) = s(n) - \hat{s}(n)$</p>
+                <p>Miền giá trị của sai số: $-\frac{\Delta}{2} \leq e(n) \leq \frac{\Delta}{2}$.</p>
+                <p>Công suất nhiễu lượng tử $\sigma_e^2$ (Giả thiết sai số phân bố đều):</p>
+                $$ \sigma_e^2 = \frac{\Delta^2}{12} $$
+                <p>Tỷ số Tín hiệu trên Nhiễu lượng tử chuẩn hóa ($SNR_q$):</p>
+                $$ SNR_q = \frac{\sigma_s^2}{\sigma_e^2} = \frac{\sigma_s^2}{\Delta^2/12} $$
+                <p>Mối quan hệ với số bit $b$ (khi $\sigma_s^2$ là công suất tín hiệu):</p>
+                $$ SNR = 6b + 10 \log_{10} \left( \frac{\sigma_s^2}{s_{\max}^2} \right) + 4.77 \text{ (dB)} $$
+                <p><b>Quy tắc chung:</b> Tăng thêm một bit cho biểu diễn mẫu thì SNR sẽ tăng 6dB.</p>
+
+                <p><b>Lượng tử hóa Phi tuyến (Companding)</b></p>
+                <p>Lượng tử hóa phi tuyến cần thiết vì đặc điểm cảm nhận của hệ thống thính giác người có đặc tuyến lô-ga-rít. Phương pháp được tiến hành bằng cách nén biên độ.</p>
+                
+                <p><b>Luật $\mu$ ($\mu = 255$):</b> Phổ biến tại Bắc Mỹ.</p>
+                <p>Công thức nén tín hiệu:</p>
+                $$ y(n) = s_{\max} \frac{\log(1 + \mu \frac{|s(n)|}{s_{\max}})}{\log(1 + \mu)} \operatorname{sgn}(s(n)) $$
+                <p>Mẫu tuyến tính 14 bit (kèm bit dấu) được ánh xạ thành từ mã 8 bit dạng SABCXYZW.</p>
+
+                <p><b>Luật A ($A = 87.56$):</b> Áp dụng ở Châu Âu. Gồm 13 phân đoạn.</p>
+                <p>Công thức nén tín hiệu:</p>
+                $$ \begin{cases} y(n) = s_{\max} \frac{A |s(n)|}{s_{\max} (1 + \log A)} & 0 \leq \frac{|s(n)|}{s_{\max}} \leq \frac{1}{A} \\ y(n) = s_{\max} \frac{1 + \log(\frac{A |s(n)|}{s_{\max}})}{1 + \log A} & \frac{1}{A} \leq \frac{|s(n)|}{s_{\max}} \leq 1 \end{cases} $$
+                <p>Mẫu tuyến tính 13 bit (kèm bit dấu) được ánh xạ thành từ mã 8 bit dạng SABCXYZW.</p>
+
+                <h4 id="3-2-2">3.2.2. DPCM (Differential Pulse Code Modulation - Điều chế xung mã vi sai)</h4>
+                <p>DPCM tận dụng tự tương quan giữa các mẫu tín hiệu lân cận. Phương pháp này chỉ thực hiện mã hóa và truyền đi độ chênh lệch giữa các mẫu cạnh nhau.</p>
+                <p>Quá trình dự đoán: Bộ mã hóa thực hiện dự đoán giá trị mẫu tiếp theo $\tilde{s}(n)$:</p>
+                $$ \tilde{s}(n) = \sum_{k=1}^{p} a_k s(n-k) $$
+                <p>Độ chênh lệch (Sai số dự đoán) $d(n)$:</p>
+                $$ d(n) = s(n) - \tilde{s}(n) $$
+                <p>$d(n)$ là giá trị được lượng tử hóa và truyền đi.</p>
+                <p>Tỷ số SNR của DPCM:</p>
+                $$ SNR_{DPCM} = SNR_{PCM} + 10 \log_{10} G_p $$
+                <p>Trong đó, $G_p$ là độ lợi thu được từ việc sử dụng bộ dự đoán tuyến tính.</p>
+
+                <h4 id="3-2-3">3.2.3. DM (Delta Modulation - Điều chế Delta)</h4>
+                <p>DM là một loại DPCM đơn giản, trong đó mỗi từ mã chỉ có một bit nhị phân. Mạch điện thực hiện dễ dàng. Nhược điểm (Hai loại méo nghiêm trọng):</p>
+                <ul>
+                    <li><b>Méo quá độ dốc (slope-overload distortion):</b> Xảy ra khi bước lượng tử quá nhỏ, đường xấp xỉ không bắt kịp sự thay đổi của tín hiệu.</li>
+                    <li><b>Méo dạng nhiễu (granular noise):</b> Xảy ra khi tín hiệu gốc có độ bằng phẳng lớn, nếu bước lượng tử lớn thì đường mã hóa xuất hiện các đỉnh nhấp nhô.</li>
+                </ul>
+
+                <h4 id="3-2-4">3.2.4. APCM (Adaptive PCM - PCM Thích nghi)</h4>
+                <p>APCM thay đổi bước lượng tử ($\Delta$) theo đặc trưng thống kê của tín hiệu. Các phương pháp lượng tử thích nghi:</p>
+                <ul>
+                    <li><b>Thích nghi Forward:</b> Bước lượng tử mới được xác định dựa trên các mẫu $s(n)$ ở thời điểm sau đó.
+                        $$ \Delta_n = \Delta_{ref} \sqrt{\frac{1}{N} \sum_{k=1}^{N} s^2(k)} $$
+                        Nhược điểm: Phải truyền tải thông tin về bước lượng tử, làm tăng tốc độ bit.
+                    </li>
+                    <li><b>Thích nghi Backward:</b> Bước lượng tử được ước lượng từ các mẫu $\hat{s}(n)$ ở thời điểm trước đó.
+                        $$ \Delta_n = \Delta_{ref} \sqrt{\frac{1}{N} \sum_{k=n-N+1}^{n-1} \hat{s}^2(k)} $$
+                        Ưu điểm: Không cần truyền tải thông tin về bước lượng tử.
+                    </li>
+                </ul>
+
+                <h4 id="3-2-5">3.2.5. ADPCM (Adaptive Differential PCM)</h4>
+                <p>ADPCM tập hợp ưu điểm của các phương pháp trên, thực hiện mã hóa sự sai khác giữa tín hiệu và tín hiệu dự đoán, đồng thời sử dụng bộ lượng tử hóa và bộ dự đoán thích nghi. Tiêu chuẩn hóa: ITU-T khuyến nghị G721 (40, 32, 24, và 16kbps).</p>
+
+                <h4 id="3-2-6">3.2.6. ADM (Adaptive Delta Modulation - Điều chế Delta Thích nghi)</h4>
+                <p>ADM cải tiến DM bằng cách thay đổi động hệ số khuếch đại. Luật thay đổi bước lượng tử (Jayant, 1970):</p>
+                $$ \Delta_n = \Delta_{n-1} K^{d(n)d(n-1)} $$
+                <p>Trong đó $K$ là một hằng số được chọn để giảm méo, $K \geq 1$.</p>
+                <p>Luật thay đổi bước liên tục (Greefkes):</p>
+                $$ \Delta_n = \begin{cases} \alpha \Delta_{n-1} + k_1 & \operatorname{sgn}(d(n)) = \operatorname{sgn}(d(n-1)) = \operatorname{sgn}(d(n-2)) \\ \alpha \Delta_{n-1} - k_2 & \text{khác} \end{cases} $$
+                <p>Trong đó $0 < \alpha < 1, 0 < k_2 \ll k_1$.</p>
+
+                <h4 id="3-2-7">3.2.7. Mã hóa dạng sóng trong miền Tần số</h4>
+                <p><b>A. Mã hóa Băng con (Subband Coding - SBC)</b></p>
+                <p>Phân chia tín hiệu thoại đầu vào thành nhiều dải băng tần nhỏ hơn (băng con) qua các bộ lọc số. Sau đó, mỗi băng con được mã hóa độc lập (ví dụ: ADPCM). ASBC (Adaptive Subband Coding) phân bố bit thích nghi, cấp phát nhiều bit hơn cho băng tần thấp. Ví dụ: G. 722.</p>
+                
+                <p><b>B. Mã hóa Chuyển đổi Thích nghi (Adaptive Transform Coding - ATC)</b></p>
+                <p>Xử lý và mã hóa trực tiếp mẫu ở miền tần số. Tín hiệu được chia thành các nhóm $N$ mẫu, chuyển đổi sang miền tần số (DFT, FFT). Mã hóa thích nghi: thành phần phổ quan trọng dùng nhiều bit, ít quan trọng dùng ít bit.</p>
+            </section>
+
+            <hr>
+
+            <section id="3-3">
+                <h3>3.3. MỘT SỐ PHƯƠNG PHÁP MÃ HÓA THAM SỐ (Vocoder)</h3>
+                <p>Mã hóa tham số (còn gọi là mã hóa phân tích-tổng hợp) dựa trên nguyên lý mô hình nguồn-bộ lọc của bộ máy phát âm.</p>
+                <ul>
+                    <li><b>Nguyên lý:</b> Thay vì truyền dạng sóng, chỉ cần truyền thông tin về các tham số của âm (loại âm, $N_0$, đặc trưng phổ $g$).</li>
+                    <li><b>Ưu điểm:</b> Rất hiệu quả, đạt tốc độ bit rất thấp (xuống đến 2.4 Kbps).</li>
+                    <li><b>Nhược điểm:</b> Phức tạp, tính tự nhiên của tiếng nói tái tạo khác xa tín hiệu gốc.</li>
+                    <li><b>Phương pháp:</b>
+                        <ul>
+                            <li>Mã hóa tham số phân kênh (Channel Vocoder)</li>
+                            <li>Mã hóa dựa trên phân tích Cepstral</li>
+                            <li>Mã hóa tham số dựa trên phân tích LPC (Linear Predictive Coding): Ví dụ: LPC-10, CELP, MELP.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+
+            <hr>
+
+            <section id="3-4">
+                <h3>3.4. PHƯƠNG PHÁP MÃ HÓA LAI GHÉP</h3>
+                <p>Mã hóa lai cố gắng kết hợp ưu điểm của mã hóa dạng sóng và mã hóa tham số: đạt tốc độ mã hóa thấp và tăng chất lượng tín hiệu.</p>
+                <p>Phương pháp thành công nhất: Các bộ mã hóa kết hợp trong miền thời gian thực hiện theo nguyên tắc <b>Phân tích thông qua Tổng hợp (Analysis-by-Synthesis - AbS)</b>.</p>
+                <ul>
+                    <li><b>Nguyên tắc AbS:</b> Sử dụng mô hình bộ lọc LPC. Thay vì mô hình 2 trạng thái đơn giản, AbS tìm kiếm tín hiệu kích thích lý tưởng để giảm tối đa sai lệch giữa dạng sóng đầu vào và dạng sóng được xây dựng lại.</li>
+                    <li><b>Quá trình:</b> Phân tích (LPC), xác định tín hiệu kích thích tối ưu, truyền thông tin về bộ lọc và tín hiệu kích thích.</li>
+                    <li><b>Kết quả:</b> Cung cấp tín hiệu thoại chất lượng cao tại tốc độ bit thấp.</li>
+                    <li><b>Nhược điểm:</b> Độ phức tạp lớn.</li>
+                    <li><b>Ví dụ:</b> RELP (Residual Excited Linear Prediction).</li>
+                </ul>
+            </section>
+
+            <hr>
+
+            <section id="3-5">
+                <h3>3.5. MỘT SỐ PHƯƠNG PHÁP MÃ HÓA TIẾNG NÓI TỐC ĐỘ THẤP</h3>
+                <p>Các phương pháp này thường là sự kết hợp giữa mã hóa tham số và các kỹ thuật khác.</p>
+                
+                <p><b>MPE (Multi-Pulse Excited):</b> Tín hiệu kích thích $u(n)$ được xác định bằng một số lượng cố định các xung. Thông tin truyền đi: Độ lớn và vị trí của các xung. Tốc độ/Chất lượng: Khoảng 10 Kbits/s, chất lượng thoại khá tốt.</p>
+                
+                <p><b>RPE (Regular-Pulse Excited):</b> Các xung kích thích được sắp xếp cách đều nhau một khoảng cố định. Thông tin truyền đi: Độ lớn của các xung và vị trí của xung đầu tiên. Ưu điểm: Có thể sử dụng nhiều xung kích thích hơn MPE ở cùng tốc độ bit.</p>
+                
+                <p><b>CELP (Code-Excited Linear Predictive - Dự đoán tuyến tính kích thích mã):</b> Khác biệt ở chỗ tín hiệu kích thích được lượng tử hóa vector một cách hiệu quả. Tín hiệu kích thích được xác định bởi một mã nằm trong bộ mã (10 bit) và một hệ số khuếch đại (5 bit). Nhược điểm: Độ phức tạp rất cao. Tốc độ/Chất lượng: Tốt ở 4,8 Kbps và 16 Kbps.</p>
+            </section>
+
+            <hr>
+
+            <section id="3-6">
+                <h3>3.6. ĐÁNH GIÁ CHẤT LƯỢNG MÃ HÓA TIẾNG NÓI</h3>
+                
+                <h4 id="3-6-1">3.6.1. Đánh giá Định lượng (Khách quan)</h4>
+                <p><b>Tỷ số Tín hiệu trên Nhiễu (SNR):</b> Tỷ số công suất trung bình tín hiệu trên nhiễu.</p>
+                $$ SNR = \frac{E\{s^2(n)\}}{E\{e^2(n)\}} $$
+                <p>Trong đó $E\{\}$ là giá trị trung bình thống kê.</p>
+                <p><b>Hạn chế:</b> SNR là thông số kỹ thuật, khách quan, nhưng mối quan hệ chặt chẽ đến sự cảm nhận của tai người là không cao.</p>
+
+                <h4 id="3-6-2">3.6.2. Đánh giá Chủ quan</h4>
+                <p><b>Thang đo Điểm Ý kiến (Mean Opinion Score - MOS):</b> Thang đo đánh giá tính chủ quan cảm nhận của người nghe về chất lượng tiếng nói thu được.</p>
+                <ul>
+                    <li><b>Thang đo 5 cấp độ:</b> 1-Tồi; 2-Kém; 3-Chấp nhận được; 4-Tốt; 5-Rất tốt.</li>
+                    <li><b>Hạn chế:</b> Là tham số định tính, không thể dùng như một điều kiện trong bài toán thiết kế bộ mã tối ưu.</li>
+                </ul>
+
+                <h4 id="3-6-3">3.6.3. Các Yếu tố khác</h4>
+                <ul>
+                    <li><b>Tốc độ mã hóa:</b> Số bit trung bình cần phải truyền trong một đơn vị thời gian.</li>
+                    <li><b>Độ trễ (Latency):</b> Khả năng đáp ứng thời gian thực. Trong hệ thống thoại tương tác thời gian thực, độ trễ > 150ms là không thể chấp nhận được.</li>
+                </ul>
+
+                <blockquote>
+                    <p><b>Liên tưởng (Analogy):</b></p>
+                    <p>Nếu coi việc mã hóa tiếng nói như việc đóng gói hành lý cho một chuyến đi, thì:</p>
+                    <ul>
+                        <li><b>Mã hóa dạng sóng (PCM/DPCM)</b> giống như việc bạn đóng gói gần như mọi thứ bạn có, giữ lại độ trung thực cao nhất, nhưng tốn rất nhiều dung lượng (tốc độ bit cao).</li>
+                        <li><b>Mã hóa tham số (Vocoder/LPC)</b> giống như bạn chỉ gửi bản mô tả chi tiết và công thức lắp ráp (các tham số). Nó cực kỳ gọn nhẹ (tốc độ bit thấp) nhưng đồ vật lắp lại có thể không còn giữ được sự tự nhiên (thiếu tính tự nhiên của giọng nói).</li>
+                        <li><b>Mã hóa lai ghép (CELP/AbS)</b> là sự kết hợp, giống như bạn gửi bản mô tả chi tiết và một "bản vá" nhỏ (tín hiệu kích thích) để đảm bảo khi lắp ráp xong, đồ vật giống với bản gốc nhất, đạt được sự cân bằng giữa tốc độ thấp và chất lượng cao.</li>
+                    </ul>
+                </blockquote>
+            </section>
+        </main>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài giảng: Phụ lục NN & HMM</title>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script>
+    MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        }
+    };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        :root {
+            --primary-color: #005a9c;
+            --secondary-color: #007bff;
+            --text-color: #333;
+            --bg-color: #ffffff;
+            --sidebar-bg: #f4f7f6;
+            --border-color: #e0e0e0;
+            --placeholder-bg: #fafafa;
+            /* Font hệ thống, hiển thị tốt tiếng Việt */
+            --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        body {
+            font-family: var(--font-stack);
+            line-height: 1.7;
+            background-color: var(--sidebar-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            display: flex;
+            max-width: 1600px;
+            margin: 20px auto;
+            background: var(--bg-color);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        
+        /* === Thanh Điều Hướng (Sidebar) === */
+        .sidebar {
+            width: 320px;
+            min-width: 320px;
+            background: var(--bg-color);
+            border-right: 1px solid var(--border-color);
+            position: sticky;
+            top: 20px;
+            height: 95vh;
+            overflow-y: auto;
+            padding: 25px 15px 25px 20px;
+        }
+        .sidebar h3 {
+            font-family: var(--font-stack);
+            color: var(--primary-color);
+            font-size: 1.3em;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 10px;
+            font-weight: 600;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding-left: 0;
+            margin-top: 15px;
+        }
+        .sidebar li {
+            margin-bottom: 5px;
+        }
+        .sidebar a {
+            text-decoration: none;
+            color: #444;
+            display: block;
+            padding: 8px 10px;
+            border-radius: 5px;
+            transition: all 0.2s ease;
+            font-size: 0.95em;
+        }
+        .sidebar a:hover,
+        .sidebar a:focus {
+            background-color: #e9f5ff;
+            color: var(--secondary-color);
+            font-weight: 600;
+        }
+        .sidebar ul ul {
+            padding-left: 20px;
+            margin-top: 5px;
+        }
+        .sidebar ul ul a {
+            font-size: 0.9em;
+            padding: 5px 10px;
+            color: #555;
+        }
+        
+        /* === Nội dung Bài giảng (Main Content) === */
+        .content {
+            flex-grow: 1;
+            padding: 20px 40px;
+            max-width: calc(100% - 380px);
+        }
+        .content header {
+            border-bottom: 3px solid var(--primary-color);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        .content h1 {
+            font-family: var(--font-stack);
+            color: var(--primary-color);
+            font-size: 2.2em;
+            margin: 0;
+            font-weight: 700;
+        }
+        .content h2 {
+            font-family: var(--font-stack);
+            color: var(--secondary-color);
+            font-size: 1.8em;
+            margin: 10px 0 0 0;
+            font-weight: 700;
+        }
+        .content .sub-title {
+            font-size: 1.2em;
+            color: #555;
+            font-style: italic;
+        }
+
+        /* Định dạng các phần học */
+        .content section {
+            margin-bottom: 40px;
+        }
+        .content h3 { /* PHẦN I, PHẦN II */
+            font-family: var(--font-stack);
+            font-size: 1.9em;
+            color: var(--primary-color);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        .content h4 { /* 1, 2, 3... */
+            font-family: var(--font-stack);
+            font-size: 1.5em;
+            color: #333;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        /* === Các thành phần chi tiết === */
+        .objective-list {
+            list-style: '✔ ';
+            padding-left: 25px;
+        }
+        .objective-list li {
+            margin-bottom: 10px;
+            padding-left: 10px;
+        }
+        
+        mjx-container {
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+        
+        /* Hình minh họa */
+        .image-placeholder {
+            width: 80%;
+            margin: 25px auto;
+            padding: 15px;
+            border: 1px solid var(--border-color);
+            background: var(--placeholder-bg);
+            border-radius: 8px;
+            text-align: center;
+        }
+        .image-placeholder img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        .image-placeholder figcaption {
+            font-style: italic;
+            color: #555;
+            font-size: 0.95em;
+        }
+        
+        blockquote {
+            border-left: 5px solid var(--secondary-color);
+            background-color: #f9f9f9;
+            padding: 15px 20px;
+            margin: 20px 0;
+            font-style: italic;
+            color: #555;
+        }
+        blockquote strong {
+            font-style: normal;
+            color: var(--primary-color);
+        }
+        
+        .chapter-divider {
+            border: 0;
+            border-top: 3px solid var(--primary-color);
+            margin: 60px 0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1000px) {
+            .container {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                position: static;
+                height: auto;
+                max-height: 400px;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+                box-sizing: border-box;
+                margin-bottom: 20px;
+            }
+            .content {
+                max-width: 100%;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <nav class="sidebar">
+            <h3>Nội dung Phụ lục</h3>
+            <ul>
+                <li><a href="#muc-tieu">Mục tiêu Bài giảng</a></li>
+                <li><a href="#part1" style="font-weight: bold; color: var(--primary-color);">PHẦN I. MẠNG NƠ-RON</a>
+                    <ul>
+                        <li><a href="#p1-1">1. Mở đầu và Đặc điểm</a></li>
+                        <li><a href="#p1-2">2. Cơ sở Mạng Nơ-ron</a></li>
+                        <li><a href="#p1-3">3. Một số Hàm Phi Tuyến</a></li>
+                        <li><a href="#p1-4">4. Cấu hình Mạng</a></li>
+                    </ul>
+                </li>
+                <li><a href="#part2" style="font-weight: bold; color: var(--primary-color); border-top: 1px solid #ccc; padding-top: 10px;">PHẦN II. MÔ HÌNH MARKOV ẨN</a>
+                    <ul>
+                        <li><a href="#p2-1">1. Quá trình Markov</a></li>
+                        <li><a href="#p2-2">2. Chuỗi Markov (Thời gian rời rạc)</a></li>
+                        <li><a href="#p2-3">3. Mô hình Markov Ẩn (HMM)</a></li>
+                        <li><a href="#p2-4">4. Đặc trưng của HMM</a></li>
+                        <li><a href="#p2-5">5. Thuật toán Tạo Dãy Quan sát</a></li>
+                    </ul>
+                </li>
+                <li><a href="#summary">Tổng kết và So sánh</a></li>
+            </ul>
+        </nav>
+
+        <main class="content">
+            <header>
+                <h1>BÀI GIẢNG: PHỤ LỤC</h1>
+                <h2>VỀ MẠNG NƠ-RON VÀ MÔ HÌNH MARKOV ẨN</h2>
+                <p class="sub-title">Môn học: Trí tuệ Nhân tạo / Học Máy / Nhận dạng Mẫu</p>
+            </header>
+
+            <section id="muc-tieu">
+                <h3>MỤC TIÊU BÀI GIẢNG</h3>
+                <p>Sau khi hoàn thành bài giảng này, người học có thể:</p>
+                <ul class="objective-list">
+                    <li>Nắm vững cơ sở và đặc điểm của Mạng Nơ-ron Nhân tạo (ANN).</li>
+                    <li>Mô tả được cấu trúc đơn giản của một nơ-ron và áp dụng công thức đầu vào - đầu ra phi tuyến.</li>
+                    <li>Phân biệt được các kiểu cấu trúc tô-pô cơ bản của mạng nơ-ron.</li>
+                    <li>Hiểu rõ định nghĩa Quá trình Markov và Chuỗi Markov với thời gian rời rạc.</li>
+                    <li>Giải thích được sự khác biệt giữa Chuỗi Markov và Mô hình Markov Ẩn (HMM).</li>
+                    <li>Xác định và mô tả các tham số đặc trưng của một Mô hình Markov Ẩn.</li>
+                    <li>Trình bày thuật toán cơ bản để HMM tạo ra một dãy quan sát.</li>
+                </ul>
+            </section>
+
+            <hr class="chapter-divider">
+
+            <section id="part1">
+                <h3>PHẦN I. MẠNG NƠ-RON</h3>
+                
+                <h4 id="p1-1">1. Mở đầu và Đặc điểm</h4>
+                <p>Các máy mô phỏng các đặc điểm của não được gọi chung là mạng nơ-ron nhân tạo (ANN).</p>
+                <p><b>Đặc điểm chính của các mạng nơ-ron:</b></p>
+                <ul>
+                    <li>Phi tuyến: Cho phép xử lý phi tuyến.</li>
+                    <li>Cơ chế ánh xạ đầu vào - đầu ra: Cho phép học có giám sát.</li>
+                    <li>Cơ chế thích nghi: Thay đổi tham số phù hợp với môi trường.</li>
+                    <li>Đáp ứng theo mẫu huấn luyện.</li>
+                    <li>Thông tin theo ngữ cảnh: Tri thức được biểu diễn tùy theo trạng thái và kiến trúc.</li>
+                    <li>Cho phép có lỗi (fault tolerance).</li>
+                    <li>Phỏng sinh học.</li>
+                    <li>Tri thức thu nhận được nhờ quá trình học.</li>
+                    <li>Tính năng có được nhờ kiến trúc mạng và tính chất kết nối.</li>
+                </ul>
+
+                <h4 id="p1-2">2. Cơ sở về Mạng Nơ-ron (Mô hình Nơ-ron đơn giản)</h4>
+                <p>Giả sử có $N$ đầu vào $x_1, x_2, ..., x_N$ với các trọng số tương ứng là $w_1, w_2, ..., w_N$.</p>
+                <p>Quan hệ phi tuyến đầu vào – đầu ra:</p>
+                $$ y = f \left( \sum_{i=1}^{N} x_i w_i - \eta \right) $$
+                <p>Trong đó $y$ là đầu ra, $\eta$ là mức ngưỡng (offset), và $f(.)$ là một hàm phi tuyến.</p>
+                <figure class="image-placeholder">
+                    
+                    <figcaption><b>Hình A.1:</b> Minh họa cấu trúc đơn giản của một mạng nơ-ron $N$ đầu vào.</figcaption>
+                </figure>
+
+                <h4 id="p1-3">3. Một số dạng Hàm Phi Tuyến phổ biến</h4>
+                <p><b>6. Hàm ngưỡng cứng (Hard threshold function):</b></p>
+                $$ f(x) = \begin{cases} 1 & \text{nếu } x \ge 0 \\ -1 & \text{nếu } x < 0 \end{cases} $$
+                <p><b>7. Hàm log-sin (Log-sin function, hay Sigmoid):</b></p>
+                $$ f(x) = \frac{1}{1 + e^{-\beta x}}, \quad \beta > 0 $$
+
+                <h4 id="p1-4">4. Cấu hình Mạng Nơ-ron (Network Topology)</h4>
+                <p>Cấu trúc tô-pô của mạng là một yếu tố quan trọng. Có ba kiểu cấu trúc cơ bản:</p>
+                <p><b>7. Mạng một tầng hoặc nhiều tầng:</b></p>
+                <ul>
+                    <li>Mạng một tầng (Hình A.2a).</li>
+                    <li>Mạng hai tầng (Hình A.2b).</li>
+                </ul>
+                <figure class="image-placeholder">
+                    
+                    <figcaption><b>Hình A.2a & A.2b:</b> Mạng một tầng và mạng hai tầng.</figcaption>
+                </figure>
+                
+                <p><b>8. Mạng hồi quy (Recurrent Network):</b></p>
+                <figure class="image-placeholder">
+                    
+                    <figcaption><b>Hình A.3:</b> Cấu trúc mạng hồi quy.</figcaption>
+                </figure>
+
+                <p><b>9. Mạng tự tổ chức (Self-Organizing Map - SOM):</b></p>
+                <figure class="image-placeholder">
+                    
+                    <figcaption><b>Hình A.4:</b> Cấu trúc mạng SOM 3x3.</figcaption>
+                </figure>
+            </section>
+
+            <hr class="chapter-divider">
+
+            <section id="part2">
+                <h3>PHẦN II. MÔ HÌNH MARKOV ẨN</h3>
+
+                <h4 id="p2-1">1. Quá trình Markov (Markov Process)</h4>
+                <p>Một quá trình ngẫu nhiên $X(t)$ được gọi là quá trình Markov nếu tương lai của quá trình (với trạng thái hiện tại đã cho) không phụ thuộc vào quá khứ của quá trình.</p>
+                <p>Với $t_1 < t_2 < ... < t_k < t_{k+1}$:</p>
+                $$ \text{Pr} [X(t_{k+1})=x_{k+1} | X(t_k)=x_k, ..., X(t_1)=x_1] = \text{Pr} [X(t_{k+1})=x_{k+1} | X(t_k)=x_k] $$
+                <p>Các giá trị $X(t)$ được gọi là trạng thái của quá trình tại thời điểm $t$.</p>
+
+                <h4 id="p2-2">2. Chuỗi Markov với Thời Gian Rời Rạc</h4>
+                <p>Giả sử $X_n$ là một chuỗi Markov với thời gian rời rạc, trạng thái bắt đầu $X_0$ có hàm phân bố xác suất rời rạc (pmf):</p>
+                $$ p_j(0) = \text{Pr} [X_0 = j], \quad (j=0, 1, ...) $$
+                <p>Hàm mật độ phân bố xác suất hợp rời rạc của $n+1$ giá trị đầu tiên:</p>
+                $$ \text{Pr} [X_n=i_n, ..., X_0=i_0] = \text{Pr} [X_n=i_n | X_{n-1}=i_{n-1}] ... \text{Pr} [X_1=i_1 | X_0=i_0] \text{Pr} [X_0=i_0] $$
+                
+                <h5>a. Xác suất chuyển đổi đồng nhất (Homogeneous)</h5>
+                <p>Giả sử các xác suất chuyển đổi một bước là cố định, không đổi theo thời gian $n$:</p>
+                $$ \text{Pr} [X_{n+1}=j | X_n=i] = a_{ij}, \quad \forall n $$
+                
+                <h5>b. Xác suất phân bố hợp rời rạc (cho chuỗi đồng nhất)</h5>
+                $$ \text{Pr} [X_n=i_n, ..., X_0=i_0] = p_{i_0}(0) a_{i_0 i_1} a_{i_1 i_2} ... a_{i_{n-1} i_n} $$
+                
+                <h5>c. Ma trận Xác suất Chuyển P</h5>
+                <p>$X_n$ được xác định hoàn toàn bởi $p_i(0)$ và ma trận xác suất chuyển một bước $P$:</p>
+                $$ P = \begin{bmatrix} a_{00} & a_{01} & a_{02} & \dots \\ a_{10} & a_{11} & a_{12} & \dots \\ a_{20} & a_{21} & a_{22} & \dots \\ \vdots & \vdots & \vdots & \ddots \end{bmatrix} $$
+                <p><b>Chú ý:</b> Tổng của mỗi hàng của ma trận $P$ phải bằng 1.</p>
+                <figure class="image-placeholder">
+                    
+                    <figcaption><b>Hình B.1:</b> Sơ đồ một chuỗi Markov rời rạc với 5 trạng thái ($S_1 – S_5$).</figcaption>
+                </figure>
+
+                <h4 id="p2-3">3. Mô hình Markov Ẩn (Hidden Markov Model - HMM)</h4>
+                <p>Các mô hình Markov cơ bản (mỗi trạng thái tương ứng một sự kiện quan sát được) có ứng dụng hạn chế. HMM là mô hình mở rộng.</p>
+                <p><b>Định nghĩa HMM:</b> Mô hình HMM là một quá trình thống kê chồng kép (double-layered stochastic process):</p>
+                <ol>
+                    <li><b>Quá trình thống kê bên trong (Ẩn):</b> Không quan sát được trực tiếp.</li>
+                    <li><b>Quá trình thống kê bên ngoài (Quan sát):</b> Chỉ quan sát được thông qua một tập các quá trình thống kê khác tạo ra dãy các quan sát.</li>
+                </ol>
+
+                <h4 id="p2-4">4. Đặc trưng của Mô hình Markov Ẩn (Tham số HMM)</h4>
+                <p>Một HMM được đặc trưng bởi 5 tham số:</p>
+                <ol>
+                    <li><b>N:</b> Số các trạng thái ẩn ($S_i$) trong mô hình.</li>
+                    <li><b>M:</b> Số các ký hiệu quan sát phân biệt ($v_k$) với mỗi trạng thái.</li>
+                    <li><b>P (Phân bố xác suất chuyển trạng thái, Ma trận A):</b>
+                        $$ a_{ij} = \text{Pr} [X_{t+1}=S_j | X_t=S_i], \quad 1 \le i, j \le N $$
+                    </li>
+                    <li><b>B (Phân bố xác suất ký hiệu quan sát ở trạng thái $S_j$, Ma trận B):</b>
+                        $$ \mathbf{B} = \{b_j(k)\}, \quad \text{trong đó } b_j(k) = \text{Pr} [O_t=v_k | X_t=S_j], \quad 1 \le j \le N, 1 \le k \le M $$
+                    </li>
+                    <li><b>$\pi$ (Phân bố trạng thái khởi đầu):</b>
+                        $$ \pi = \{\pi_i\}, \quad \text{trong đó } \pi_i = \text{Pr} [X_1=S_i], \quad 1 \le i \le N $$
+                    </li>
+                </ol>
+
+                <h4 id="p2-5">5. Thuật toán Tạo Dãy Quan sát từ HMM</h4>
+                <p>Với các tham số $N, M, P, B, \pi$ cho trước, HMM có thể tạo ra một dãy quan sát $O = O_1 O_2 ... O_T$:</p>
+                <ol>
+                    <li><b>Bước 1:</b> Chọn trạng thái khởi đầu $X_1=S_i$ theo phân bố $\pi$.</li>
+                    <li><b>Bước 2:</b> Đặt $t=1$.</li>
+                    <li><b>Bước 3:</b> Chọn $O_t=v_k$ theo phân bố xác suất ký hiệu ở trạng thái $S_i$ (tức là $b_i(k)$).</li>
+                    <li><b>Bước 4:</b> Chuyển sang trạng thái mới $X_{t+1}=S_j$ theo phân bố xác suất chuyển (tức là $a_{ij}$).</li>
+                    <li><b>Bước 5:</b> Đặt $t=t+1$; trở lại Bước 3 nếu $t < T$; nếu không thì kết thúc.</li>
+                </ol>
+            </section>
+            
+            <hr>
+
+            <section id="summary">
+                <h3>TỔNG KẾT VÀ SO SÁNH</h3>
+                <blockquote>
+                    <p>Nếu <b>Mạng Nơ-ron</b> giống như một bộ xử lý phức tạp học cách phản ứng (ánh xạ) trực tiếp với dữ liệu, thì <b>Mô hình Markov Ẩn (HMM)</b> giống như một chiếc hộp đen, nơi chúng ta cố gắng suy luận những cơ chế ngẫu nhiên bên trong (trạng thái ẩn) chỉ qua những tín hiệu nó phát ra (dãy quan sát).</p>
+                </blockquote>
+            </section>
+
+        </main>
+    </div>
+
+</body>
+</html>
