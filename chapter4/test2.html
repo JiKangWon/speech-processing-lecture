@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài tập Trắc nghiệm: Chương 4 - Tổng hợp Tiếng Nói (Đề 2)</title>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script>
+    MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        }
+    };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        :root {
+            --primary-color: #005a9c;
+            --secondary-color: #007bff;
+            --text-color: #333;
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --border-color: #e0e0e0;
+            --correct-bg: #e6f7ec;
+            --correct-border: #5cb85c;
+            --incorrect-bg: #fbe9e9;
+            --incorrect-border: #d9534f;
+            --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            font-family: var(--font-stack);
+            line-height: 1.6;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            background: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 30px 40px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.2em;
+        }
+        header h2 {
+            margin: 5px 0 0;
+            font-size: 1.5em;
+            font-weight: 400;
+            opacity: 0.9;
+        }
+
+        main {
+            padding: 30px 40px;
+        }
+        
+        .section-header {
+            font-family: var(--font-stack);
+            color: var(--primary-color);
+            font-size: 1.8em;
+            font-weight: 600;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 10px;
+            margin-top: 10px;
+            margin-bottom: 25px;
+        }
+        main .section-header:first-of-type {
+            margin-top: 0;
+        }
+
+        .question-block {
+            margin-bottom: 30px;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 25px;
+        }
+
+        .question-block:last-child {
+            border-bottom: none;
+        }
+
+        .question-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .options-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .option {
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px 18px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .option:hover {
+            background-color: #f9f9f9;
+            border-color: var(--secondary-color);
+        }
+
+        /* Lớp CSS cho các lựa chọn */
+        .option.correct {
+            background-color: var(--correct-bg);
+            border-color: var(--correct-border);
+            font-weight: bold;
+            color: #2b7a4b;
+        }
+
+        .option.incorrect {
+            background-color: var(--incorrect-bg);
+            border-color: var(--incorrect-border);
+            color: #a94442;
+        }
+
+        /* Vô hiệu hóa click sau khi đã chọn */
+        .question-block.answered .option {
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .question-block.answered .option:hover {
+            background-color: transparent;
+        }
+        .question-block.answered .option.correct:hover {
+            background-color: var(--correct-bg);
+        }
+         .question-block.answered .option.incorrect:hover {
+            background-color: var(--incorrect-bg);
+        }
+
+        /* Khung giải thích */
+        .explanation {
+            display: none; /* Ẩn mặc định */
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #fdfdea;
+            border: 1px solid #f0ad4e;
+            border-left-width: 5px;
+            border-radius: 5px;
+        }
+
+        .explanation strong {
+            color: #8a6d3b;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Bài ôn tập: Chương 4 - Tổng hợp Tiếng Nói</h1>
+            <h2>Đề thi số 2</h2>
+        </header>
+        
+        <main id="quiz-container">
+            </main>
+    </div>
+
+    <script>
+        // Dữ liệu câu hỏi và đáp án (Đã được giải chi tiết)
+        const quizData = [
+            {
+                question: "1. Khái niệm \"tổng hợp tiếng nói\" trước đây thường được dùng để chỉ quá trình nào?",
+                options: ["Quá trình chuyển đổi từ chữ viết sang tiếng nói.", "Quá trình tạo âm thanh tiếng nói một cách nhân tạo từ máy dựa theo nguyên lý mô phỏng cơ quan phát âm của người.", "Quá trình mã hóa tiếng nói ở tốc độ thấp.", "Quá trình cung cấp các thông tin dạng tiếng nói từ máy trong đó các bản tin được tạo dựng một cách linh động."],
+                answer: "Quá trình tạo âm thanh tiếng nói một cách nhân tạo từ máy dựa theo nguyên lý mô phỏng cơ quan phát âm của người.",
+                explanation: "<strong>Giải thích:</strong> Theo định nghĩa cũ (4.1.1), tổng hợp tiếng nói tập trung vào việc mô phỏng cơ học/vật lý của bộ máy phát âm."
+            },
+            {
+                question: "2. Phương pháp tổng hợp trực tiếp đơn giản được sử dụng lần đầu tiên trong hệ thống điện thoại của nước Anh từ những năm nào?",
+                options: ["Từ những năm 80 của thế kỷ trước.", "Từ những năm 60 của thế kỷ trước.", "Từ những năm 36 của thế kỷ trước.", "Ngày nay vẫn chưa được sử dụng."],
+                answer: "Từ những năm 36 của thế kỷ trước.",
+                explanation: "<strong>Giải thích:</strong> Lịch sử phát triển được đề cập trong mục 4.2.1.1."
+            },
+            {
+                question: "3. Trong phương pháp tổng hợp trực tiếp đơn giản, nhiệm vụ của bộ tổng hợp là gì?",
+                options: ["Phân tích ngữ âm và biến đổi các thành phần riêng rẽ.", "Thay đổi pitch và thời gian của các thành phần tiếng nói.", "Kết nối các đơn vị yêu cầu cấu thành bản tin lại với nhau theo một thứ tự nào đó mà không phải thay đổi hay biến đổi các thành phần riêng rẽ.", "Mã hóa tốc độ thấp các đơn vị tiếng nói."],
+                answer: "Kết nối các đơn vị yêu cầu cấu thành bản tin lại với nhau theo một thứ tự nào đó mà không phải thay đổi hay biến đổi các thành phần riêng rẽ.",
+                explanation: "<strong>Giải thích:</strong> Đúng như tên gọi 'đơn giản', phương pháp này chỉ ghép nối các đoạn ghi âm có sẵn mà không xử lý tín hiệu (4.2.1.1)."
+            },
+            {
+                question: "4. Phương pháp tổng hợp trực tiếp đơn giản tỏ ra hiệu quả nhất khi các bản tin có dạng nào?",
+                options: ["Các cấu trúc câu phức tạp yêu cầu ngữ điệu thay đổi.", "Một danh sách, chẳng hạn như một dãy số cơ bản.", "Các bản tin mà trong đó các từ thay thế ở những vị trí nhất định trong câu.", "Bản tin có yêu cầu cấu trúc pitch phức tạp."],
+                answer: "Một danh sách, chẳng hạn như một dãy số cơ bản.",
+                explanation: "<strong>Giải thích:</strong> Vì không xử lý được ngữ điệu phức tạp, nó chỉ tốt cho các câu có cấu trúc cố định hoặc danh sách (4.2.1.1)."
+            },
+            {
+                question: "5. Đối với các dãy số cơ bản, cần thiết phải ghi lại chúng ở hai dạng: một tương ứng với vị trí cuối câu và một dạng không. Điều này là vì yếu tố nào thay đổi tùy theo vị trí của từ trong câu?",
+                options: ["Biên độ và biên phổ.", "Kích thước bộ nhớ.", "Cấu trúc pitch của mỗi đơn vị tiếng nói.", "Vị trí chắp nối phân đoạn dạng sóng."],
+                answer: "Cấu trúc pitch của mỗi đơn vị tiếng nói.",
+                explanation: "<strong>Giải thích:</strong> Ngữ điệu (pitch) thường xuống giọng ở cuối câu, nên cần ghi âm riêng cho trường hợp này (4.2.1.1)."
+            },
+            {
+                question: "6. Để giải quyết vấn đề kích thước bộ nhớ lưu trữ lớn trong tổng hợp trực tiếp đơn giản, người ta có thể sử dụng phương pháp nào?",
+                options: ["Bỏ qua các đặc trưng âm học.", "Sử dụng phương pháp mã hóa tốc độ thấp cho các đơn vị tiếng nói trước khi thực hiện việc lưu trữ.", "Chia nhỏ các đơn vị tiếng nói thành các âm tố (phoneme).", "Chuyển sang sử dụng bộ tổng hợp theo Formant."],
+                answer: "Sử dụng phương pháp mã hóa tốc độ thấp cho các đơn vị tiếng nói trước khi thực hiện việc lưu trữ.",
+                explanation: "<strong>Giải thích:</strong> Nén dữ liệu (mã hóa) giúp giảm dung lượng lưu trữ cho kho mẫu âm thanh (4.2.1.1 - Cải tiến)."
+            },
+            {
+                question: "7. Phương pháp TD-PSOLA (Time domain Pitch Synchronous Overlap Add) thuộc loại kỹ thuật tổng hợp trực tiếp tiếng nói nào?",
+                options: ["Phương pháp chắp nối từ.", "Phương pháp chắp nối các đơn vị từ con.", "Phương pháp chắp nối các phân đoạn dạng sóng tín hiệu.", "Phương pháp tổng hợp theo luật."],
+                answer: "Phương pháp chắp nối các phân đoạn dạng sóng tín hiệu.",
+                explanation: "<strong>Giải thích:</strong> TD-PSOLA là kỹ thuật xử lý trên miền thời gian để nối các đoạn sóng (4.2.1.2)."
+            },
+            {
+                question: "8. Trong TD-PSOLA, các vị trí nào được đánh dấu trên dạng sóng tín hiệu tiếng nói?",
+                options: ["Vị trí có biên độ tín hiệu cực đại.", "Vị trí tương ứng với vùng có biên độ tín hiệu nhỏ nhất.", "Các vị trí tương ứng với sự đóng lại của dây thanh (xung pitch).", "Vị trí có tần số cơ bản cao nhất."],
+                answer: "Các vị trí tương ứng với sự đóng lại của dây thanh (xung pitch).",
+                explanation: "<strong>Giải thích:</strong> Việc đánh dấu xung pitch (pitch marking) là bước đầu tiên và quan trọng nhất của PSOLA (4.2.1.2)."
+            },
+            {
+                question: "9. Trong TD-PSOLA, hàm cửa sổ phải được chỉnh trùng với vị trí nào của vùng có biên độ tín hiệu?",
+                options: ["Điểm bắt đầu của chu kỳ.", "Vùng có biên độ tín hiệu nhỏ nhất.", "Trung tâm của vùng có biên độ tín hiệu cực đại.", "Điểm kết thúc của chu kỳ."],
+                answer: "Trung tâm của vùng có biên độ tín hiệu cực đại.",
+                explanation: "<strong>Giải thích:</strong> Cửa sổ Hanning thường được đặt tâm tại đỉnh xung năng lượng để bảo toàn thông tin quan trọng nhất (4.2.1.2)."
+            },
+            {
+                question: "10. Độ dài của hàm cửa sổ trong TD-PSOLA phải như thế nào để tạo ra sự chồng lấn nhỏ giữa các cửa sổ tín hiệu cạnh nhau?",
+                options: ["Phải nhỏ hơn một chu kỳ.", "Phải dài hơn một chu kỳ.", "Phải bằng nửa chu kỳ.", "Phụ thuộc vào loại hàm cửa sổ (ví dụ: Hanning)."],
+                answer: "Phải dài hơn một chu kỳ.",
+                explanation: "<strong>Giải thích:</strong> Chồng lấn (Overlap) giúp làm mượt tín hiệu tại điểm nối, nên cửa sổ phải dài hơn chu kỳ pitch (4.2.1.2)."
+            },
+            {
+                question: "11. Phương pháp tổng hợp theo Formant còn được biết đến với tên gọi nào khác?",
+                options: ["Phương pháp tổng hợp trực tiếp đơn giản.", "Phương pháp mô phỏng bộ máy phát âm.", "Phương pháp tổng hợp theo luật.", "Phương pháp TD-PSOLA."],
+                answer: "Phương pháp tổng hợp theo luật.",
+                explanation: "<strong>Giải thích:</strong> Rule-based Synthesis là tên gọi khác của Formant Synthesis (4.2.2)."
+            },
+            {
+                question: "12. Đối với các âm vô thanh (phụ âm vô thanh) trong tổng hợp theo Formant, nguồn âm được tạo ra từ đâu?",
+                options: ["Một hàm tuần hoàn trong miền thời gian.", "Một dãy đáp ứng xung qua mạch lọc LTI.", "Một bộ phát nhiễu ngẫu nhiên.", "Sự kết hợp giữa nguồn hữu thanh và vô thanh."],
+                answer: "Một bộ phát nhiễu ngẫu nhiên.",
+                explanation: "<strong>Giải thích:</strong> Âm vô thanh có tính chất nhiễu (không tuần hoàn), nên dùng nguồn nhiễu (4.2.2)."
+            },
+            {
+                question: "13. Trong sơ đồ tổng quát của hệ thống tổng hợp theo Formant, mô hình khoang miệng và khoang mũi được xây dựng như thế nào để tái tạo tất cả các formant?",
+                options: ["Nối tiếp.", "Tích chập.", "Song song riêng biệt.", "Chỉ cần mô phỏng khoang miệng."],
+                answer: "Song song riêng biệt.",
+                explanation: "<strong>Giải thích:</strong> Để tái tạo đầy đủ các formant (đặc biệt là các formant phụ từ mũi), hai khoang này được mô phỏng song song (4.2.2)."
+            },
+            {
+                question: "14. Theo lý thuyết mạch lọc, các điểm cực phải có dạng là cặp liên hợp phức để đảm bảo điều kiện gì?",
+                options: ["Hàm truyền đạt phải là tích của các hàm bậc hai.", "Xây dựng mạch lọc với các hệ số $a_1$ và $a_2$ là thực.", "Tạo ra nhiều formant.", "Thay đổi pitch của bản tin."],
+                answer: "Xây dựng mạch lọc với các hệ số $a_1$ và $a_2$ là thực.",
+                explanation: "<strong>Giải thích:</strong> Để hệ số phương trình sai phân là số thực (thực thi được), các nghiệm phức phải đi theo cặp liên hợp (4.2.2.1)."
+            },
+            {
+                question: "15. Trong bộ lọc formant bậc hai, yếu tố nào quyết định độ nhọn hay độ phẳng của cộng hưởng?",
+                options: ["Độ lớn biên độ của các điểm cực (pole).", "Góc pha $\\theta$ của điểm cực.", "Tần số lấy mẫu $F_s$.", "Kích thước của hàm cửa sổ."],
+                answer: "Độ lớn biên độ của các điểm cực (pole).",
+                explanation: "<strong>Giải thích:</strong> Bán kính cực ($r$) càng gần 1 (biên độ lớn) thì đỉnh cộng hưởng càng nhọn (4.2.2.1)."
+            },
+            {
+                question: "16. Nếu độ lớn biên độ của các điểm cực càng nhỏ, thì cộng hưởng sẽ như thế nào?",
+                options: ["Cộng hưởng càng nhọn.", "Băng tần càng hẹp.", "Cộng hưởng càng phẳng.", "Băng tần bằng 0."],
+                answer: "Cộng hưởng càng phẳng.",
+                explanation: "<strong>Giải thích:</strong> Ngược lại với câu 15, biên độ nhỏ ($r$ xa vòng tròn đơn vị) làm đỉnh cộng hưởng tù (phẳng) hơn (4.2.2.1)."
+            },
+            {
+                question: "17. Mối liên hệ giữa băng tần chuẩn hóa ($\\hat{B}$) của formant và bán kính của điểm cực ($r$) được xấp xỉ hợp lý bằng công thức nào?",
+                options: ["$\\hat{B} = 2 \\ln(r)$.", "$\\hat{B} = 1 - r^2$.", "$\\hat{B} = -2 \\ln(r)$.", "$\\hat{B} = \\frac{F}{F_s}$."],
+                answer: "$\\hat{B} = -2 \\ln(r)$.",
+                explanation: "<strong>Giải thích:</strong> Đây là công thức xấp xỉ chuẩn liên hệ giữa băng thông và bán kính cực (4.2.2.2)."
+            },
+            {
+                question: "18. Phương pháp tổng hợp formant theo sơ đồ nối tiếp (cascade) có ưu điểm nổi bật là gì?",
+                options: ["Mô phỏng mỗi formant riêng rẽ.", "Dễ dàng xây dựng các hàm truyền đạt và biểu thức quan hệ đầu vào đầu ra (công thức vi sai).", "Cho phép xác định một cách chính xác tần số của các formant.", "Mô hình nguồn được phức tạp hóa."],
+                answer: "Dễ dàng xây dựng các hàm truyền đạt và biểu thức quan hệ đầu vào đầu ra (công thức vi sai).",
+                explanation: "<strong>Giải thích:</strong> Với sơ đồ nối tiếp, hàm truyền tổng là tích các hàm truyền thành phần, dễ dàng chuyển sang miền thời gian (4.2.2.3.A)."
+            },
+            {
+                question: "19. Ưu điểm của phương pháp tổng hợp formant song song là gì?",
+                options: ["Xây dựng công thức vi sai đơn giản.", "Giảm thiểu sự đơn giản hóa mô hình nguồn.", "Cho phép xác định một cách chính xác tần số của các formant.", "Hàm truyền đạt là tích của các hàm bậc hai."],
+                answer: "Cho phép xác định một cách chính xác tần số của các formant.",
+                explanation: "<strong>Giải thích:</strong> Do mỗi nhánh tạo ra một formant riêng biệt nên việc điều khiển tần số chính xác hơn và độc lập hơn (4.2.2.3.B)."
+            },
+            {
+                question: "20. Tại sao phương pháp tổng hợp theo formant khó đạt được tính tự nhiên của tín hiệu tiếng nói?",
+                options: ["Vì nó sử dụng tần số lấy mẫu thấp (8kHz hoặc 10kHz).", "Do mô hình nguồn và mô hình chuyển đổi bị đơn giản hóa quá mức.", "Vì nó chỉ sử dụng ba formant đầu tiên để phân biệt tín hiệu.", "Vì nó chỉ sử dụng các mạch lọc FIR."],
+                answer: "Do mô hình nguồn và mô hình chuyển đổi bị đơn giản hóa quá mức.",
+                explanation: "<strong>Giải thích:</strong> Mô hình toán học không thể mô tả hết các sắc thái phức tạp của bộ máy phát âm sinh học (4.2.2.3 - Hạn chế)."
+            },
+            {
+                question: "21. Bộ tổng hợp Klatt được thiết kế để làm việc ở tần số lấy mẫu khoảng bao nhiêu?",
+                options: ["8 kHz.", "16 kHz.", "44.1 kHz.", "10 kHz."],
+                answer: "10 kHz.",
+                explanation: "<strong>Giải thích:</strong> Thông tin chi tiết về bộ tổng hợp Klatt trong tài liệu (4.2.2.4)."
+            },
+            {
+                question: "22. Theo các nghiên cứu, việc sử dụng 6 formant trong bộ tổng hợp formant (thay vì chỉ 3 formant đủ để phân biệt tín hiệu âm thanh) nhằm mục đích gì?",
+                options: ["Đảm bảo mô hình nguồn không bị đơn giản hóa.", "Tăng thêm tính tự nhiên cho tín hiệu tổng hợp được.", "Giảm thiểu yêu cầu về không gian lưu trữ.", "Phân biệt các âm vô thanh."],
+                answer: "Tăng thêm tính tự nhiên cho tín hiệu tổng hợp được.",
+                explanation: "<strong>Giải thích:</strong> Các formant cao (F4, F5, F6) ít ảnh hưởng đến nội dung âm vị nhưng quan trọng cho âm sắc và tính tự nhiên (4.2.2.4)."
+            },
+            {
+                question: "23. Các \"máy nói\" cổ điển, như máy do Von Kempelen chế tạo, thường là loại thiết bị gì?",
+                options: ["Bộ tổng hợp kỹ thuật số sử dụng phần mềm.", "Các thiết bị cơ học với các ống, ống thổi, ... hoạt động như các dụng cụ âm nhạc.", "Các bộ lọc formant nối tiếp.", "Các hệ thống sử dụng thuật toán TD-PSOLA."],
+                answer: "Các thiết bị cơ học với các ống, ống thổi, ... hoạt động như các dụng cụ âm nhạc.",
+                explanation: "<strong>Giải thích:</strong> Articulatory Synthesis thời kỳ đầu là các thiết bị cơ khí (4.2.3)."
+            },
+            {
+                question: "24. Điều gì mang lại thuận lợi cho các hệ thống máy nói cổ điển ở khía cạnh con người có thể điều khiển và bắt chước quá trình tạo tiếng nói tự nhiên?",
+                options: ["Mô hình hình thái ngôn ngữ.", "Việc điều khiển hoạt động của máy là nhờ con người theo thời gian thực (thông qua phản hồi).", "Việc sử dụng các ống đơn giản xấp xỉ hình dạng ống phức tạp.", "Tần số lấy mẫu cao."],
+                answer: "Việc điều khiển hoạt động của máy là nhờ con người theo thời gian thực (thông qua phản hồi).",
+                explanation: "<strong>Giải thích:</strong> Người điều khiển có thể nghe và điều chỉnh ngay lập tức, giống như chơi nhạc cụ (4.2.3)."
+            },
+            {
+                question: "25. Khó khăn chính thứ hai của phương pháp tổng hợp mô phỏng bộ máy phát âm mà các nhà nghiên cứu phải đối mặt là gì?",
+                options: ["Khó xác định các tham số formant.", "Thiếu các ứng dụng thực tiễn.", "Việc cân bằng giữa việc xây dựng một mô hình mô phỏng chính xác cao nhất và một mô hình thực tiễn dễ thiết kế và thực hiện.", "Việc chắp nối các phân đoạn sóng."],
+                answer: "Việc cân bằng giữa việc xây dựng một mô hình mô phỏng chính xác cao nhất và một mô hình thực tiễn dễ thiết kế và thực hiện.",
+                explanation: "<strong>Giải thích:</strong> Mô hình quá chính xác thì quá phức tạp để tính toán, mô hình đơn giản thì âm thanh kém tự nhiên (4.2.3)."
+            },
+            {
+                question: "26. Hệ thống chuyển đổi từ chữ viết sang tiếng nói (TTS) điển hình được đặc trưng như một quá trình phân tích-tổng hợp bao nhiêu giai đoạn?",
+                options: ["Quá trình 1 giai đoạn.", "Quá trình 2 giai đoạn.", "Quá trình 3 giai đoạn.", "Quá trình 4 giai đoạn."],
+                answer: "Quá trình 2 giai đoạn.",
+                explanation: "<strong>Giải thích:</strong> Gồm 2 giai đoạn chính: Phân tích văn bản và Tổng hợp tiếng nói (4.3.1)."
+            },
+            {
+                question: "27. Ở giai đoạn phân tích chữ viết của hệ thống TTS, chữ viết đầu vào thường bao gồm những thành phần nào?",
+                options: ["Chỉ bao gồm các từ đơn và cụm từ.", "Các cụm từ viết tắt, các số La Mã, ngày tháng, công thức, các dấu câu.", "Chỉ bao gồm các dãy phoneme và cấu trúc nhấn.", "Các tham số điều khiển bộ máy phát âm."],
+                answer: "Các cụm từ viết tắt, các số La Mã, ngày tháng, công thức, các dấu câu.",
+                explanation: "<strong>Giải thích:</strong> Văn bản thực tế rất phức tạp, chứa nhiều ký tự không phải chữ cái cần được chuẩn hóa (4.3.1)."
+            },
+            {
+                question: "28. Trong các hệ thống TTS hiện đại, việc xác định phát âm của từ thường được hoàn thành bằng cách sử dụng phương pháp nào để đảm bảo từ đã biết được phát âm một cách chính xác?",
+                options: ["Phân tích hình thái ngôn ngữ (morphology).", "Sử dụng một từ điển phát âm rất lớn (có thể gồm hàng vài chục ngàn từ).", "Chỉ dựa vào các luật phát âm.", "Phân tích cú pháp của chữ viết."],
+                answer: "Sử dụng một từ điển phát âm rất lớn (có thể gồm hàng vài chục ngàn từ).",
+                explanation: "<strong>Giải thích:</strong> Từ điển lớn giúp xử lý các trường hợp bất quy tắc tốt hơn luật phát âm (4.3.2)."
+            },
+            {
+                question: "29. Điều gì cần được thực hiện để kết hợp các hiệu ứng âm tiết (phonetic) xảy ra trên vùng biên giữa các từ, nhằm cải thiện tính tự nhiên của tiếng nói tổng hợp được?",
+                options: ["Phân tích hình thái học ngôn ngữ.", "Thực hiện một số điều chỉnh.", "Thêm vào các từ vựng mới.", "Gán cấu trúc nhấn cho các từ."],
+                answer: "Thực hiện một số điều chỉnh.",
+                explanation: "<strong>Giải thích:</strong> Coarticulation (sự đồng cấu âm) xảy ra ở biên từ cần được mô hình hóa bằng các điều chỉnh (4.3.2)."
+            },
+            {
+                question: "30. Theo một số nghiên cứu về tiếng Việt, thanh điệu được quyết định bởi sự phân bố của những yếu tố nào?",
+                options: ["Vị trí của các formant F1, F2.", "Băng thông chuẩn hóa và bán kính điểm cực.", "Tốc độ nói và biên độ.", "Năng lượng tín hiệu và tần số cơ bản."],
+                answer: "Năng lượng tín hiệu và tần số cơ bản.",
+                explanation: "<strong>Giải thích:</strong> Đây là đặc trưng âm học chính của thanh điệu tiếng Việt (4.4)."
+            }
+        ];
+
+        // Hàm khởi tạo bài kiểm tra
+        function buildQuiz() {
+            const quizContainer = document.getElementById('quiz-container');
+            
+            quizData.forEach((data, index) => {
+                // Tạo khối câu hỏi
+                const questionBlock = document.createElement('div');
+                questionBlock.className = 'question-block';
+                questionBlock.id = `q${index}`;
+
+                // Thêm câu hỏi
+                const questionTitle = document.createElement('div');
+                questionTitle.className = 'question-title';
+                questionTitle.innerHTML = data.question; // Dùng innerHTML để render MathJax
+                questionBlock.appendChild(questionTitle);
+
+                // Tạo danh sách các lựa chọn
+                const optionsList = document.createElement('ul');
+                optionsList.className = 'options-list';
+
+                data.options.forEach(optionText => {
+                    const optionItem = document.createElement('li');
+                    optionItem.className = 'option';
+                    optionItem.innerHTML = optionText; // Dùng innerHTML để render MathJax
+
+                    // Kiểm tra xem đây có phải là câu trả lời đúng không
+                    if (optionText === data.answer) {
+                        optionItem.dataset.correct = "true";
+                    }
+
+                    // Thêm sự kiện click
+                    optionItem.addEventListener('click', () => selectAnswer(questionBlock, optionItem, data.answer, data.explanation));
+                    optionsList.appendChild(optionItem);
+                });
+
+                questionBlock.appendChild(optionsList);
+
+                // Tạo khung giải thích (ẩn)
+                const explanationBox = document.createElement('div');
+                explanationBox.className = 'explanation';
+                explanationBox.innerHTML = data.explanation; // Dùng innerHTML để render MathJax
+                questionBlock.appendChild(explanationBox);
+
+                // Thêm khối câu hỏi vào container
+                quizContainer.appendChild(questionBlock);
+            });
+            
+            // Yêu cầu MathJax render lại nếu cần
+            if (typeof MathJax !== 'undefined' && MathJax.typesetPromise) {
+                MathJax.typesetPromise();
+            }
+        }
+
+        // Hàm xử lý khi chọn câu trả lời
+        function selectAnswer(questionBlock, selectedOption, correctAnswer, explanation) {
+            // Đánh dấu câu hỏi này là đã trả lời
+            questionBlock.classList.add('answered');
+
+            // Tìm tất cả các lựa chọn trong câu hỏi này
+            const allOptions = questionBlock.querySelectorAll('.option');
+
+            allOptions.forEach(option => {
+                // Highlight đáp án đúng
+                if (option.dataset.correct === "true") {
+                    option.classList.add('correct');
+                }
+                // Highlight đáp án sai (nếu người dùng chọn sai)
+                else if (option === selectedOption) {
+                    option.classList.add('incorrect');
+                }
+            });
+
+            // Hiển thị khung giải thích
+            const explanationBox = questionBlock.querySelector('.explanation');
+            explanationBox.style.display = 'block';
+        }
+
+        // Bắt đầu xây dựng bài kiểm tra khi trang được tải
+        document.addEventListener('DOMContentLoaded', buildQuiz);
+    </script>
+
+</body>
+</html>
