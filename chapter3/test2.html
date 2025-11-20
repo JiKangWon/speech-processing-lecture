@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài tập Trắc nghiệm: Chương 3 - Mã Hóa Tiếng Nói (Đề 2)</title>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script>
+    MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        }
+    };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        :root {
+            --primary-color: #005a9c;
+            --secondary-color: #007bff;
+            --text-color: #333;
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --border-color: #e0e0e0;
+            --correct-bg: #e6f7ec;
+            --correct-border: #5cb85c;
+            --incorrect-bg: #fbe9e9;
+            --incorrect-border: #d9534f;
+            --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            font-family: var(--font-stack);
+            line-height: 1.6;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            background: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 30px 40px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.2em;
+        }
+        header h2 {
+            margin: 5px 0 0;
+            font-size: 1.5em;
+            font-weight: 400;
+            opacity: 0.9;
+        }
+
+        main {
+            padding: 30px 40px;
+        }
+        
+        .section-header {
+            font-family: var(--font-stack);
+            color: var(--primary-color);
+            font-size: 1.8em;
+            font-weight: 600;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 10px;
+            margin-top: 10px;
+            margin-bottom: 25px;
+        }
+        main .section-header:first-of-type {
+            margin-top: 0;
+        }
+
+        .question-block {
+            margin-bottom: 30px;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 25px;
+        }
+
+        .question-block:last-child {
+            border-bottom: none;
+        }
+
+        .question-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .options-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .option {
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px 18px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .option:hover {
+            background-color: #f9f9f9;
+            border-color: var(--secondary-color);
+        }
+
+        /* Lớp CSS cho các lựa chọn */
+        .option.correct {
+            background-color: var(--correct-bg);
+            border-color: var(--correct-border);
+            font-weight: bold;
+            color: #2b7a4b;
+        }
+
+        .option.incorrect {
+            background-color: var(--incorrect-bg);
+            border-color: var(--incorrect-border);
+            color: #a94442;
+        }
+
+        /* Vô hiệu hóa click sau khi đã chọn */
+        .question-block.answered .option {
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .question-block.answered .option:hover {
+            background-color: transparent;
+        }
+        .question-block.answered .option.correct:hover {
+            background-color: var(--correct-bg);
+        }
+         .question-block.answered .option.incorrect:hover {
+            background-color: var(--incorrect-bg);
+        }
+
+        /* Khung giải thích */
+        .explanation {
+            display: none; /* Ẩn mặc định */
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #fdfdea;
+            border: 1px solid #f0ad4e;
+            border-left-width: 5px;
+            border-radius: 5px;
+        }
+
+        .explanation strong {
+            color: #8a6d3b;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Bài ôn tập: Chương 3 - Mã Hóa Tiếng Nói</h1>
+            <h2>Đề thi số 2</h2>
+        </header>
+        
+        <main id="quiz-container">
+            </main>
+    </div>
+
+    <script>
+        // Dữ liệu câu hỏi và đáp án (Đã được giải)
+        const quizData = [
+            {
+                section: "PHẦN I: KHÁI NIỆM CHUNG VÀ PHÂN LOẠI (CÂU 1 - 5)",
+                question: "Câu 1: Quá trình biến đổi các giá trị rời rạc thành các mã tương ứng được gọi là gì?",
+                options: ["Điều chế xung mã.", "Mã hóa.", "Lượng tử hóa.", "Tiền nhấn."],
+                answer: "Mã hóa.",
+                explanation: "<strong>Giải thích:</strong> Đây là định nghĩa cơ bản của Mã hóa (3.1.1): biến đổi các giá trị rời rạc (sau khi lượng tử hóa) thành các từ mã."
+            },
+            {
+                question: "Câu 2: Tín hiệu tiếng nói trong các hệ thống thông tin thoại thường chỉ quan tâm đến khoảng tần số nào?",
+                options: ["0.3 kHz – 4 kHz.", "0.3 kHz – 3.4 kHz.", "4 kHz – 8 kHz.", "3.4 kHz – 10 kHz."],
+                answer: "0.3 kHz – 3.4 kHz.",
+                explanation: "<strong>Giải thích:</strong> Dải tần số thoại (voice frequency band) chuẩn là từ 300Hz đến 3400Hz (3.1.3)."
+            },
+            {
+                question: "Câu 3: Quá trình tiền xử lý tín hiệu tiếng nói tương tự trước khi được số hóa (lấy mẫu và lượng tử hóa) thường bao gồm những bước nào?",
+                options: ["Lọc thông dải và tích phân.", "Mã hóa vector.", "Lọc hạn biên (Anti-aliasing filter), tiền nhấn, khuếch đại.", "Giải mã và tổng hợp."],
+                answer: "Lọc hạn biên (Anti-aliasing filter), tiền nhấn, khuếch đại.",
+                explanation: "<strong>Giải thích:</strong> Đây là các bước tiền xử lý chuẩn (3.1.3) để chuẩn bị tín hiệu cho bộ chuyển đổi ADC."
+            },
+            {
+                question: "Câu 4: Mã hóa tiếng nói có nhiều điểm khác biệt và cần cách tiếp cận riêng biệt so với mã hóa dữ liệu thông thường vì nó khai thác đặc trưng nào?",
+                options: ["Đặc trưng của tín hiệu điện từ.", "Đặc trưng của quá trình tạo và cảm nhận tiếng nói của con người.", "Đặc trưng của quá trình dừng và bán dừng.", "Đặc trưng của kênh truyền."],
+                answer: "Đặc trưng của quá trình tạo và cảm nhận tiếng nói của con người.",
+                explanation: "<strong>Giải thích:</strong> Mã hóa tiếng nói hiệu quả vì nó loại bỏ các thông tin dư thừa dựa trên mô hình phát âm và thính giác của con người (3.1.2)."
+            },
+            {
+                question: "Câu 5: Theo phân loại dựa trên tốc độ mã hóa, xu hướng phát triển hiện nay của các phương pháp mã hóa tiếng nói là các phương pháp tiếp cận mã hóa tốc độ rất thấp, khoảng bao nhiêu hoặc thấp hơn?",
+                options: ["64 kbps.", "16 kbps.", "9.6 kbps.", "2.4 kbps."],
+                answer: "2.4 kbps.",
+                explanation: "<strong>Giải thích:</strong> Xu hướng hiện đại (như MELP, LPC-10) nhắm đến tốc độ siêu thấp khoảng 2.4 kbps hoặc thấp hơn (3.1.4)."
+            },
+            {
+                section: "PHẦN II: MÃ HÓA DẠNG SÓNG (CÂU 6 - 15)",
+                question: "Câu 6: Phương pháp mã hóa PCM tuyến tính còn được biết đến với chuẩn nào của ITU, hoạt động ở tốc độ 64 kbps?",
+                options: ["G.726.", "G.711.", "G.722.", "G.721."],
+                answer: "G.711.",
+                explanation: "<strong>Giải thích:</strong> G.711 là chuẩn ITU cho PCM 64kbps (sử dụng luật A hoặc $\\mu$) (3.2.1)."
+            },
+            {
+                question: "Câu 7: Trong lượng tử hóa tuyến tính (đều), bước lượng tử hóa $\\Delta$ được xác định theo công thức nào, nếu $s_{max}$ và $s_{min}$ là khoảng tín hiệu quan tâm và $b$ là số bit?",
+                options: ["$\\Delta = s_{max} - s_{min}$.", "$\\Delta = (s_{max} - s_{min}) / b$.", "$\\Delta = (s_{max} - s_{min}) / 2^b$.", "$\\Delta = 2^b / (s_{max} - s_{min})$."],
+                answer: "$\\Delta = (s_{max} - s_{min}) / 2^b$.",
+                explanation: "<strong>Giải thích:</strong> Bước lượng tử bằng khoảng giá trị chia cho tổng số mức ($2^b$) (3.2.1)."
+            },
+            {
+                question: "Câu 8: Công suất nhiễu lượng tử ($\\sigma_e^2$) trong lượng tử hóa đều (tuyến tính) được tính theo công thức nào (với giả thiết sai số lượng tử có phân bố đều)?",
+                options: ["$\\sigma_e^2 = \\Delta / 2$.", "$\\sigma_e^2 = \\Delta^2 / 12$.", "$\\sigma_e^2 = \\Delta^2 / 2$.", "$\\sigma_e^2 = \\Delta^2$."],
+                answer: "$\\sigma_e^2 = \\Delta^2 / 12$.",
+                explanation: "<strong>Giải thích:</strong> Đây là công thức kinh điển tính phương sai (công suất nhiễu) của sai số phân bố đều trong khoảng $[-\\Delta/2, \\Delta/2]$ (3.2.1)."
+            },
+            {
+                question: "Câu 9: Luật lượng tử hóa phi tuyến nào có giá trị $A=87.56$ và được áp dụng ở Châu Âu?",
+                options: ["Luật $\\mu$.", "Luật A.", "Luật Jayant.", "Luật Greefkes."],
+                answer: "Luật A.",
+                explanation: "<strong>Giải thích:</strong> Luật A (A-law) với A=87.56 là tiêu chuẩn nén ở Châu Âu (3.2.1)."
+            },
+            {
+                question: "Câu 10: Trong lượng tử hóa phi tuyến theo luật $\\mu$, mỗi mẫu tuyến tính 14 bit được ánh xạ thành một từ mã gồm bao nhiêu bit (bao gồm cả bit dấu)?",
+                options: ["14 bit.", "13 bit.", "8 bit.", "6 bit."],
+                answer: "8 bit.",
+                explanation: "<strong>Giải thích:</strong> Luật $\\mu$ nén mẫu 14 bit xuống còn 8 bit (1 bit dấu, 3 bit đoạn, 4 bit mức) (3.2.1)."
+            },
+            {
+                question: "Câu 11: Đặc tuyến lượng tử hóa nào thường được sử dụng trong trường hợp số mức lượng tử là số chẵn và không có mức lượng tử có giá trị bằng 0?",
+                options: ["Lượng tử hóa bước cân (midtread quantizer).", "Lượng tử hóa bước lệch (midrise quantizer).", "Lượng tử hóa thích nghi.", "Lượng tử hóa phi tuyến."],
+                answer: "Lượng tử hóa bước lệch (midrise quantizer).",
+                explanation: "<strong>Giải thích:</strong> Midrise không có mức 0 ở giữa, thường dùng cho số mức chẵn (3.2.1)."
+            },
+            {
+                question: "Câu 12: Trong DPCM, việc mã hóa và truyền đi độ chênh lệch giữa các mẫu tín hiệu lân cận tận dụng đặc điểm nào của tín hiệu tiếng nói?",
+                options: ["Đặc điểm lô-ga-rít của tai người.", "Độ trễ thấp.", "Tự tương quan rất lớn giữa các mẫu tín hiệu lân cận nhau.", "Tính dừng của tín hiệu."],
+                answer: "Tự tương quan rất lớn giữa các mẫu tín hiệu lân cận nhau.",
+                explanation: "<strong>Giải thích:</strong> Do các mẫu gần nhau thường có giá trị gần nhau (tương quan cao), sự chênh lệch giữa chúng sẽ nhỏ, giúp tiết kiệm bit mã hóa (3.2.2)."
+            },
+            {
+                question: "Câu 13: Tỷ số SNR của DPCM được xác định bằng cách cộng thêm yếu tố nào vào SNR của PCM?",
+                options: ["Sai số lượng tử $e(n)$.", "Độ lợi thu được từ việc sử dụng bộ dự đoán tuyến tính $G_p$.", "Tốc độ bit $b$.", "Chu kỳ pitch $N_0$."],
+                answer: "Độ lợi thu được từ việc sử dụng bộ dự đoán tuyến tính $G_p$.",
+                explanation: "<strong>Giải thích:</strong> $SNR_{DPCM} = SNR_{PCM} + 10 \\log_{10} G_p$. $G_p$ thể hiện hiệu quả của bộ dự đoán (3.2.2)."
+            },
+            {
+                question: "Câu 14: Hai dạng méo nghiêm trọng mà mã hóa DM thường mắc phải là méo quá độ dốc (slope-overload distortion) và méo dạng nhiễu. Méo dạng nhiễu còn được gọi là gì?",
+                options: ["Nhiễu tích lũy.", "Nhiễu hạt (granular noise).", "Nhiễu tần số.", "Nhiễu nền."],
+                answer: "Nhiễu hạt (granular noise).",
+                explanation: "<strong>Giải thích:</strong> Granular noise xảy ra khi tín hiệu thay đổi chậm nhưng bước lượng tử quá lớn, tạo ra dao động (hạt) quanh tín hiệu (3.2.3)."
+            },
+            {
+                question: "Câu 15: Phương pháp mã hóa dạng sóng nào là duy nhất có thể so sánh về tốc độ mã hóa với phương pháp tham số nguồn (8 kbps)?",
+                options: ["PCM luật $\\mu$.", "DPCM.", "DM.", "ADPCM."],
+                answer: "DM.",
+                explanation: "<strong>Giải thích:</strong> DM (Delta Modulation) dùng 1 bit/mẫu $\\rightarrow$ 8kbps, tốc độ rất thấp so với các phương pháp dạng sóng khác (3.2.3)."
+            },
+            {
+                section: "PHẦN III: MÃ HÓA THÍCH NGHI VÀ MIỀN TẦN SỐ (CÂU 16 - 20)",
+                question: "Câu 16: Trong APCM, phương pháp lượng tử thích nghi nào thích ứng nhanh với sự thay đổi hình dạng phổ và cải thiện SNR khoảng 5dB so với PCM luật $\\mu$, nhưng cần truyền tải thông tin về bước lượng tử?",
+                options: ["Thích nghi forward.", "Thích nghi backward.", "Lượng tử hóa đều.", "Lượng tử hóa phi tuyến."],
+                answer: "Thích nghi forward.",
+                explanation: "<strong>Giải thích:</strong> Thích nghi Forward tính bước lượng tử từ tín hiệu gốc nên chính xác và nhanh hơn, nhưng tốn băng thông để truyền tham số này (3.2.4)."
+            },
+            {
+                question: "Câu 17: Khuyến nghị G.721 của CCITT/ITU tiêu chuẩn hóa phương pháp mã hóa nào, hoạt động ở tốc độ 32 kbps?",
+                options: ["PCM tuyến tính.", "DPCM.", "ADPCM.", "CELP."],
+                answer: "ADPCM.",
+                explanation: "<strong>Giải thích:</strong> G.721 là chuẩn ADPCM 32kbps (3.2.5)."
+            },
+            {
+                question: "Câu 18: Luật thay đổi bước lượng tử đơn giản nhất trong ADM được đề xuất bởi Jayant vào năm nào?",
+                options: ["1930.", "1970.", "1988.", "2000."],
+                answer: "1970.",
+                explanation: "<strong>Giải thích:</strong> Luật Jayant (1970) điều chỉnh bước lượng tử dựa trên tích của hai bit mã hóa liên tiếp (3.2.6)."
+            },
+            {
+                question: "Câu 19: Phương pháp mã hóa dạng sóng trong miền tần số (Transform Coding) đạt được lợi điểm là các thành phần tín hiệu trong miền tần số được giải tương quan, nghĩa là chúng gần như thế nào?",
+                options: ["Tương quan mạnh.", "Không có sự tương hỗ.", "Đồng nhất.", "Dừng."],
+                answer: "Không có sự tương hỗ.",
+                explanation: "<strong>Giải thích:</strong> Giải tương quan (decorrelated) có nghĩa là các thành phần không còn phụ thuộc lẫn nhau (không tương hỗ), giúp mã hóa hiệu quả hơn (3.2.7)."
+            },
+            {
+                question: "Câu 20: Mã hóa chuyển đổi thích nghi (ATC) cho phép kết quả mã hóa với tốc độ rất thấp, cỡ bao nhiêu với chất lượng khá tốt?",
+                options: ["64 kbps.", "32 kbps.", "9.6 kbps.", "2.4 kbps."],
+                answer: "9.6 kbps.",
+                explanation: "<strong>Giải thích:</strong> ATC là kỹ thuật mã hóa miền tần số mạnh mẽ, có thể đạt 9.6 - 20 kbps (3.2.7.B)."
+            },
+            {
+                section: "PHẦN IV: MÃ HÓA THAM SỐ VÀ LAI GHÉP (CÂU 21 - 26)",
+                question: "Câu 21: Mã hóa tham số (Vocoder) đạt được tốc độ bit rất thấp là do ý tưởng của phương pháp này bắt nguồn từ mô hình nào?",
+                options: ["Mô hình biến đổi DCT.", "Mô hình nguồn-bộ lọc mô tả bộ máy phát âm.", "Mô hình lượng tử hóa vector.", "Mô hình phân tích cepstral."],
+                answer: "Mô hình nguồn-bộ lọc mô tả bộ máy phát âm.",
+                explanation: "<strong>Giải thích:</strong> Vocoder không truyền sóng âm, mà truyền các tham số điều khiển mô hình Nguồn-Bộ lọc để tái tạo lại âm thanh (3.3)."
+            },
+            {
+                question: "Câu 22: Mặc dù mã hóa tham số có thể đạt tốc độ bit rất thấp (xuống đến 2.4 Kbps), nhược điểm chính của nó là gì?",
+                options: ["Tính tự nhiên của tiếng nói được tái tạo khác xa với tín hiệu tiếng nói con người.", "Độ trễ mã hóa quá lớn.", "Rất khó triển khai thực hiện.", "Chỉ sử dụng được cho âm hữu thanh."],
+                answer: "Tính tự nhiên của tiếng nói được tái tạo khác xa với tín hiệu tiếng nói con người.",
+                explanation: "<strong>Giải thích:</strong> Do giản lược hóa quá trình phát âm, tiếng nói vocoder thường nghe 'méo' hoặc giống rô-bốt (3.3)."
+            },
+            {
+                question: "Câu 23: Trong mã hóa tham số LPC, ngoài thông tin về loại âm, độ lớn tín hiệu và tập các hệ số bộ lọc LPC, thông tin quan trọng nào khác cần được mã hóa?",
+                options: ["Tần số lấy mẫu.", "Tần số cơ bản (chu kỳ pitch).", "Số bit lượng tử hóa.", "Độ lợi dự đoán $G_p$."],
+                answer: "Tần số cơ bản (chu kỳ pitch).",
+                explanation: "<strong>Giải thích:</strong> Để tái tạo âm hữu thanh, cần biết tần số rung của dây thanh (Pitch/F0) (3.3)."
+            },
+            {
+                question: "Câu 24: Phương pháp mã hóa lai ghép kết hợp mã hóa trực tiếp dạng sóng và mã hóa tham số nhằm đạt được mục tiêu gì?",
+                options: ["Đạt được tốc độ mã hóa cao và chất lượng thấp.", "Đạt được tốc độ mã hóa thấp và tăng được chất lượng tín hiệu tiếng nói mã hóa.", "Chỉ tập trung vào tối thiểu hóa sai số lượng tử.", "Phân tích tham số của bộ máy phát âm mà không quan tâm đến dạng sóng."],
+                answer: "Đạt được tốc độ mã hóa thấp và tăng được chất lượng tín hiệu tiếng nói mã hóa.",
+                explanation: "<strong>Giải thích:</strong> Mã hóa lai ghép (như CELP) cố gắng lấy ưu điểm của cả hai: nén tốt (của tham số) và chất lượng tốt (của dạng sóng) (3.4)."
+            },
+            {
+                question: "Câu 25: Kỹ thuật mã hóa lai ghép nào (thành công và thường được sử dụng nhiều nhất) được gọi là \"phân tích thông qua việc tổng hợp\" (Analysis - by - Synthesis - AbS)?",
+                options: ["SBC.", "DPCM.", "CELP.", "RPE."],
+                answer: "CELP.",
+                explanation: "<strong>Giải thích:</strong> CELP sử dụng vòng lặp AbS để tìm tín hiệu kích thích tối ưu nhất từ bộ mã (3.4, 3.5)."
+            },
+            {
+                question: "Câu 26: Mã hóa lai ghép AbS sử dụng mô hình bộ lọc dự đoán tuyến tính cho cơ quan phát âm, sau đó cố gắng tìm kiếm tín hiệu kích thích lý tưởng để giảm tối đa cái gì?",
+                options: ["Tốc độ bit.", "Sai lệch giữa dạng sóng tín hiệu đầu vào và dạng sóng tín hiệu được xây dựng lại.", "Độ phức tạp.", "Tần số lấy mẫu."],
+                answer: "Sai lệch giữa dạng sóng tín hiệu đầu vào và dạng sóng tín hiệu được xây dựng lại.",
+                explanation: "<strong>Giải thích:</strong> Nguyên tắc của AbS là thử sai để tìm ra tín hiệu kích thích sao cho sai số giữa tín hiệu gốc và tín hiệu tổng hợp là nhỏ nhất (3.4)."
+            },
+            {
+                section: "PHẦN V: MÃ HÓA TỐC ĐỘ THẤP VÀ ĐÁNH GIÁ (CÂU 27 - 30)",
+                question: "Câu 27: Phương pháp CELP khác với hai phương pháp MPE và RPE ở điểm nào về tín hiệu kích thích?",
+                options: ["Tín hiệu kích thích được xác định bằng một số lượng cố định các xung.", "Tín hiệu kích thích được sắp xếp cách đều nhau một khoảng cố định.", "Tín hiệu kích thích được lượng tử hóa vector một cách hiệu quả.", "CELP không sử dụng mô hình bộ lọc dự đoán tuyến tính."],
+                answer: "Tín hiệu kích thích được lượng tử hóa vector một cách hiệu quả.",
+                explanation: "<strong>Giải thích:</strong> CELP chọn tín hiệu kích thích từ một bộ mã (Codebook) định sẵn (Vector Quantization), trong khi MPE/RPE xác định vị trí xung (3.5)."
+            },
+            {
+                question: "Câu 28: Trong phương pháp CELP, bộ mã lượng tử vector thường được mã hóa bằng bao nhiêu bit, và hệ số khuếch đại được mã hóa bởi 5 bit?",
+                options: ["5 bit.", "8 bit.", "10 bit.", "16 bit."],
+                answer: "10 bit.",
+                explanation: "<strong>Giải thích:</strong> Bộ mã thường có kích thước 1024 (tương đương 10 bit index) (3.5)."
+            },
+            {
+                question: "Câu 29: Thang đo điểm ý kiến (Mean Opinion Score - MOS) được sử dụng để đánh giá chất lượng mã hóa tiếng nói theo thông số nào?",
+                options: ["Khách quan (tỷ số SNR).", "Chủ quan (độ hài lòng của người nghe).", "Tốc độ mã hóa.", "Độ trễ mã hóa."],
+                answer: "Chủ quan (độ hài lòng của người nghe).",
+                explanation: "<strong>Giải thích:</strong> MOS là thang điểm từ 1-5 dựa trên đánh giá cảm nhận trực tiếp của người nghe (3.6.2)."
+            },
+            {
+                question: "Câu 30: Trong các ứng dụng mã hóa tiếng nói của các hệ thống thoại tương tác thời gian thực, độ trễ mã hóa như thế nào là không thể chấp nhận được?",
+                options: ["> 50 ms.", "> 100 ms.", "> 150 ms.", "> 200 ms."],
+                answer: "> 150 ms.",
+                explanation: "<strong>Giải thích:</strong> Độ trễ > 150ms sẽ gây ra cảm giác trễ tiếng, khó chịu trong hội thoại thời gian thực (3.6.3)."
+            }
+        ];
+
+        // Hàm khởi tạo bài kiểm tra
+        function buildQuiz() {
+            const quizContainer = document.getElementById('quiz-container');
+            let currentSection = "";
+
+            quizData.forEach((data, index) => {
+                // Thêm tiêu đề Mục nếu có
+                if (data.section && data.section !== currentSection) {
+                    currentSection = data.section;
+                    const sectionHeader = document.createElement('h2');
+                    sectionHeader.className = 'section-header';
+                    sectionHeader.textContent = currentSection;
+                    quizContainer.appendChild(sectionHeader);
+                }
+
+                // Tạo khối câu hỏi
+                const questionBlock = document.createElement('div');
+                questionBlock.className = 'question-block';
+                questionBlock.id = `q${index}`;
+
+                // Thêm câu hỏi
+                const questionTitle = document.createElement('div');
+                questionTitle.className = 'question-title';
+                questionTitle.innerHTML = data.question; // Dùng innerHTML để render MathJax
+                questionBlock.appendChild(questionTitle);
+
+                // Tạo danh sách các lựa chọn
+                const optionsList = document.createElement('ul');
+                optionsList.className = 'options-list';
+
+                data.options.forEach(optionText => {
+                    const optionItem = document.createElement('li');
+                    optionItem.className = 'option';
+                    optionItem.innerHTML = optionText; // Dùng innerHTML để render MathJax
+
+                    // Kiểm tra xem đây có phải là câu trả lời đúng không
+                    if (optionText.startsWith(data.answer) && data.answer.length > 0) {
+                        optionItem.dataset.correct = "true";
+                    }
+
+                    // Thêm sự kiện click
+                    optionItem.addEventListener('click', () => selectAnswer(questionBlock, optionItem, data.answer, data.explanation));
+                    optionsList.appendChild(optionItem);
+                });
+
+                questionBlock.appendChild(optionsList);
+
+                // Tạo khung giải thích (ẩn)
+                const explanationBox = document.createElement('div');
+                explanationBox.className = 'explanation';
+                explanationBox.innerHTML = data.explanation; // Dùng innerHTML để render MathJax
+                questionBlock.appendChild(explanationBox);
+
+                // Thêm khối câu hỏi vào container
+                quizContainer.appendChild(questionBlock);
+            });
+            
+            // Yêu cầu MathJax render lại nếu cần
+            if (typeof MathJax !== 'undefined' && MathJax.typesetPromise) {
+                MathJax.typesetPromise();
+            }
+        }
+
+        // Hàm xử lý khi chọn câu trả lời
+        function selectAnswer(questionBlock, selectedOption, correctAnswer, explanation) {
+            // Đánh dấu câu hỏi này là đã trả lời
+            questionBlock.classList.add('answered');
+
+            // Tìm tất cả các lựa chọn trong câu hỏi này
+            const allOptions = questionBlock.querySelectorAll('.option');
+
+            allOptions.forEach(option => {
+                // Highlight đáp án đúng
+                if (option.dataset.correct === "true") {
+                    option.classList.add('correct');
+                }
+                // Highlight đáp án sai (nếu người dùng chọn sai)
+                else if (option === selectedOption) {
+                    option.classList.add('incorrect');
+                }
+            });
+
+            // Hiển thị khung giải thích
+            const explanationBox = questionBlock.querySelector('.explanation');
+            explanationBox.style.display = 'block';
+        }
+
+        // Bắt đầu xây dựng bài kiểm tra khi trang được tải
+        document.addEventListener('DOMContentLoaded', buildQuiz);
+    </script>
+
+</body>
+</html>
