@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài tập Trắc nghiệm: Chương 5 - Nhận dạng Tiếng Nói</title>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script>
+    MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        }
+    };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        :root {
+            --primary-color: #005a9c;
+            --secondary-color: #007bff;
+            --text-color: #333;
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --border-color: #e0e0e0;
+            --correct-bg: #e6f7ec;
+            --correct-border: #5cb85c;
+            --incorrect-bg: #fbe9e9;
+            --incorrect-border: #d9534f;
+            --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            font-family: var(--font-stack);
+            line-height: 1.6;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            background: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 30px 40px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.2em;
+        }
+        header h2 {
+            margin: 5px 0 0;
+            font-size: 1.5em;
+            font-weight: 400;
+            opacity: 0.9;
+        }
+
+        main {
+            padding: 30px 40px;
+        }
+        
+        .section-header {
+            font-family: var(--font-stack);
+            color: var(--primary-color);
+            font-size: 1.8em;
+            font-weight: 600;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 10px;
+            margin-top: 10px;
+            margin-bottom: 25px;
+        }
+        main .section-header:first-of-type {
+            margin-top: 0;
+        }
+
+        .question-block {
+            margin-bottom: 30px;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 25px;
+        }
+
+        .question-block:last-child {
+            border-bottom: none;
+        }
+
+        .question-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .options-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .option {
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px 18px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .option:hover {
+            background-color: #f9f9f9;
+            border-color: var(--secondary-color);
+        }
+
+        /* Lớp CSS cho các lựa chọn */
+        .option.correct {
+            background-color: var(--correct-bg);
+            border-color: var(--correct-border);
+            font-weight: bold;
+            color: #2b7a4b;
+        }
+
+        .option.incorrect {
+            background-color: var(--incorrect-bg);
+            border-color: var(--incorrect-border);
+            color: #a94442;
+        }
+
+        /* Vô hiệu hóa click sau khi đã chọn */
+        .question-block.answered .option {
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .question-block.answered .option:hover {
+            background-color: transparent;
+        }
+        .question-block.answered .option.correct:hover {
+            background-color: var(--correct-bg);
+        }
+         .question-block.answered .option.incorrect:hover {
+            background-color: var(--incorrect-bg);
+        }
+
+        /* Khung giải thích */
+        .explanation {
+            display: none; /* Ẩn mặc định */
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #fdfdea;
+            border: 1px solid #f0ad4e;
+            border-left-width: 5px;
+            border-radius: 5px;
+        }
+
+        .explanation strong {
+            color: #8a6d3b;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Bài ôn tập: Chương 5 - Nhận dạng Tiếng Nói</h1>
+            <h2>Đề thi Trắc nghiệm</h2>
+        </header>
+        
+        <main id="quiz-container">
+            </main>
+    </div>
+
+    <script>
+        // Dữ liệu câu hỏi và đáp án (Đã được giải chi tiết)
+        const quizData = [
+            {
+                question: "Câu 1 (5.1. Mở đầu): Mục tiêu xa vời mà các nhà nghiên cứu nhận dạng tiếng nói vẫn còn ở \"quá xa\" là gì?",
+                options: ["Hiểu được quá trình tạo tín hiệu tiếng nói.", "Đưa ra nhiều kỹ thuật phân tích tiếng nói.", "Xây dựng và phát triển nhiều hệ thống nhận dạng tín hiệu tiếng nói quan trọng.", "Xây dựng được những cỗ máy có thể giao tiếp một cách tự nhiên với con người."],
+                answer: "Xây dựng được những cỗ máy có thể giao tiếp một cách tự nhiên với con người.",
+                explanation: "<strong>Giải thích:</strong> Mục tiêu tối thượng là máy hiểu tiếng nói tự nhiên như người, điều này vẫn là thách thức lớn (5.1)."
+            },
+            {
+                question: "Câu 2 (5.2. Lịch sử Phát triển): Công nghệ nhận dạng tiếng nói Thế hệ 1 (những năm 30 đến 50) sử dụng phương thức nào?",
+                options: ["Các phương pháp thống kê với mô hình Markov ẩn (HMM).", "Các phương thức ad hoc để nhận dạng các âm, hoặc các bộ từ vựng với số lượng nhỏ của các từ tách biệt.", "Các giải pháp lập trình động cho việc chỉnh thời gian.", "Các biện pháp nhận dạng mẫu để nhận dạng tín hiệu tiếng nói với các bộ từ vựng vừa và nhỏ."],
+                answer: "Các phương thức ad hoc để nhận dạng các âm, hoặc các bộ từ vựng với số lượng nhỏ của các từ tách biệt.",
+                explanation: "<strong>Giải thích:</strong> Thế hệ đầu tiên sơ khai, dựa trên các phương pháp tự phát (ad hoc) cho từ vựng nhỏ (5.2)."
+            },
+            {
+                question: "Câu 3 (5.2. Lịch sử Phát triển): Thế hệ thứ ba của công nghệ nhận dạng tiếng nói (những năm 60 đến 80) sử dụng các biện pháp nào?",
+                options: ["Sử dụng các phương pháp acoustic-phonetic để nhận dạng các phonemes.", "Sử dụng các biện pháp nhận dạng mẫu để nhận dạng tín hiệu tiếng nói với các bộ từ vựng vừa và nhỏ của các từ tách biệt hoặc dãy từ có liên kết với nhau.", "Sử dụng các phương pháp huấn luyện lan truyền xuôi-ngược.", "Sử dụng mạng nơ-ron để ước lượng các hàm mật độ xác suất có điều kiện."],
+                answer: "Sử dụng các biện pháp nhận dạng mẫu để nhận dạng tín hiệu tiếng nói với các bộ từ vựng vừa và nhỏ của các từ tách biệt hoặc dãy từ có liên kết với nhau.",
+                explanation: "<strong>Giải thích:</strong> Thế hệ 3 nổi bật với Nhận dạng mẫu (Pattern Recognition), LPC, DTW và VQ (5.2)."
+            },
+            {
+                question: "Câu 4 (5.2. Lịch sử Phát triển): Công nghệ của Thế hệ 4 (những năm 80 đến 00) đã sử dụng phương pháp thống kê nào để mô phổng tính chất động và thống kê của tín hiệu tiếng nói trong hệ thống nhận dạng liên tục?",
+                options: ["Mạng nơ-ron lan truyền xuôi-ngược.", "Mô hình Markov ẩn (HMM).", "Lượng tử hóa véc-tơ (VEC).", "Phân đoạn K-trung bình (segmental K-mean) cho các bộ từ vựng nhỏ."],
+                answer: "Mô hình Markov ẩn (HMM).",
+                explanation: "<strong>Giải thích:</strong> HMM là công nghệ chủ đạo của thế hệ 4, cho phép nhận dạng liên tục hiệu quả (5.2)."
+            },
+            {
+                question: "Câu 5 (5.2. Lịch sử Phát triển): Công nghệ nhận dạng tiếng nói Thế hệ 5 đang chứng kiến sự phát triển của các giải pháp nào?",
+                options: ["Sử dụng các đo lường khoảng cách LPC để cho điểm sự tương đồng của các mẫu.", "Tăng tính chắc chắn (robustness) của hệ thống nhận dạng trong môi trường có nhiễu.", "Sử dụng các phương pháp thích nghi để thay đổi các tham số gắn với tín hiệu tiếng nói.", "Sử dụng các phương thức ad hoc để nhận dạng các âm."],
+                answer: "Tăng tính chắc chắn (robustness) của hệ thống nhận dạng trong môi trường có nhiễu.",
+                explanation: "<strong>Giải thích:</strong> Thế hệ 5 tập trung vào tính bền vững (robustness), kết hợp nhiều phương pháp và xử lý song song (5.2)."
+            },
+            {
+                question: "Câu 6 (5.3. Phân loại): Theo cách phân loại dựa trên đơn vị tiếng nói, hệ thống nhận dạng tiếng nói có thể được phân thành hai loại chính nào?",
+                options: ["Hệ thống nhận dạng từ riêng lẻ và Hệ thống nhận dạng liên tục.", "Hệ thống nhận dạng phụ thuộc người nói và độc lập người nói.", "Hệ thống nhận dạng tự động và hệ thống xử lý ngôn ngữ tự nhiên (NLP).", "Hệ thống nhận dạng transcription và hệ thống nhận dạng hội thoại."],
+                answer: "Hệ thống nhận dạng từ riêng lẻ và Hệ thống nhận dạng liên tục.",
+                explanation: "<strong>Giải thích:</strong> Phân loại theo đơn vị (Discrete vs Continuous) là cách chia cơ bản nhất (5.3)."
+            },
+            {
+                question: "Câu 7 (5.3. Phân loại): Lớp nhận dạng tiếng nói với mục đích hiểu (còn gọi là lớp nhận dạng tiếng nói hội thoại) tập trung vào mục tiêu nào?",
+                options: ["Nhận dạng mỗi từ một cách chính xác.", "Chỉ sử dụng các kiến thức ngữ pháp đơn giản.", "Tập trung vào việc hiểu nghĩa của các câu thay vì việc nhận dạng các từ riêng biệt.", "Không cần sử dụng các kiến thức ngôn ngữ phức tạp."],
+                answer: "Tập trung vào việc hiểu nghĩa của các câu thay vì việc nhận dạng các từ riêng biệt.",
+                explanation: "<strong>Giải thích:</strong> Speech Understanding ưu tiên ý nghĩa và ngữ cảnh hơn là chính xác từng từ (5.3)."
+            },
+            {
+                question: "Câu 8 (5.3. Phân loại): Nhận định nào sau đây là đúng về Hệ thống nhận dạng độc lập với người nói (speaker-independent)?",
+                options: ["Mẫu/mô hình tham khảo cần phải thay đổi cập nhật mỗi lần người nói thay đổi.", "Có khả năng nhận dạng tiếng nói của bất cứ ai, mặc dù khó hơn rất nhiều so với hệ thống phụ thuộc người nói.", "Là một hệ thống con của Hệ thống xử lý ngôn ngữ tự nhiên (NLP).", "Luôn yêu cầu người sử dụng phải ngừng trong khi nói."],
+                answer: "Có khả năng nhận dạng tiếng nói của bất cứ ai, mặc dù khó hơn rất nhiều so với hệ thống phụ thuộc người nói.",
+                explanation: "<strong>Giải thích:</strong> Speaker-independent được huấn luyện trên dữ liệu lớn để nhận dạng mọi người dùng mà không cần huấn luyện lại (5.3)."
+            },
+            {
+                question: "Câu 9 (5.4. Cấu trúc Hệ nhận dạng): Trong cấu trúc tổng quát của một hệ thống nhận dạng tiếng nói (Hình 5.1), kết quả thu được sau quá trình trích chọn đặc trưng là gì?",
+                options: ["Tín hiệu tiếng nói đầu vào đã được tiền xử lý.", "Bộ mã vector dùng để so sánh.", "Mô hình ngôn ngữ.", "Tập các đặc trưng âm học (acoustic features) được tạo dựng thành một véc-tơ."],
+                answer: "Tập các đặc trưng âm học (acoustic features) được tạo dựng thành một véc-tơ.",
+                explanation: "<strong>Giải thích:</strong> Đầu ra của khối Front-end là chuỗi các vector đặc trưng (feature vectors) (5.4)."
+            },
+            {
+                question: "Câu 10 (5.4. Cấu trúc Hệ nhận dạng): Quá trình huấn luyện hệ thống nhận dạng độc lập với người nói (speaker-independent recognition) thường yêu cầu điều gì?",
+                options: ["Duy nhất một biểu diễn (utterances) cho mỗi từ cần được huấn luyện.", "Bao gồm hàng ngàn biểu diễn tương ứng với tín hiệu của mẫu tham khảo mong muốn, thường là bộ phận của một cơ sở dữ liệu tiếng nói đã được thu thập.", "Không cần quá trình xử lý phức tạp.", "Chỉ cần sử dụng một mô hình âm đơn (a single phoneme)."],
+                answer: "Bao gồm hàng ngàn biểu diễn tương ứng với tín hiệu của mẫu tham khảo mong muốn, thường là bộ phận của một cơ sở dữ liệu tiếng nói đã được thu thập.",
+                explanation: "<strong>Giải thích:</strong> Để độc lập người nói, cần lượng dữ liệu huấn luyện khổng lồ từ nhiều người khác nhau (5.4)."
+            },
+            {
+                question: "Câu 11 (5.4. Cấu trúc Hệ nhận dạng): Trong quá trình nhận dạng, sau khi tính toán độ tương đồng (likelihood) của dãy véc-tơ đặc trưng và mẫu tham khảo, kết quả nhận dạng được xác định dựa trên tiêu chí nào?",
+                options: ["Mẫu có khoảng cách (distance) nhỏ nhất.", "Mẫu hoặc dãy mẫu có độ tương đồng (likelihood) cao nhất.", "Mẫu được tính toán bằng thuật toán Durbin.", "Mẫu có hệ số cepstral thứ 0 nhỏ nhất."],
+                answer: "Mẫu hoặc dãy mẫu có độ tương đồng (likelihood) cao nhất.",
+                explanation: "<strong>Giải thích:</strong> Nguyên tắc Maximum Likelihood: chọn mẫu có xác suất sinh ra tín hiệu quan sát cao nhất (5.4)."
+            },
+            {
+                question: "Câu 12 (5.5.1. Lượng tử hóa Véc-tơ): Phân tích phổ so với biểu diễn trực tiếp dạng sóng tín hiệu (uncoded speech waveform) mang lại lợi ích gì?",
+                options: ["Làm tăng tốc độ thông tin yêu cầu.", "Cho phép ta giảm nhỏ đi rất nhiều tốc độ thông tin yêu cầu.", "Đảm bảo sai số lượng tử bằng không.", "Cho phép biểu diễn các tham số LPC."],
+                answer: "Cho phép ta giảm nhỏ đi rất nhiều tốc độ thông tin yêu cầu.",
+                explanation: "<strong>Giải thích:</strong> Biểu diễn phổ loại bỏ thông tin dư thừa, giúp giảm tốc độ bit đáng kể (5.5.1)."
+            },
+            {
+                question: "Câu 13 (5.5.1. Lượng tử hóa Véc-tơ): Ưu điểm của phương pháp biểu diễn lượng tử hóa véc-tơ là gì?",
+                options: ["Giảm nhỏ sai số lượng tử kế thừa.", "Không cần tra bảng cho việc tính toán tính tương đồng.", "Tăng dung lượng lưu trữ cho các véc-tơ mã.", "Cho phép giảm nhỏ việc tính toán để xác định sự giống nhau (similarity) của các véc-tơ phân tích phổ, thường giảm xuống thành một phép tra bảng."],
+                answer: "Cho phép giảm nhỏ việc tính toán để xác định sự giống nhau (similarity) của các véc-tơ phân tích phổ, thường giảm xuống thành một phép tra bảng.",
+                explanation: "<strong>Giải thích:</strong> VQ thay thế vector phức tạp bằng chỉ số (index), biến phép so sánh phức tạp thành so sánh chỉ số hoặc tra bảng (5.5.1)."
+            },
+            {
+                question: "Câu 14 (5.5.1. Lượng tử hóa Véc-tơ): Hạn chế của việc sử dụng bộ mã lượng tử hóa véc-tơ (VEC) là gì?",
+                options: ["Phép tra bảng quá phức tạp khi bộ mã nhỏ.", "Tồn tại sự méo phổ kế thừa (inherent distortion) do số lượng hữu hạn véc-tơ mã.", "Không thể giảm nhỏ tốc độ bit dưới 1000bps.", "Chỉ có thể áp dụng cho các từ vựng rất lớn."],
+                answer: "Tồn tại sự méo phổ kế thừa (inherent distortion) do số lượng hữu hạn véc-tơ mã.",
+                explanation: "<strong>Giải thích:</strong> Số lượng vector mã hữu hạn không thể biểu diễn chính xác vô hạn các biến thể phổ thực tế (5.5.1)."
+            },
+            {
+                question: "Câu 15 (5.5.2. Bộ xử lý LPC): Bước đầu tiên trong quá trình xử lý của bộ xử lý LPC là gì?",
+                options: ["Phân khung tín hiệu.", "Lấy cửa sổ tín hiệu.", "Tiền nhấn tín hiệu (Pre-emphasis).", "Phân tích tính tự tương quan."],
+                answer: "Tiền nhấn tín hiệu (Pre-emphasis).",
+                explanation: "<strong>Giải thích:</strong> Tiền nhấn (Pre-emphasis) được thực hiện đầu tiên để làm phẳng phổ tín hiệu (5.5.2)."
+            },
+            {
+                question: "Câu 16 (5.5.2. Bộ xử lý LPC): Mục đích của việc lấy cửa sổ tín hiệu (Windowing) trong phân tích LPC là gì?",
+                options: ["Giảm nhỏ sự không liên tục của tín hiệu ở phần đầu và cuối mỗi khung.", "Tăng cường các thành phần tín hiệu ở vùng tần cao.", "Phân tách các khung tín hiệu không chồng lấn.", "Tính toán năng lượng của khung tín hiệu."],
+                answer: "Giảm nhỏ sự không liên tục của tín hiệu ở phần đầu và cuối mỗi khung.",
+                explanation: "<strong>Giải thích:</strong> Cửa sổ (như Hamming) làm giảm biên độ ở biên khung về 0 để tránh rò rỉ phổ (spectral leakage) (5.5.2)."
+            },
+            {
+                question: "Câu 17 (5.5.2. Bộ xử lý LPC): Trong phân tích tính tự tương quan của LPC, thành phần tự tương quan bậc 0 ($\\Phi_l(0)$) đại diện cho thông số quan trọng nào của khung tín hiệu $l$?",
+                options: ["Bậc của phân tích LPC ($p$).", "Hệ số phản xạ.", "Năng lượng của khung thứ $l$.", "Hệ số LPC."],
+                answer: "Năng lượng của khung thứ $l$.",
+                explanation: "<strong>Giải thích:</strong> Tự tương quan tại độ trễ 0 chính là tổng bình phương tín hiệu, tức năng lượng (5.5.2)."
+            },
+            {
+                question: "Câu 18 (5.5.2. Bộ xử lý LPC): Tập các hệ số cepstral LPC được chứng minh là có tính chất gì so với tập các hệ số LPC, hệ số phản xạ hay hệ số tỉ lệ log diện tích trong việc nhận dạng tín hiệu tiếng nói?",
+                options: ["Đáng tin cậy và chắc chắn (robust) hơn.", "Cần ít thành phần hơn.", "Nhạy cảm với nhiễu bậc thấp.", "Thường được sử dụng mà không cần lấy trọng."],
+                answer: "Đáng tin cậy và chắc chắn (robust) hơn.",
+                explanation: "<strong>Giải thích:</strong> Cepstral coefficients phân tách tốt hơn nguồn và bộ lọc, ít nhạy cảm với nhiễu hơn các hệ số LPC gốc (5.5.2)."
+            },
+            {
+                question: "Câu 19 (5.5.3. Phân tích MFCC): Trong sơ đồ khối quá trình phân tích MFCC, phép biến đổi nào được áp dụng cho các lô-ga-rít phổ Mel để trích chọn các thành phần đặc trưng tương đối độc lập thống kê với nhau?",
+                options: ["Phép biến đổi Fourier nhanh (FFT).", "Biến đổi Z.", "Phép biến đổi Cosine rời rạc (DCT).", "Hệ mạch lọc thang Mel."],
+                answer: "Phép biến đổi Cosine rời rạc (DCT).",
+                explanation: "<strong>Giải thích:</strong> DCT được dùng ở bước cuối của MFCC để giải tương quan (decorrelate) các hệ số (5.5.3)."
+            },
+            {
+                question: "Câu 20 (5.5.3. Phân tích MFCC): Hệ số cepstral thứ 0 ($C_0$) trong MFCC biểu diễn điều gì?",
+                options: ["Giá trị trung bình của phổ biên độ.", "Tần số lấy mẫu.", "Giá trị trung bình (mean) của lô-ga-rít phổ Mel, có quan hệ mật thiết với năng lượng khung.", "Độ dốc (slope) của toàn dải phổ."],
+                answer: "Giá trị trung bình (mean) của lô-ga-rít phổ Mel, có quan hệ mật thiết với năng lượng khung.",
+                explanation: "<strong>Giải thích:</strong> C0 là thành phần một chiều (DC) của cepstrum, đại diện cho log năng lượng (5.5.3)."
+            },
+            {
+                question: "Câu 21 (5.5.3. Phân tích MFCC): Các hệ số đen-ta ($\\Delta$) và đen-ta-đen-ta ($\\Delta\\Delta$) được thêm vào véc-tơ đặc trưng nhằm mục đích gì?",
+                options: ["Loại bỏ nhiễu nền.", "Chỉ sử dụng cho quá trình huấn luyện mà không dùng trong nhận dạng mẫu.", "Tạo thành các tham số động, làm gia tăng chất lượng hệ thống nhận dạng bằng cách bao gồm thông tin về đạo hàm của cepstral theo thời gian.", "Thực hiện cân bằng mờ (blind equalization)."],
+                answer: "Tạo thành các tham số động, làm gia tăng chất lượng hệ thống nhận dạng bằng cách bao gồm thông tin về đạo hàm của cepstral theo thời gian.",
+                explanation: "<strong>Giải thích:</strong> Thông tin động (sự thay đổi theo thời gian) rất quan trọng để nhận dạng các âm vị chuyển tiếp (5.5.3)."
+            },
+            {
+                question: "Câu 22 (5.6. Phương pháp Acoustic-Phonetic): Phương pháp nhận dạng Acoustic-Phonetic giả thiết rằng các đơn vị âm tiết (phonetic) được đặc tả đầy đủ bởi một tập các tính chất phù hợp với tín hiệu tiếng nói, và do đó, bước đầu tiên trong quá trình nhận dạng là gì?",
+                options: ["Tính toán các mô hình Markov ẩn.", "Phân đoạn (segmentation) và gán nhãn.", "So sánh trực tiếp các mẫu tiếng nói.", "Sử dụng cây hồi quy và phân loại (CART)."],
+                answer: "Phân đoạn (segmentation) và gán nhãn.",
+                explanation: "<strong>Giải thích:</strong> Phương pháp này cố gắng tìm và gán nhãn cho các vùng âm vị trước khi nhận dạng từ (5.6.1)."
+            },
+            {
+                question: "Câu 23 (5.6. Phương pháp Acoustic-Phonetic): Theo nguồn, một trong những tồn tại làm cho phương pháp nhận dạng Acoustic-Phonetic thiếu sự thành công trong thực tế là gì?",
+                options: ["Phương pháp này không thể áp dụng cho các từ vựng lớn.", "Phương pháp này yêu cầu một khối lượng thông tin lớn về các tính chất âm học của các đơn vị âm tiết, nhưng thông tin này thường không đầy đủ.", "Việc huấn luyện mô hình rất tốn thời gian.", "Không thể áp dụng các luật về ngữ pháp."],
+                answer: "Phương pháp này yêu cầu một khối lượng thông tin lớn về các tính chất âm học của các đơn vị âm tiết, nhưng thông tin này thường không đầy đủ.",
+                explanation: "<strong>Giải thích:</strong> Kiến thức chuyên gia về âm học là khó thu thập và khó mô hình hóa đầy đủ bằng luật (5.6.1)."
+            },
+            {
+                question: "Câu 24 (5.6. Phương pháp Nhận dạng Mẫu): Quá trình phân loại mẫu trong phương pháp nhận dạng mẫu yêu cầu điều gì?",
+                options: ["Chỉ đo lường khoảng cách cục bộ (khoảng cách phổ giữa hai véc-tơ phổ).", "Cần cả đo lường khoảng cách cục bộ và một thủ tục sắp xếp thời gian toàn cục (chỉnh thời gian động) để bù lại sự khác biệt tốc độ tiếng nói.", "Chỉ cần sử dụng thuật toán Viterbi.", "So sánh với các mô hình ngữ nghĩa."],
+                answer: "Cần cả đo lường khoảng cách cục bộ và một thủ tục sắp xếp thời gian toàn cục (chỉnh thời gian động) để bù lại sự khác biệt tốc độ tiếng nói.",
+                explanation: "<strong>Giải thích:</strong> Cần DTW (Dynamic Time Warping) để so sánh hai mẫu có độ dài/tốc độ khác nhau (5.6.2)."
+            },
+            {
+                question: "Câu 25 (5.6. Phương pháp Nhận dạng Mẫu): Phương pháp nhận dạng mẫu có ưu điểm gì liên quan đến việc áp dụng cho các loại đơn vị tín hiệu tiếng nói khác nhau (từ phonemelike, từ, cụm từ)?",
+                options: ["Phương pháp này chỉ áp dụng hiệu quả cho các từ riêng lẻ.", "Có tính nhất quán và không thay đổi, cho phép thuật toán áp dụng rộng rãi với các loại đơn vị tín hiệu tiếng nói khác nhau.", "Khối lượng tính toán luôn nhỏ.", "Độ chính xác không thay đổi khi số lượng dữ liệu huấn luyện tăng."],
+                answer: "Có tính nhất quán và không thay đổi, cho phép thuật toán áp dụng rộng rãi với các loại đơn vị tín hiệu tiếng nói khác nhau.",
+                explanation: "<strong>Giải thích:</strong> Thuật toán so khớp mẫu không quan tâm đơn vị là từ hay âm vị, nó chỉ so sánh các vector đặc trưng (5.6.2)."
+            },
+            {
+                question: "Câu 26 (5.6. Phương pháp sử dụng Trí tuệ Nhân tạo): Thông tin cú pháp (syntactic information) trong phương pháp AI là gì?",
+                options: ["Các dữ kiện âm thanh được nói trên cơ sở các đo lường phổ.", "Thông tin về sự kết hợp giữa các dữ kiện âm học để tạo thành các cấu trúc từ.", "Thông tin về sự kết hợp của các từ để tạo thành một dãy đúng ngữ pháp (theo một mô hình ngôn ngữ nào đó).", "Thông tin cho phép có khả năng suy diễn cần thiết nhằm giải quyết sự mập mờ về nghĩa."],
+                answer: "Thông tin về sự kết hợp của các từ để tạo thành một dãy đúng ngữ pháp (theo một mô hình ngôn ngữ nào đó).",
+                explanation: "<strong>Giải thích:</strong> Cú pháp (Syntactic) liên quan đến ngữ pháp và trật tự từ (5.6.3)."
+            },
+            {
+                question: "Câu 27 (5.6. Phương pháp sử dụng Trí tuệ Nhân tạo): Trong phương pháp tích hợp \"bottom-up\" của hệ thống nhận dạng tiếng nói, các xử lý được thực hiện theo thứ tự nào?",
+                options: ["Từ mô hình ngôn ngữ đến trích chọn đặc trưng.", "Từ trích chọn đặc trưng, giải mã âm tiết lên đến giải mã từ vựng và mô hình ngôn ngữ.", "Từ bảng \"blackboard\" đến các nguồn kiến thức độc lập.", "Từ quyết định lô-gic đến phân loại mẫu."],
+                answer: "Từ trích chọn đặc trưng, giải mã âm tiết lên đến giải mã từ vựng và mô hình ngôn ngữ.",
+                explanation: "<strong>Giải thích:</strong> Bottom-up đi từ mức thấp (tín hiệu/âm thanh) lên mức cao (từ vựng/ngữ nghĩa) (5.6.3)."
+            },
+            {
+                question: "Câu 28 (5.6.4. Mạng Nơ-ron): Ưu điểm của Mạng Nơ-ron truyền thống (conventional) là gì, mà khiến nó được áp dụng rộng rãi?",
+                options: ["Chúng chỉ giải quyết các bài toán liên quan đến các mẫu tĩnh.", "Chúng chỉ có thể xấp xỉ các cấu trúc tuyến tính.", "Các mạng nơ-ron kế thừa bản chất là một cấu trúc chịu lỗi tốt (fault tolerance) và có khả năng học thích nghi theo thời gian thực.", "Chúng là các cấu trúc có tính tuần hoàn cao."],
+                answer: "Các mạng nơ-ron kế thừa bản chất là một cấu trúc chịu lỗi tốt (fault tolerance) và có khả năng học thích nghi theo thời gian thực.",
+                explanation: "<strong>Giải thích:</strong> Khả năng học, thích nghi và chịu lỗi là ưu điểm cốt lõi của NN (5.6.4)."
+            },
+            {
+                question: "Câu 29 (5.6.5. HMM): Hầu hết các hệ thống nhận dạng liên tục (CSR) hiện nay dựa trên mô hình nào?",
+                options: ["Phân loại âm vị nguyên âm theo cây nhị phân.", "Bộ xử lý LPC.", "Các mô hình Markov ẩn (HMM).", "Mạng nơ-ron với thời gian trễ (TDNN)."],
+                answer: "Các mô hình Markov ẩn (HMM).",
+                explanation: "<strong>Giải thích:</strong> HMM là tiêu chuẩn vàng cho nhận dạng tiếng nói liên tục trong nhiều thập kỷ (5.6.5)."
+            },
+            {
+                question: "Câu 30 (5.7. Nhận dạng Tiếng Việt): Việc xây dựng hệ thống nhận dạng tiếng Việt chính xác với lượng từ vựng lớn gặp khó khăn vì những đặc điểm nào của ngôn ngữ này?",
+                options: ["Tiếng Việt có sự phân hóa về mặt thổ ngữ tương đối lớn giữa ba miền Bắc, Trung, Nam.", "Tiếng Việt có thanh điệu.", "Sự khác biệt giữa các thanh điệu có khi rất nhỏ khi được phát âm bởi một số vùng miền (ví dụ, dấu \"?\" và \"~\" phát âm giống nhau ở vùng Bắc Trung bộ).", "Cả A, B và C đều đúng."],
+                answer: "Cả A, B và C đều đúng.",
+                explanation: "<strong>Giải thích:</strong> Tiếng Việt là ngôn ngữ thanh điệu và có sự đa dạng phương ngữ lớn, gây khó khăn cho nhận dạng (5.7)."
+            }
+        ];
+
+        // Hàm khởi tạo bài kiểm tra
+        function buildQuiz() {
+            const quizContainer = document.getElementById('quiz-container');
+            
+            quizData.forEach((data, index) => {
+                // Tạo khối câu hỏi
+                const questionBlock = document.createElement('div');
+                questionBlock.className = 'question-block';
+                questionBlock.id = `q${index}`;
+
+                // Thêm câu hỏi
+                const questionTitle = document.createElement('div');
+                questionTitle.className = 'question-title';
+                questionTitle.innerHTML = data.question; // Dùng innerHTML để render MathJax
+                questionBlock.appendChild(questionTitle);
+
+                // Tạo danh sách các lựa chọn
+                const optionsList = document.createElement('ul');
+                optionsList.className = 'options-list';
+
+                data.options.forEach(optionText => {
+                    const optionItem = document.createElement('li');
+                    optionItem.className = 'option';
+                    optionItem.innerHTML = optionText; // Dùng innerHTML để render MathJax
+
+                    // Kiểm tra xem đây có phải là câu trả lời đúng không
+                    if (optionText === data.answer) {
+                        optionItem.dataset.correct = "true";
+                    }
+
+                    // Thêm sự kiện click
+                    optionItem.addEventListener('click', () => selectAnswer(questionBlock, optionItem, data.answer, data.explanation));
+                    optionsList.appendChild(optionItem);
+                });
+
+                questionBlock.appendChild(optionsList);
+
+                // Tạo khung giải thích (ẩn)
+                const explanationBox = document.createElement('div');
+                explanationBox.className = 'explanation';
+                explanationBox.innerHTML = data.explanation; // Dùng innerHTML để render MathJax
+                questionBlock.appendChild(explanationBox);
+
+                // Thêm khối câu hỏi vào container
+                quizContainer.appendChild(questionBlock);
+            });
+            
+            // Yêu cầu MathJax render lại nếu cần
+            if (typeof MathJax !== 'undefined' && MathJax.typesetPromise) {
+                MathJax.typesetPromise();
+            }
+        }
+
+        // Hàm xử lý khi chọn câu trả lời
+        function selectAnswer(questionBlock, selectedOption, correctAnswer, explanation) {
+            // Đánh dấu câu hỏi này là đã trả lời
+            questionBlock.classList.add('answered');
+
+            // Tìm tất cả các lựa chọn trong câu hỏi này
+            const allOptions = questionBlock.querySelectorAll('.option');
+
+            allOptions.forEach(option => {
+                // Highlight đáp án đúng
+                if (option.dataset.correct === "true") {
+                    option.classList.add('correct');
+                }
+                // Highlight đáp án sai (nếu người dùng chọn sai)
+                else if (option === selectedOption) {
+                    option.classList.add('incorrect');
+                }
+            });
+
+            // Hiển thị khung giải thích
+            const explanationBox = questionBlock.querySelector('.explanation');
+            explanationBox.style.display = 'block';
+        }
+
+        // Bắt đầu xây dựng bài kiểm tra khi trang được tải
+        document.addEventListener('DOMContentLoaded', buildQuiz);
+    </script>
+
+</body>
+</html>

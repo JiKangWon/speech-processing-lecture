@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài tập Trắc nghiệm: Chương 5 - Nhận dạng Tiếng Nói (Đề 3)</title>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script>
+    MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        }
+    };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        :root {
+            --primary-color: #005a9c;
+            --secondary-color: #007bff;
+            --text-color: #333;
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --border-color: #e0e0e0;
+            --correct-bg: #e6f7ec;
+            --correct-border: #5cb85c;
+            --incorrect-bg: #fbe9e9;
+            --incorrect-border: #d9534f;
+            --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            font-family: var(--font-stack);
+            line-height: 1.6;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            background: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 30px 40px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.2em;
+        }
+        header h2 {
+            margin: 5px 0 0;
+            font-size: 1.5em;
+            font-weight: 400;
+            opacity: 0.9;
+        }
+
+        main {
+            padding: 30px 40px;
+        }
+        
+        .section-header {
+            font-family: var(--font-stack);
+            color: var(--primary-color);
+            font-size: 1.8em;
+            font-weight: 600;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 10px;
+            margin-top: 10px;
+            margin-bottom: 25px;
+        }
+        main .section-header:first-of-type {
+            margin-top: 0;
+        }
+
+        .question-block {
+            margin-bottom: 30px;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 25px;
+        }
+
+        .question-block:last-child {
+            border-bottom: none;
+        }
+
+        .question-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .options-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .option {
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px 18px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .option:hover {
+            background-color: #f9f9f9;
+            border-color: var(--secondary-color);
+        }
+
+        /* Lớp CSS cho các lựa chọn */
+        .option.correct {
+            background-color: var(--correct-bg);
+            border-color: var(--correct-border);
+            font-weight: bold;
+            color: #2b7a4b;
+        }
+
+        .option.incorrect {
+            background-color: var(--incorrect-bg);
+            border-color: var(--incorrect-border);
+            color: #a94442;
+        }
+
+        /* Vô hiệu hóa click sau khi đã chọn */
+        .question-block.answered .option {
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .question-block.answered .option:hover {
+            background-color: transparent;
+        }
+        .question-block.answered .option.correct:hover {
+            background-color: var(--correct-bg);
+        }
+         .question-block.answered .option.incorrect:hover {
+            background-color: var(--incorrect-bg);
+        }
+
+        /* Khung giải thích */
+        .explanation {
+            display: none; /* Ẩn mặc định */
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #fdfdea;
+            border: 1px solid #f0ad4e;
+            border-left-width: 5px;
+            border-radius: 5px;
+        }
+
+        .explanation strong {
+            color: #8a6d3b;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Bài ôn tập: Chương 5 - Nhận dạng Tiếng Nói</h1>
+            <h2>Đề thi số 3</h2>
+        </header>
+        
+        <main id="quiz-container">
+            </main>
+    </div>
+
+    <script>
+        // Dữ liệu câu hỏi và đáp án (Đã được giải chi tiết)
+        const quizData = [
+            {
+                question: "Câu 1 (5.1. Mở đầu): Mặc dù đã đạt được những bước tiến dài trong việc hiểu quá trình tạo tín hiệu tiếng nói và đưa ra nhiều kỹ thuật phân tích, mục tiêu nào mà các nhà nghiên cứu nhận dạng tiếng nói vẫn còn ở \"quá xa\"?",
+                options: ["Xây dựng và phát triển nhiều hệ thống nhận dạng tín hiệu tiếng nói quan trọng.", "Đưa ra nhiều kỹ thuật phân tích tiếng nói.", "Hiểu được quá trình tạo tín hiệu tiếng nói.", "Xây dựng được những cỗ máy có thể giao tiếp một cách tự nhiên với con người."],
+                answer: "Xây dựng được những cỗ máy có thể giao tiếp một cách tự nhiên với con người.",
+                explanation: "<strong>Giải thích:</strong> Mục tiêu tối thượng là giao tiếp tự nhiên giữa người và máy vẫn là thách thức lớn nhất (5.1)."
+            },
+            {
+                question: "Câu 2 (5.2. Lịch sử Phát triển): Thế hệ công nghệ nhận dạng tiếng nói nào đã sử dụng các giải pháp lập trình động cho việc chỉnh thời gian và phương pháp mã hóa lượng tử hóa véc-tơ để giảm nhỏ dữ liệu và tính toán?",
+                options: ["Thế hệ 2 (những năm 50 đến 60).", "Thế hệ 3 (những năm 60 đến 80).", "Thế hệ 4 (những năm 80 đến 00).", "Thế hệ 5 (đang phát triển)."],
+                answer: "Thế hệ 3 (những năm 60 đến 80).",
+                explanation: "<strong>Giải thích:</strong> Thế hệ 3 đặc trưng bởi Nhận dạng mẫu, DTW (chỉnh thời gian động) và VQ (lượng tử hóa vector) (5.2)."
+            },
+            {
+                question: "Câu 3 (5.3. Phân loại): Theo phân loại dựa trên đơn vị tiếng nói, hệ thống nhận dạng nào có mục tiêu nhận dạng các câu liên tục và không yêu cầu người sử dụng phải ngừng trong khi nói (về mặt lý thuyết)?",
+                options: ["Hệ thống nhận dạng từ riêng lẻ.", "Hệ thống nhận dạng phụ thuộc người nói.", "Hệ thống xử lý ngôn ngữ tự nhiên (NLP).", "Hệ thống nhận dạng tiếng nói liên tục."],
+                answer: "Hệ thống nhận dạng tiếng nói liên tục.",
+                explanation: "<strong>Giải thích:</strong> Continuous speech recognition cho phép người dùng nói tự nhiên mà không cần ngắt quãng giữa các từ (5.3)."
+            },
+            {
+                question: "Câu 4 (5.3. Phân loại): Nhận định nào sau đây là đúng về sự khác biệt giữa lớp nhận dạng tiếng nói liên tục với mục đích ghi chép (transcription) và lớp nhận dạng tiếng nói hội thoại (với mục đích hiểu)?",
+                options: ["Cả hai lớp đều tập trung vào việc nhận dạng mỗi từ một cách chính xác.", "Lớp ghi chép tập trung vào việc hiểu nghĩa, còn lớp hội thoại tập trung vào nhận dạng từ.", "Lớp hội thoại không cần sử dụng các kiến thức ngôn ngữ phức tạp.", "Lớp ghi chép có mục tiêu nhận dạng mỗi từ một cách chính xác, còn lớp hội thoại tập trung vào việc hiểu nghĩa của các câu."],
+                answer: "Lớp ghi chép có mục tiêu nhận dạng mỗi từ một cách chính xác, còn lớp hội thoại tập trung vào việc hiểu nghĩa của các câu.",
+                explanation: "<strong>Giải thích:</strong> Transcription cần chính xác từng từ, còn Understanding/Conversational cần nắm bắt ý nghĩa và ngữ cảnh (5.3)."
+            },
+            {
+                question: "Câu 5 (5.4. Cấu trúc Hệ nhận dạng): Trong cấu trúc tổng quát của hệ thống nhận dạng tiếng nói, quá trình trích chọn đặc trưng thường tạo ra khoảng bao nhiêu véc-tơ đặc trưng âm học trong một đơn vị thời gian một giây?",
+                options: ["1 véc-tơ.", "Khoảng 100 véc-tơ.", "10 véc-tơ.", "39 véc-tơ."],
+                answer: "Khoảng 100 véc-tơ.",
+                explanation: "<strong>Giải thích:</strong> Thông thường, khung tín hiệu là 20-30ms và bước nhảy là 10ms, dẫn đến khoảng 100 khung/giây (5.4)."
+            },
+            {
+                question: "Câu 6 (5.4. Cấu trúc Hệ nhận dạng): Trong quá trình nhận dạng, việc tính toán độ tương đồng (likelihood) của dãy véc-tơ đặc trưng và mẫu tham khảo thường được tính toán bằng cách áp dụng thuật toán hiệu quả nào?",
+                options: ["Thuật toán Durbin.", "Thuật toán Viterbi.", "Phân đoạn K-trung bình.", "Biến đổi Cosine rời rạc (DCT)."],
+                answer: "Thuật toán Viterbi.",
+                explanation: "<strong>Giải thích:</strong> Viterbi là thuật toán quy hoạch động phổ biến nhất để tìm đường đi tối ưu (likelihood cao nhất) trong HMM (5.4)."
+            },
+            {
+                question: "Câu 7 (5.5.1. Lượng tử hóa Véc-tơ): Nếu tín hiệu tiếng nói được lấy mẫu với tần số 10kHz và sử dụng 16 bít để biểu diễn biên độ mỗi mẫu (biểu diễn raw), tốc độ bit cần thiết để lưu trữ là bao nhiêu?",
+                options: ["1600 bps.", "16,000 bps.", "160,000 bps.", "1000 bps."],
+                answer: "160,000 bps.",
+                explanation: "<strong>Giải thích:</strong> $10,000 \\text{ mẫu/giây} \\times 16 \\text{ bit/mẫu} = 160,000 \\text{ bit/giây}$ (5.5.1)."
+            },
+            {
+                question: "Câu 8 (5.5.1. Lượng tử hóa Véc-tơ): Một trong những ưu điểm chính của phương pháp biểu diễn lượng tử hóa véc-tơ là khả năng giảm nhỏ việc tính toán để xác định sự giống nhau (similarity) của các véc-tơ phân tích phổ, thường giảm xuống thành thao tác nào?",
+                options: ["Thực hiện phép chập với mạch lọc tương hợp.", "Xấp xỉ bằng mô hình Markov ẩn (HMM).", "Một phép tra bảng.", "Tính toán khoảng cách phổ."],
+                answer: "Một phép tra bảng.",
+                explanation: "<strong>Giải thích:</strong> VQ thay thế vector bằng index, nên việc so sánh trở thành tra bảng khoảng cách giữa các mã trong Codebook (5.5.1)."
+            },
+            {
+                question: "Câu 9 (5.5.1. Lượng tử hóa Véc-tơ): Theo nguồn, để quá trình huấn luyện bộ mã lượng tử hóa véc-tơ hoạt động tốt, số lượng véc-tơ huấn luyện $L$ thường phải tối thiểu bằng bao nhiêu lần kích cỡ bộ mã $M$?",
+                options: ["$L = 2M$.", "$L \\approx 3p/2$.", "$L$ tối thiểu bằng 10M.", "$L > M$."],
+                answer: "$L$ tối thiểu bằng 10M.",
+                explanation: "<strong>Giải thích:</strong> Quy tắc kinh nghiệm để đảm bảo tính thống kê là số mẫu huấn luyện phải gấp ít nhất 10 lần số lượng từ mã (5.5.1)."
+            },
+            {
+                question: "Câu 10 (5.5.1. Lượng tử hóa Véc-tơ): Trong thủ tục phân loại véc-tơ, việc tìm kiếm chỉ số mã hóa $m^*$ phù hợp nhất với véc-tơ phổ $v$ được gọi là gì?",
+                options: ["Phép biến đổi Cosine rời rạc.", "Phương pháp Extreme Learning Machine.", "Việc tìm kiếm lân cận gần nhất hoặc thủ tục mã hóa tối ưu.", "Thuật toán Durbin."],
+                answer: "Việc tìm kiếm lân cận gần nhất hoặc thủ tục mã hóa tối ưu.",
+                explanation: "<strong>Giải thích:</strong> Nearest Neighbor Search tìm vector trong bộ mã có khoảng cách nhỏ nhất tới vector đầu vào (5.5.1)."
+            },
+            {
+                question: "Câu 11 (5.5.2. Bộ xử lý LPC): Mạch lọc được sử dụng cho việc tiền nhấn tín hiệu (pre-emphasis) trong LPC thường là hệ thống lọc số bậc thấp có dạng nào?",
+                options: ["Bộ lọc đáp ứng xung vô hạn (IIR) bậc nhất.", "Mạch lọc thông cao (high-pass filter).", "Bộ lọc đáp ứng xung hữu hạn (FIR) bậc nhất.", "Mạch lọc thích nghi với tham số $a_n$ thay đổi."],
+                answer: "Bộ lọc đáp ứng xung hữu hạn (FIR) bậc nhất.",
+                explanation: "<strong>Giải thích:</strong> Hàm truyền $H(z) = 1 - a z^{-1}$ là một bộ lọc FIR bậc nhất (5.5.2)."
+            },
+            {
+                question: "Câu 12 (5.5.2. Bộ xử lý LPC): Mục đích của việc sử dụng hàm cửa sổ (ví dụ: cửa sổ Hamming) trong phân tích LPC là gì?",
+                options: ["Tăng cường các thành phần tín hiệu ở vùng tần cao.", "Biến đổi thành các hệ số cepstral.", "Giảm nhỏ sự không liên tục của tín hiệu ở phần đầu và cuối mỗi khung.", "Phân tích tính tự tương quan."],
+                answer: "Giảm nhỏ sự không liên tục của tín hiệu ở phần đầu và cuối mỗi khung.",
+                explanation: "<strong>Giải thích:</strong> Cửa sổ làm giảm biên độ ở biên về 0, giảm thiểu hiện tượng rò rỉ phổ khi cắt khung (5.5.2.3)."
+            },
+            {
+                question: "Câu 13 (5.5.2. Bộ xử lý LPC): Đối với tín hiệu tiếng nói có tốc độ lấy mẫu $F_s = 6.67$ kHz, các giá trị phổ biến của số mẫu trong khung $N$ và số mẫu phân cách $M$ thường được chọn tương ứng là bao nhiêu?",
+                options: ["$N=240$ (30ms) và $M=80$ (10ms).", "$N=300$ (30ms) và $M=100$ (10ms).", "$N=300$ (45ms) và $M=100$ (15ms).", "$N=400$ (60ms) và $M=200$ (30ms)."],
+                answer: "$N=300$ (45ms) và $M=100$ (15ms).",
+                explanation: "<strong>Giải thích:</strong> Tra Bảng 5.2: Với $F_s=6.67kHz$, $N=300$ mẫu (45ms) và $M=100$ mẫu (15ms) (5.5.2.9)."
+            },
+            {
+                question: "Câu 14 (5.5.2. Bộ xử lý LPC): Thành phần $C_0$ trong hệ số cepstral LPC, được tính bằng $C_0 = \\frac{1}{2} \\ln(\\sigma^2)$, biểu diễn thông số nào?",
+                options: ["Hệ số phản xạ bậc 0.", "Độ lợi của việc sử dụng mô hình LPC.", "Năng lượng khung $\\Phi_l(0)$.", "Giá trị trung bình của lô-ga-rít phổ Mel."],
+                answer: "Độ lợi của việc sử dụng mô hình LPC.",
+                explanation: "<strong>Giải thích:</strong> Trong công thức chuyển đổi LPC sang Cepstral (3.18), $c_0 = \\ln(\\sigma^2)$ liên quan đến độ lợi (gain) của mô hình (5.5.2.6)."
+            },
+            {
+                question: "Câu 15 (5.5.2. Bộ xử lý LPC): Mục đích của việc thêm các tham số động (đạo hàm cepstral cấp một $\\Delta$ và cấp hai $\\Delta\\Delta$) vào véc-tơ đặc trưng là gì?",
+                options: ["Đảm bảo $C_0$ không được sử dụng trong nhận dạng mẫu.", "Đảm bảo tính nhất quán (robustness) trong môi trường nhiễu.", "Làm gia tăng chất lượng hệ thống nhận dạng bằng cách bao gồm thông tin về đạo hàm của cepstral theo thời gian.", "Giảm nhỏ độ nhạy cảm của các hệ số bậc thấp đối với độ dốc phổ toàn dải."],
+                answer: "Làm gia tăng chất lượng hệ thống nhận dạng bằng cách bao gồm thông tin về đạo hàm của cepstral theo thời gian.",
+                explanation: "<strong>Giải thích:</strong> Thông tin động (sự thay đổi của đặc trưng theo thời gian) giúp phân biệt các âm vị tốt hơn (5.5.2.8)."
+            },
+            {
+                question: "Câu 16 (5.5.3. Phân tích MFCC): Trong MFCC, hệ mạch lọc thang Mel (Mel-scale filterbank) gồm bao nhiêu băng con (subbands) được sử dụng?",
+                options: ["13.", "12.", "23.", "Khoảng 40."],
+                answer: "23.",
+                explanation: "<strong>Giải thích:</strong> Theo chuẩn ETSI và tài liệu, bộ lọc Mel thường gồm 23 băng con (5.5.3)."
+            },
+            {
+                question: "Câu 17 (5.5.3. Phân tích MFCC): Trong sơ đồ khối MFCC, phép biến đổi nào được áp dụng cho các lô-ga-rít phổ Mel nhằm trích chọn các thành phần đặc trưng tương đối độc lập thống kê với nhau?",
+                options: ["Phép biến đổi Fourier nhanh (FFT).", "Phép biến đổi Cosine rời rạc (DCT).", "Biến đổi Z.", "Phép biến đổi Hough."],
+                answer: "Phép biến đổi Cosine rời rạc (DCT).",
+                explanation: "<strong>Giải thích:</strong> DCT là bước cuối cùng để giải tương quan (decorrelate) các hệ số log năng lượng Mel (5.5.3)."
+            },
+            {
+                question: "Câu 18 (5.5.3. Phân tích MFCC): Hệ số cepstral thứ 0 ($C_0$) trong MFCC, mặc dù có quan hệ mật thiết với năng lượng khung, thường được trích ra một cách đặc biệt để sử dụng cho mục đích nào?",
+                options: ["Chỉ để tính toán hệ số $\\Delta\\Delta$.", "Sử dụng cho quá trình huấn luyện mô hình Markov ẩn (HMM) và các kỹ thuật thích nghi.", "Phân tích tính tự tương quan $\\Phi_l(0)$.", "Là thành phần chính của véc-tơ đặc trưng phổ biến gồm 39 thành phần."],
+                answer: "Sử dụng cho quá trình huấn luyện mô hình Markov ẩn (HMM) và các kỹ thuật thích nghi.",
+                explanation: "<strong>Giải thích:</strong> $C_0$ (Log Energy) nhạy cảm với độ lớn âm lượng nên thường được xử lý riêng hoặc chuẩn hóa trong HMM (5.5.3)."
+            },
+            {
+                question: "Câu 19 (5.5.3. Phân tích MFCC): Khi sử dụng MFCC, véc-tơ đặc trưng phổ biến (ví dụ: 39 thành phần) thường bao gồm các tham số nào?",
+                options: ["Hệ số cepstral $C_0$ và $C_1$ đến $C_{12}$.", "Lô-ga-rít năng lượng khung và 23 hệ số MFCC.", "Lô-ga-rít năng lượng khung, 12 hệ số cepstral ($C_1$ đến $C_{12}$), các hệ số đen-ta cấp một ($\\Delta$), và các hệ số đen-ta-đen-ta cấp hai ($\\Delta\\Delta$).", "Các hệ số phản xạ và các hệ số log tỷ lệ diện tích."],
+                answer: "Lô-ga-rít năng lượng khung, 12 hệ số cepstral ($C_1$ đến $C_{12}$), các hệ số đen-ta cấp một ($\\Delta$), và các hệ số đen-ta-đen-ta cấp hai ($\\Delta\\Delta$).",
+                explanation: "<strong>Giải thích:</strong> 39 thành phần = 1 (LogE) + 12 (MFCC) + 13 (Delta) + 13 (Delta-Delta) (5.5.3)."
+            },
+            {
+                question: "Câu 20 (5.6.1. Acoustic-Phonetic): Phương pháp nhận dạng Acoustic-Phonetic giả thiết rằng các đơn vị âm tiết được đặc tả đầy đủ bởi một tập các tính chất phù hợp với tín hiệu tiếng nói. Tuy nhiên, một tồn tại lớn của phương pháp này là gì?",
+                options: ["Nó yêu cầu quá trình chỉnh thời gian động (DTW) phức tạp.", "Nó quá nhạy cảm với số lượng dữ liệu huấn luyện.", "Phương pháp này yêu cầu một khối lượng thông tin lớn về các tính chất âm học của các đơn vị âm tiết, nhưng những thông tin này thường không đầy đủ và không sẵn sàng.", "Nó chỉ áp dụng được cho các mẫu tĩnh."],
+                answer: "Phương pháp này yêu cầu một khối lượng thông tin lớn về các tính chất âm học của các đơn vị âm tiết, nhưng những thông tin này thường không đầy đủ và không sẵn sàng.",
+                explanation: "<strong>Giải thích:</strong> Khó khăn trong việc mô hình hóa đầy đủ tri thức chuyên gia về âm học là hạn chế lớn nhất của phương pháp này (5.6.1)."
+            },
+            {
+                question: "Câu 21 (5.6.1. Acoustic-Phonetic): Trong sơ đồ phân loại nguyên âm tiếng Anh đơn giản (Hình 5.9), sau khi phân tách Compact/Diffuse (dựa trên $F_1$), bước tiếp theo là phân tách các nhóm con dựa trên tần số formant thứ hai ($F_2$) thành hai loại nào?",
+                options: ["Tense/Lax (Căng/Thả lỏng).", "Flat/Plain (Bằng/Đơn giản).", "Acute/Grave (Âm sắc/Âm huyền).", "Voiced/Unvoiced (Hữu thanh/Vô thanh)."],
+                answer: "Acute/Grave (Âm sắc/Âm huyền).",
+                explanation: "<strong>Giải thích:</strong> Theo Hình 5.9, bước 2 dựa trên F2 phân loại thành Acute (F2 cao) và Grave (F2 thấp) (5.6.1)."
+            },
+            {
+                question: "Câu 22 (5.6.2. Pattern Recognition): Trong quá trình Phân loại mẫu, để bù lại sự khác biệt tốc độ tiếng nói (tỷ lệ thời gian) giữa mẫu kiểm tra và mẫu tham khảo, cần sử dụng thủ tục nào?",
+                options: ["Thuật toán Durbin.", "Thủ tục sắp xếp thời gian toàn cục (chỉnh thời gian động - Dynamic Time Warping).", "Phân tích tính tự tương quan.", "Phân đoạn K-trung bình."],
+                answer: "Thủ tục sắp xếp thời gian toàn cục (chỉnh thời gian động - Dynamic Time Warping).",
+                explanation: "<strong>Giải thích:</strong> DTW là kỹ thuật kinh điển để so khớp hai chuỗi thời gian có tốc độ khác nhau (5.6.2)."
+            },
+            {
+                question: "Câu 23 (5.6.2. Pattern Recognition): Phương pháp nhận dạng mẫu có tính chất gì liên quan đến việc áp dụng cho các loại đơn vị tiếng nói, bộ từ vựng, số đông người nói và môi trường nền khác nhau?",
+                options: ["Rất nhạy cảm (sensitive) và yêu cầu thay đổi thuật toán.", "Khối lượng tính toán thường không thể thực hiện được (prohibitive).", "Nhất quán và không thay đổi (insensitive), cho phép thuật toán áp dụng một cách rộng rãi.", "Luôn yêu cầu thông tin tiếng nói cụ thể được sử dụng một cách rõ ràng."],
+                answer: "Nhất quán và không thay đổi (insensitive), cho phép thuật toán áp dụng một cách rộng rãi.",
+                explanation: "<strong>Giải thích:</strong> Phương pháp này dựa trên so sánh vector đặc trưng thuần túy, không phụ thuộc vào bản chất ngôn ngữ hay đơn vị âm thanh (5.6.2)."
+            },
+            {
+                question: "Câu 24 (5.6.3. AI): Nguồn thông tin nào trong phương pháp AI mô tả thông tin về sự kết hợp giữa các dữ kiện âm học để tạo thành các cấu trúc từ, và được cụ thể hóa bởi một bộ từ vựng ánh xạ các âm thanh vào các từ?",
+                options: ["Thông tin âm học.", "Thông tin cú pháp.", "Thông tin ngữ nghĩa.", "Thông tin từ vựng (lexical)."],
+                answer: "Thông tin từ vựng (lexical).",
+                explanation: "<strong>Giải thích:</strong> Lexical knowledge là cầu nối giữa âm thanh (phoneme) và từ vựng (word) (5.6.3)."
+            },
+            {
+                question: "Câu 25 (5.6.3. AI): Câu \"Go to the refrigerator and get me a book\" được coi là đúng về mặt cú pháp. Tuy nhiên, theo nguồn, câu này được đánh giá như thế nào về mặt ngữ nghĩa (semantic)?",
+                options: ["Hoàn toàn không có nghĩa.", "Nhất quán với tác vụ đang được thực hiện.", "Có thể giải quyết được bằng thông tin thực dụng (pragmatic).", "Không nhất quán về mặt ngữ nghĩa."],
+                answer: "Không nhất quán về mặt ngữ nghĩa.",
+                explanation: "<strong>Giải thích:</strong> Câu đúng ngữ pháp nhưng vô nghĩa (sách không ở trong tủ lạnh), đây là ví dụ về vai trò của Semantic (5.6.3)."
+            },
+            {
+                question: "Câu 26 (5.6.3. AI): Phương pháp tích hợp kiến thức nào hoạt động theo nguyên tắc các xử lý cấp thấp nhất (trích chọn đặc trưng, giải mã âm tiết) được thực hiện trước các phép xử lý cấp cao (mô hình ngôn ngữ) theo một thứ tự nối tiếp?",
+                options: ["Phương pháp \"top-down\".", "Phương pháp \"blackboard\".", "Phương pháp \"bottom-up\".", "Phương pháp điều khiển ngữ nghĩa."],
+                answer: "Phương pháp \"bottom-up\".",
+                explanation: "<strong>Giải thích:</strong> Bottom-up đi từ tín hiệu lên đến ý nghĩa theo một chiều (5.6.3)."
+            },
+            {
+                question: "Câu 27 (5.6.4. Mạng Nơ-ron): Ưu điểm nào của mạng nơ-ron khiến cấu trúc này khá trơ (least sensitive) với nhiễu hoặc các lỗi không hoàn hảo bên trong cấu trúc (chịu lỗi tốt)?",
+                options: ["Khả năng xấp xỉ mọi cấu trúc không tuyến tính.", "Khả năng học thích nghi theo thời gian thực.", "Khả năng dễ dàng thực thi với cấp độ lớn các tính toán song song.", "Các thông tin nhúng trong mạng được trải (lan) đến mọi phần tử tính toán trong mạng."],
+                answer: "Các thông tin nhúng trong mạng được trải (lan) đến mọi phần tử tính toán trong mạng.",
+                explanation: "<strong>Giải thích:</strong> Do kiến trúc phân tán (distributed representation), lỗi cục bộ ít ảnh hưởng toàn cục (5.6.4)."
+            },
+            {
+                question: "Câu 28 (5.6.4. Mạng Nơ-ron): Cấu trúc mạng nơ-ron nào mở rộng đầu vào của mỗi phần tử tính toán để thêm vào N khung tín hiệu tiếng nói, nhằm bao trùm một khoảng thời gian N$\\Delta$ giây?",
+                options: ["Mạng Nơ-ron truyền thống (conventional).", "Mạng Nơ-ron với thời gian trễ (TDNN - Time delay neural network).", "Mạng nơ-ron kết hợp mạch lọc tương hợp.", "Mô hình Markov ẩn (HMM)."],
+                answer: "Mạng Nơ-ron với thời gian trễ (TDNN - Time delay neural network).",
+                explanation: "<strong>Giải thích:</strong> TDNN sử dụng cửa sổ trượt theo thời gian để nắm bắt đặc tính động của tiếng nói (5.6.4)."
+            },
+            {
+                question: "Câu 29 (5.6.5. HMM): Trong hệ thống nhận dạng liên tục (CSR) dựa trên HMM, đơn vị cơ bản của âm được biểu diễn bởi mô hình âm (acoustic model) là gì?",
+                options: ["Từ vựng.", "Âm tiết.", "Âm vị (phone).", "Chuỗi từ $w$."],
+                answer: "Âm vị (phone).",
+                explanation: "<strong>Giải thích:</strong> Do số lượng từ vựng quá lớn, HMM thường mô hình hóa các đơn vị nhỏ hơn là âm vị (khoảng 40-50 phoneme) (5.6.5)."
+            },
+            {
+                question: "Câu 30 (5.7. Nhận dạng Tiếng Việt): Một trong những đặc điểm của tiếng Việt gây khó khăn cho việc xây dựng hệ thống nhận dạng chính xác với lượng từ vựng lớn là gì?",
+                options: ["Tiếng Việt là ngôn ngữ không có thanh điệu.", "Tiếng Việt không có sự phân hóa thổ ngữ giữa các miền.", "Sự khác biệt giữa các thanh điệu có khi rất nhỏ khi được phát âm bởi một số vùng miền.", "Tiếng Việt chỉ sử dụng một tập cố định khoảng 10 đơn vị âm vị cơ sở."],
+                answer: "Sự khác biệt giữa các thanh điệu có khi rất nhỏ khi được phát âm bởi một số vùng miền.",
+                explanation: "<strong>Giải thích:</strong> Sự nhập nhằng thanh điệu (đặc biệt ở miền Trung/Nam) làm tăng độ khó cho nhận dạng (5.7)."
+            }
+        ];
+
+        // Hàm khởi tạo bài kiểm tra
+        function buildQuiz() {
+            const quizContainer = document.getElementById('quiz-container');
+            
+            quizData.forEach((data, index) => {
+                // Tạo khối câu hỏi
+                const questionBlock = document.createElement('div');
+                questionBlock.className = 'question-block';
+                questionBlock.id = `q${index}`;
+
+                // Thêm câu hỏi
+                const questionTitle = document.createElement('div');
+                questionTitle.className = 'question-title';
+                questionTitle.innerHTML = data.question; // Dùng innerHTML để render MathJax
+                questionBlock.appendChild(questionTitle);
+
+                // Tạo danh sách các lựa chọn
+                const optionsList = document.createElement('ul');
+                optionsList.className = 'options-list';
+
+                data.options.forEach(optionText => {
+                    const optionItem = document.createElement('li');
+                    optionItem.className = 'option';
+                    optionItem.innerHTML = optionText; // Dùng innerHTML để render MathJax
+
+                    // Kiểm tra xem đây có phải là câu trả lời đúng không
+                    if (optionText === data.answer) {
+                        optionItem.dataset.correct = "true";
+                    }
+
+                    // Thêm sự kiện click
+                    optionItem.addEventListener('click', () => selectAnswer(questionBlock, optionItem, data.answer, data.explanation));
+                    optionsList.appendChild(optionItem);
+                });
+
+                questionBlock.appendChild(optionsList);
+
+                // Tạo khung giải thích (ẩn)
+                const explanationBox = document.createElement('div');
+                explanationBox.className = 'explanation';
+                explanationBox.innerHTML = data.explanation; // Dùng innerHTML để render MathJax
+                questionBlock.appendChild(explanationBox);
+
+                // Thêm khối câu hỏi vào container
+                quizContainer.appendChild(questionBlock);
+            });
+            
+            // Yêu cầu MathJax render lại nếu cần
+            if (typeof MathJax !== 'undefined' && MathJax.typesetPromise) {
+                MathJax.typesetPromise();
+            }
+        }
+
+        // Hàm xử lý khi chọn câu trả lời
+        function selectAnswer(questionBlock, selectedOption, correctAnswer, explanation) {
+            // Đánh dấu câu hỏi này là đã trả lời
+            questionBlock.classList.add('answered');
+
+            // Tìm tất cả các lựa chọn trong câu hỏi này
+            const allOptions = questionBlock.querySelectorAll('.option');
+
+            allOptions.forEach(option => {
+                // Highlight đáp án đúng
+                if (option.dataset.correct === "true") {
+                    option.classList.add('correct');
+                }
+                // Highlight đáp án sai (nếu người dùng chọn sai)
+                else if (option === selectedOption) {
+                    option.classList.add('incorrect');
+                }
+            });
+
+            // Hiển thị khung giải thích
+            const explanationBox = questionBlock.querySelector('.explanation');
+            explanationBox.style.display = 'block';
+        }
+
+        // Bắt đầu xây dựng bài kiểm tra khi trang được tải
+        document.addEventListener('DOMContentLoaded', buildQuiz);
+    </script>
+
+</body>
+</html>
